@@ -135,3 +135,5 @@ form.register input[type="submit"] {
 	cursor: pointer;
 	text-transform: uppercase;
 }
+
+</style>
