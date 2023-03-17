@@ -21,6 +21,14 @@ const routes = [
     }
   },
   {
+    path: '/leave',
+    name: 'Leave',
+    component: () => import('../views/Leave.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login
