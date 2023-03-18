@@ -63,7 +63,9 @@
     </div>
     <br> <br>
     
-        <LeaveDisplay/>
+        <LeaveDisplay :key="refreshComp"/>
+        <br>
+        <ManagerLeave :key="refreshComp"/>
         
 </template>
 
@@ -72,13 +74,19 @@
     import { getFirestore } from 'firebase/firestore'
     import {doc, setDoc} from "firebase/firestore";
     const db = getFirestore(firebaseApp);
+    import { getAuth } from "firebase/auth";
+
+        const auth = getAuth();
+        const user = auth.currentUser;
 
     import LeaveDisplay from '../components/LeaveDisplay.vue';
+    import ManagerLeave from '../components/ManagerLeave.vue';
 
         export default {
             name: 'OnlyLeave',
             components:{
-                LeaveDisplay
+                LeaveDisplay,
+                ManagerLeave
             },
         
 
@@ -102,8 +110,8 @@
             
         alert(" Saving your data for Leave : " + duration)
             try {
-                const docRef = await setDoc(doc(db, "Leave",duration),{
-                Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
+                const docRef = await setDoc(doc(db, "Leave",undefined),{
+                Email: user.email, Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
                 console.log(docRef) 
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();

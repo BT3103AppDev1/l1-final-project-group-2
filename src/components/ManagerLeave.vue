@@ -1,9 +1,9 @@
 <template>
     <div>
-    <h1 id="Current"> My Leaves </h1>
+    <h1 id="Current Pending"> Pending Leave Requests</h1>
     
 
-    <table id = "table" class = "auto-index">
+    <table id = "pending table" class = "auto-index">
         <tr>
                 <th>S.No</th>
                 <th>Description</th>
@@ -23,12 +23,12 @@
 <script>
 import firebaseApp from '../firebase/index.js';
 import { getFirestore } from 'firebase/firestore'
-import {doc, collection, getDocs, deleteDoc, query, where} from "firebase/firestore";
+import {doc, collection, getDocs, deleteDoc, query, where, updateDoc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth();
 const user = auth.currentUser;
- console.log(user.email)
+ console.log("MANGER", user.email)
 
 const db = getFirestore(firebaseApp);
 
@@ -38,14 +38,15 @@ export default {
     async function display(){
     
 
-    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Email", "==", user.email)));
+    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Status", "==", "pending")));
+    console.log("manager")
 
     let index = 1
     
 
     allDocuments.forEach(doc => {
+        console.log("pending")
         let docid = doc.id
-        console.log(docid, "document ID")
         let documentData = doc.data()
         let description = documentData.Description
         let type = documentData.Type
@@ -53,11 +54,11 @@ export default {
         let days = documentData.Days
         let employer = documentData.Employer
         let status = documentData.Status
+        let email = documentData.Email
         
-    
 
 
-        let table = document.getElementById("table")
+        let table = document.getElementById("pending table")
         let row = table.insertRow(index)
         let cell1= row.insertCell(0)
         let cell2= row.insertCell(1)
@@ -104,59 +105,55 @@ export default {
         
         
         
-                // create button element
-        const deletebtn = document.createElement("button");
-        deletebtn.className= "bwt"
-
-        // create span element for button text
-        const span = document.createElement("span");
-        span.className="deletespan"
-        span.innerText = "CONFIRM DELETE";
-
-        // create SVG element for icon
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("width", "25");
-        svg.setAttribute("height", "25");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "2");
-
-        // create path element for SVG icon
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
-        path.setAttribute("d", "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16");
-
-        // append child elements to button
-        svg.appendChild(path);
-        deletebtn.appendChild(span);
-        deletebtn.appendChild(svg);
-
+        const tickbtn = document.createElement("button");
+        tickbtn.className= "tickbwt"
+        tickbtn.innerHTML="&#10003;"
         
+        const crossbtn = document.createElement("button");
+        crossbtn.className= "crossbwt"
+        crossbtn.innerHTML="&#10007"
+        
+
        
 
-        cell8.appendChild(deletebtn)
-        deletebtn.onclick = function() {
-            deleteLeave(docid)
+        cell8.appendChild(tickbtn)
+        cell8.append(crossbtn)
+        crossbtn.onclick = function() {
+            rejectLeave(docid)
+        }
+        tickbtn.onclick = function() {
+            approveLeave(docid)
         }
         
         index+=1
     })
 }
     display()
-    async function deleteLeave(docid) {
-        alert("You are going to delete Leave " + docid)
+    async function rejectLeave(docid) {
+        alert("You are going to reject Leave " + docid)
         console.log(document.body.offsetWidth)
         await deleteDoc(doc(db,"Leave", docid))
-        console.log("Document successfully deleted!", docid);
-        let tb = document.getElementById("table")
+        console.log("Document successfully rejected!", docid);
+        let tb = document.getElementById("pending table")
         while(tb.rows.length > 1) {
             tb.deleteRow(1)
         }
         
         display()
     }
+    async function approveLeave(docid) {
+        alert("You are going to approve Leave " + docid)
+        await updateDoc(doc(db, 'Leave', docid), {Status: "approved"});
+        console.log("Document successfully approved!", docid);
+        let tb = document.getElementById("pending table")
+        while(tb.rows.length > 1) {
+            tb.deleteRow(1)
+        }
+        
+        display()
+
+    }
+    
 }
     }
 
@@ -201,26 +198,6 @@ th,td {
     padding: 8px;
 }
 
-
-
-.approved {
-  display: inline-flex;
-  align-items: center;
-  margin: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  background-color: #c6f6d5;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #059669;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-.approved:hover {
-  background-color: #9ae6b4;
-  
-}
 .pending {
   display: inline-flex;
   align-items: center;
@@ -239,73 +216,37 @@ th,td {
   background-color: #8e8e8e;
   
 }
-.rejected {
-  display: inline-flex;
-  align-items: center;
-  margin: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  
-  background-color: #f47878;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #fd2626;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+
+
+.tickbwt {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+    line-height: 18px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #4CAF50;
 }
 
-.rejected:hover {
-  background-color: #ff0202;
-  
-}
-.bwt {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    border: 2px solid rgb(231, 50, 50);
-    
+.crossbwt {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+    line-height: 18px;
     cursor: pointer;
-    box-shadow: 0 0 10px #333;
-    overflow: hidden;
-    transition: .3s;
+    color: #fff;
+    background-color: #f44336;
+
 }
-.bwt:hover {
-    background-color: rgb(245, 207, 207);
-    transform: scale(1.2);
-    box-shadow: 0 0 4px #111;
-    transition: .3s;
-}
-svg {
-    color: rgb(231, 50, 50);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: .3s;
-}
-.bwt:focus svg {
-    opacity: 0;
-    transition: .3s;
-}
-.deletespan {
-    width: 150px;
-    position: absolute;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    color: rgb(231, 50, 50);
-    font-weight: 600;
-    transition: .3s;
-}
-.bwt:focus {
-    width: 150px;
-    height: 50px;
-    transition: .3s;
-}
-.bwt:focus span {
-    opacity: 1;
-    transition: .3s;
-}
+
 </style>
 
 
