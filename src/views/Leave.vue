@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import firebaseApp from '../firebase/index';
+    import firebaseApp from '../firebase/firebase';
     import { getFirestore } from 'firebase/firestore'
     import {doc, setDoc} from "firebase/firestore";
     const db = getFirestore(firebaseApp);

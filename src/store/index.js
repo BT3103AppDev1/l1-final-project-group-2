@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
 import router from '../router/index.js'
-import { auth } from '../firebase/index.js'
+import { auth } from '../firebase/firebase.js'
 import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut 
 } from 'firebase/auth'
+import 'firebase/firestore'
+
 
 export default createStore({
   state: {
