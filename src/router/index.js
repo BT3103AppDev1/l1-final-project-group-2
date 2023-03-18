@@ -21,6 +21,14 @@ const routes = [
     }
   },
   {
+    path: '/chat',
+    name: 'Chat',
+    component: () => import('../views/Chat.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/leave',
     name: 'Leave',
     component: () => import('../views/Leave.vue'),
