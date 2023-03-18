@@ -5,7 +5,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
     <router-link to="/leave">Leave</router-link> |
-    <router-link to="/chat">Chat</router-link>
+    <router-link to="/chat">Chat</router-link> |
     <button @click="$store.dispatch('logout')">Logout</button>
   </div>
   <router-view/>
