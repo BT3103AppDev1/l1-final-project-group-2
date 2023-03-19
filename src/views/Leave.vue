@@ -72,7 +72,7 @@
 <script>
     import firebaseApp from '../firebase/index';
     import { getFirestore } from 'firebase/firestore'
-    import {doc, setDoc} from "firebase/firestore";
+    import {doc, setDoc, collection} from "firebase/firestore";
     const db = getFirestore(firebaseApp);
     import { getAuth } from "firebase/auth";
 
@@ -110,8 +110,8 @@
             
         alert(" Saving your data for Leave : " + duration)
             try {
-                const docRef = await setDoc(doc(db, "Leave",undefined),{
-                Email: user.email, Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
+                const docRef = await setDoc(doc(collection(db, "Leave")),{
+                Email : user.email, Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
                 console.log(docRef) 
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();
