@@ -132,7 +132,7 @@ export default {
     async function rejectLeave(docid) {
         alert("You are going to reject Leave " + docid)
         console.log(document.body.offsetWidth)
-        await deleteDoc(doc(db,"Leave", docid))
+        await updateDoc(doc(db, 'Leave', docid), {Status: "rejected"});
         console.log("Document successfully rejected!", docid);
         let tb = document.getElementById("pending table")
         while(tb.rows.length > 1) {
