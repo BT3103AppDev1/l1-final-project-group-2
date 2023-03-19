@@ -386,7 +386,7 @@
 
 
 <script>
-import firebaseApp from '../firebase/index.js';
+import firebaseApp from '../firebase/firebase.js';
 import {getFirestore} from "firebase/firestore"
 import {doc, setDoc, getDocs, collection} from "firebase/firestore";
 const db = getFirestore(firebaseApp);
