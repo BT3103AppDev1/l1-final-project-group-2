@@ -1,67 +1,102 @@
-
-
- 
 <template>
 	<main class="login">
-		<section class="forms">
-
-			<form class="register" @submit.prevent="register">
-				<h2>Register</h2>
-				<input 
-					type="email" 
-					placeholder="Email address"
-					v-model="register_form.email" />
-				<input 
-					type="password" 
-					placeholder="Password" 
-					v-model="register_form.password" />
-				<input 
-					type="submit" 
-					value="Register" />
-			</form>
-
-			<form class="login" @submit.prevent="login">
-				<h2>Login</h2>
-				<input 
-					type="email" 
-					placeholder="Email address"
-					v-model="login_form.email" />
-				<input 
-					type="password" 
-					placeholder="Password" 
-					v-model="login_form.password" />
-				<input 
-					type="submit" 
-					value="Login" />
-			</form>
-
-		</section>
+	  <section class="forms">
+		<form class="register" @submit.prevent="register">
+		  <h2>Register</h2>
+		  <input
+			type="name"
+			placeholder="Name"
+			v-model="register_form.name"
+		  />
+		  <input
+			type="email"
+			placeholder="Email address"
+			v-model="register_form.email"
+		  />
+		  <input
+			type="password"
+			placeholder="Password"
+			v-model="register_form.password"
+		  />
+		  <input
+			type="team"
+			placeholder="Team"
+			v-model="register_form.team"
+		  />
+		  <input
+			type="role"
+			placeholder="Role"
+			v-model="register_form.role"
+		  />
+		  <input type="submit" value="Register" />
+		</form>
+  
+		<form class="login" @submit.prevent="login">
+		  <h2>Login</h2>
+  
+		  <input
+			type="email"
+			placeholder="Email address"
+			v-model="login_form.email"
+		  />
+		  <input
+			type="password"
+			placeholder="Password"
+			v-model="login_form.password"
+		  />
+		  <input type="submit" value="Login" />
+		</form>
+	  </section>
 	</main>
-</template>
-
-<script>
-import { ref } from 'vue'
-import { useStore } from 'vuex'
-export default {
-	setup () {
-		const login_form = ref({});
-		const register_form = ref({});
-		const store = useStore();
-		const login = () => {
-			store.dispatch('login', login_form.value);
+  </template>
+  
+  <script>
+  import { ref } from "vue";
+  import { useStore } from "vuex";
+  import firebaseApp from "../firebase/index";
+  import { getFirestore, addDoc, collection } from "firebase/firestore";
+  
+  const db = getFirestore(firebaseApp);
+  
+  export default {
+	setup() {
+	  const login_form = ref({});
+	  const register_form = ref({});
+	  const store = useStore();
+	  const login = () => {
+		store.dispatch("login", login_form.value);
+	  };
+	  const register = async () => {
+		store.dispatch("register", register_form.value);
+		await createUser();
+	  };
+	  const createUser = async () => {
+		const colRef = collection(db, "users");
+		const dataObj = {
+		  name: register_form.value.name,
+		  email: register_form.value.email,
+		  team: register_form.value.team,
+		  role: register_form.value.role,
+		};
+		try {
+		  const docRef = await addDoc(colRef, dataObj);
+		  console.log("Document was created with ID:", docRef.id);
+		} catch (error) {
+		  console.error("Error adding document: ", error);
 		}
-		const register = () => {
-			store.dispatch('register', register_form.value);
-		}
-		return {
-			login_form,
-			register_form,
-			login,
-			register
-		}
-	}
-}
-</script>
+	  };
+  
+	  return {
+		login_form,
+		register_form,
+		login,
+		register,
+		createUser,
+	  };
+	},
+  };
+  </script>
+  
 
 <style>
 .forms {
