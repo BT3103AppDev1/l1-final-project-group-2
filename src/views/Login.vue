@@ -53,7 +53,7 @@
   <script>
   import { ref } from "vue";
   import { useStore } from "vuex";
-  import firebaseApp from "../firebase/index";
+  import firebaseApp from "../firebase/firebase.js";
   import { getFirestore, addDoc, collection } from "firebase/firestore";
   
   const db = getFirestore(firebaseApp);
