@@ -1,11 +1,4 @@
 <template>
-	<div class="sidenav">
-		<a href="#">About</a>
-		<a href="#">Services</a>
-		<a href="#">Clients</a>
-		<a href="#">Contact</a>
-	
-  </div>
   <main class='project'>
     <div class='project-info'>
       <h1>Task Dashboard</h1>
@@ -125,10 +118,6 @@
 
  h1 {
 	 font-size: 30px;
-}
- .project {
-	 padding: 0px 10px;
-	 margin-left: 100px;
 }
  .project-info {
 	 padding: 2rem 0;

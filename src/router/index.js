@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import { auth } from '../firebase/firebase.js';
+import '../assets/main.css'
 
 const routes = [
   {
@@ -13,9 +14,9 @@ const routes = [
     }
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue'),
+    path: '/team',
+    name: 'Team',
+    component: () => import('../views/Team.vue'),
     meta: {
       requiresAuth: true
     }
