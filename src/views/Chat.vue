@@ -80,7 +80,6 @@ export default {
     },
   },
   methods: {
-    
     async sendMessage() {
       if (!this.newMessage.trim()) return
 
@@ -311,3 +310,4 @@ button[type="submit"]:hover {
   }
 }
 </style>
+
