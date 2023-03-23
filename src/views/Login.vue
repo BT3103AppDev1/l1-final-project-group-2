@@ -72,6 +72,7 @@
 	  };
 	  const createUser = async () => {
 		const colRef = collection(db, "users");
+		const colRefTwo = collection(db, "teams",register_form.value.team,"users");
 		const dataObj = {
 		  name: register_form.value.name,
 		  email: register_form.value.email,
@@ -80,7 +81,9 @@
 		};
 		try {
 		  const docRef = await addDoc(colRef, dataObj);
+		  const docRefTwo = await addDoc(colRefTwo, dataObj);
 		  console.log("Document was created with ID:", docRef.id);
+		  console.log("Document was created with ID:", docRefTwo.id);
 		} catch (error) {
 		  console.error("Error adding document: ", error);
 		}
