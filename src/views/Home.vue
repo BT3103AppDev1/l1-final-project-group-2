@@ -1,6 +1,6 @@
 <template>
   <main class="home">
-    <PersonalPage @added="change" :key="refreshComp"/>
+    <PersonalPage @added="change" @changedStatus="change" :key="refreshComp"/>
 
     
   </main>
