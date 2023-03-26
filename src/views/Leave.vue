@@ -1,39 +1,31 @@
 <template>
     
         
-            <h1>Leave Dashboard <button class = "applyLeave" @click ="showForm = true"> + Apply Leave</button>
-                
-                    <div class="overlay" v-if="showForm">
-                    <div class="modal">
-                        <h5>Form Title</h5>
-                        <form id= "leaveForm" @submit.prevent="submitForm">
-                            <div class = "formli">
-                                <label for="description"> Description: </label>
-                                <input type = "text" id = "description" required = "" placeholder="Enter Description"> <br><br>
-                                <label for="type"> Type of Leave: </label>
-                                <select id="type">
-                                <option value="">-- Please select --</option>
-                                <option value="Annual">Annual</option>
-                                <option value="Sick">Sick</option>
-                                <option value="Urgent">Urgent</option>
-                                <option value="Others">Others</option>
-                                </select> <br> <br>
-                                <label for="duration"> Duration </label>
-                                <input type = "text" id = "duration" required = "" placeholder="Enter Start and End Date"> <br><br>
-                                <label for="days"> Number of Days </label>
-                                <input type = "number" id = "days" required = "" placeholder="Enter Number of Days"> <br><br>
-                                <label for="employer"> Approving Employer </label>
-                                <input type = "text" id = "employer" required = "" placeholder="Enter Employer Name"> <br><br>
-                                
+            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave">+ Add Leave</button></h1>
+        
+        <div class = "form-popup" >
+          <div class = "popup" id = "myform">    
+          <form action="/action_page.php" class = "formli" id="leaveForm">         
+            <h3> Leave Request </h3>
+              <br><br>
+              <label for="type">Type of Leave</label>
+              <input type="text" placeholder="Type" id="type" required>
+              <label for="description">Description</label>
+              <input type="text" placeholder="Description" id="description" required>
+              <label for="duration">Duration</label>
+              <input type="text" placeholder="ddmmyy - ddmmyy" id="duration" required>
+              <label for="days">Number of Days</label>
+              <input type="number" placeholder="Num of Days" id="days" required>
+              <label for="employer">Approving Employer</label>
+              <input type="text" placeholder="Name" id="employer" required>
 
-                                
-                        </div>
-                        <button type="submit">Submit</button>
-                        <button @click="showForm = false">Close</button>
-                        </form>
-                    </div>
-    </div>
-            </h1>
+              <button class="btn" type="button" v-on:click="submitForm">Submit</button>
+              <button class="btn" type="button" v-on:click="closeForm" >Close</button>
+            </form>
+            </div>
+        </div>
+
+            
             
         
     <div class = box>
@@ -65,14 +57,15 @@
     
         <LeaveDisplay :key="refreshComp"/>
         <br>
-        <ManagerLeave :key="refreshComp"/>
+       
+        <ManagerLeave v-if="isManager" />
         
 </template>
 
 <script>
     import firebaseApp from '../firebase/firebase';
     import { getFirestore } from 'firebase/firestore'
-    import {doc, setDoc, collection} from "firebase/firestore";
+    import {getDoc,doc, setDoc, collection} from "firebase/firestore";
     const db = getFirestore(firebaseApp);
     import { getAuth } from "firebase/auth";
 
@@ -88,18 +81,35 @@
                 LeaveDisplay,
                 ManagerLeave
             },
-        
-
             data() {
     return {
-      showForm: false,
-      form: {
-        name: '',
-        email: ''
-      }
+      isManager: false
+    }
+  },
+
+  async mounted() {
+    try {
+        console.log(user.uid)
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+      const userData = userDoc.data();
+      console.log(userData.role)
+      this.isManager = userData.role === "manager";
+      
+    } catch (error) {
+      console.error("Error getting user data:", error);
     }
   },
   methods: {
+    addLeave() {
+      console.log("hi")
+      document.getElementById("myform").style.display = "block";
+    },
+    closeForm() {
+      console.log("bye")
+      document.getElementById("myform").style.display = "none";
+
+    },
             async submitForm(){
               console.log("IN AC")
             let description = document.getElementById("description").value
@@ -129,19 +139,56 @@
 div{
     background-color: #EBF0F7;
 }
-.formli{
-        display: inline-block;
-        text-align: center;
-        background-color: white;
-        
-    
-    }
-    form{
-        text-align: center;
-        align-items: center;
-        margin: auto;
-       
-    }
+.form-popup{
+    position:relative;
+    text-align: center;
+    width: 100%;
+  }
+
+  .popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: [form width];
+    height: [form height];
+    padding: [form padding];
+    margin: [form margin];
+    background-color: #fff;
+}
+
+  .formli {
+    width: [form width];
+    height: 640px;
+    padding: [form padding];
+    background-color: #fff;
+  }
+
+  .formli input[type=text],  
+  .formli input[type=date]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 20px 0;
+    border: 3px solid #999999;
+    background: #fff;
+    font-size: small;
+  }
+
+  
+
+  .formli .btn {
+    padding: 12px 20px;
+    background-color: #fff;
+    cursor: pointer;
+	 margin-bottom: 1rem;
+   opacity: 0.8;
+  margin: 10px;
+
+}
+  
+ 
+
+
 h5{
     background-color: whitesmoke;
     text-align: center;
@@ -151,6 +198,8 @@ h1{
     color: black;
     background-color: white;
 }
+
+
 .applyLeave{
   align-items: center;
   appearance: none;
@@ -185,22 +234,18 @@ h1{
   z-index: 0;
   float:right;
 }
-
 .applyLeave:hover {
   background: #F6F9FE;
   color: #174ea6;
 }
-
 .applyLeave:active {
   box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
   outline: none;
 }
-
 .applyLeave:focus {
   outline: none;
   border: 2px solid #4285f4;
 }
-
     .box{
         
         
