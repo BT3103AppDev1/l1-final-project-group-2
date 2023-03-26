@@ -1,50 +1,31 @@
 <template>
-  <div class="chat-container">
-    <div class="chat-list">
-      <div
-        v-for="conversation in conversations"
-        :key="conversation.id"
-        class="conversation-item"
-        :class="{ 'active': conversation.id === activeConversation }"
-        @click="selectConversation(conversation.id)"
-      >
-        <img :src="conversation.photoURL" alt="user" class="avatar" />
-        <div class="info">
-          <div class="name">{{ conversation.displayName }}</div>
-          <div class="message">{{ conversation.lastMessage }}</div>
-        </div>
-        <div class="time">{{ conversation.time }}</div>
+  <div>
+    <div v-for="conversation in conversations" :key="conversation.id">
+      <h3>{{ conversation.displayName }}</h3>
+      <div v-for="message in conversation.messages" :key="message.id">
+        <div>{{ message.senderId }}: {{ message.content }}</div>
       </div>
     </div>
-    <div class="chat">
-      <div v-if="activeConversation">
-        <div class="chat-header">
-          <div class="name">{{ activeConversationName }}</div>
-          <button class="close-button" @click="closeConversation">&times;</button>
-        </div>
-        <div class="chat-messages">
-          <div v-for="message in activeConversationMessages" :key="message.id" class="message">
-            <div class="bubble" :class="{ 'mine': message.uid === currentUser.uid }">{{ message.text }}</div>
-            <div class="time">{{ message.time }}</div>
-          </div>
-        </div>
-        <form class="chat-form" @submit.prevent="sendMessage">
-          <input type="text" v-model="newMessage" placeholder="Type your message here" />
-          <button type="submit">Send</button>
-        </form>
-      </div>
-      <div v-else>
-        <p>Select a conversation to start chatting.</p>
-      </div>
+    <div>
+      <label for="userSelect">Select user to send a message:</label>
+      <select id="userSelect" v-model="selectedUser">
+        <option disabled value="">Please select a user</option>
+        <option v-for="user in users" :key="user.id" :value="user.id">{{ user.displayName }}</option>
+      </select>
     </div>
+    <form @submit.prevent="sendMessage">
+      <input type="text" v-model="newMessage" />
+      <button type="submit" :disabled="!selectedUser">Send</button>
+    </form>
   </div>
 </template>
 
+
 <script>
-import { getFirestore, doc, setDoc, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth'
-import { initializeApp } from 'firebase/app';
-import { where } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, setDoc, query, orderBy } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ56Dc6lkHOcHa1bgjb0cQvFAsgF_cgas",
@@ -57,257 +38,81 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-const db = getFirestore(firebaseApp)
-const auth = getAuth()
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp); // add this line to initialize Firestore
 
 export default {
   data() {
-    return {
-      conversations: [],
-      activeConversation: null,
-      newMessage: '',
-      currentUser: auth.currentUser,
-    }
-  },
-  computed: {
-    activeConversationName() {
-      const conversation = this.conversations.find(c => c.id === this.activeConversation)
-      return conversation ? conversation.displayName : ''
-    },
-    activeConversationMessages() {
-      const conversation = this.conversations.find(c => c.id === this.activeConversation)
-      return conversation ? conversation.messages : []
-    },
-  },
-  methods: {
-    async sendMessage() {
-      if (!this.newMessage.trim()) return
-
-      try {
-        const { uid, photoURL, displayName } = this.currentUser
-        const createdAt = new Date().toISOString()
-        const messageData = {
-          text: this.newMessage,
-          createdAt,
-          uid,
-          photoURL,
-          displayName,
-        }
-        await setDoc(doc(collection(db, 'conversations', this.activeConversation, 'messages'), new Date().getTime().toString()), messageData)
-        this.newMessage = ''
-      } catch (error) {
-        console.error('Error writing new message to Firebase Database', error)
-      }
-    },
-    async selectConversation(conversationId) {
-      this.activeConversation = conversationId
-
-      const conversationRef = collection(db, 'conversations', conversationId, 'messages')
-      const q = query(conversationRef, orderBy('createdAt'))
-
-      onSnapshot(q, querySnapshot => {
-        const messages = []
-        querySnapshot.forEach(doc => {
-          messages.push({ id: doc.id, ...doc.data() })
-        })
-        const conversationIndex = this.conversations.findIndex(c => c.id === conversationId)
-        if (conversationIndex !== -1) {
-          this.conversations[conversationIndex].messages = messages
-          this.conversations[conversationIndex].lastMessage = messages[messages.length - 1].text
-          this.conversations[conversationIndex].time = messages[messages.length - 1].createdAt
-        }
-      })
-    },
-    closeConversation() {
-      this.activeConversation = null
-    },
-  },
-  mounted() {
-  const conversationsRef = collection(db, 'conversations')
-  const q = query(conversationsRef, where('members', 'array-contains', this.currentUser.uid), orderBy('updatedAt', 'desc'))
-
-  onSnapshot(q, querySnapshot => {
-    console.log(querySnapshot)
-    const conversations = []
-    querySnapshot.forEach(doc => {
-      const data = doc.data()
-      const members = data.members.filter(m => m !== this.currentUser.uid)
-      const conversation = {
-        id: doc.id,
-        members,
-        displayName: data.displayName || members[0],
-        photoURL: data.photoURL || '',
-        lastMessage: '',
-        time: '',
-        messages: [],
-      }
-      conversations.push(conversation)
-    })
-    console.log(conversations)
-    this.conversations = conversations
-  })
+  return {
+    newMessage: "",
+    conversations: [],
+    selectedUser: "",
+    users: [],
+  };
 },
-}
+async created() {
+  await this.fetchAndInitializeConversations();
+  await this.fetchUsers();
+},
+  methods: {
+    async fetchUsers() {
+  const loggedInUserId = "logged_in_user_id"; // Replace with the actual logged-in user ID
+  const usersSnapshot = await getDocs(collection(db, "users"));
+
+  usersSnapshot.forEach((userDoc) => {
+    if (userDoc.id !== loggedInUserId) {
+      this.users.push({
+        id: userDoc.id,
+        displayName: userDoc.data().displayName,
+      });
+    }
+  });
+},
+
+    async fetchAndInitializeConversations() {
+      const loggedInUserId = auth.currentUser;
+      const usersSnapshot = await getDocs(collection(db, "users"));
+
+      for (const userDoc of usersSnapshot.docs) {
+        if (userDoc.id !== loggedInUserId) {
+          const conversationId = this.getConversationId(loggedInUserId, userDoc.id);
+          const conversationRef = doc(db, "conversations", conversationId);
+
+          const conversationSnapshot = await getDoc(conversationRef);
+          if (!conversationSnapshot.exists()) {
+            await setDoc(conversationRef, {
+              participants: [loggedInUserId, userDoc.id],
+              messages: [],
+            });
+          }
+
+          this.conversations.push({
+            id: conversationId,
+            displayName: userDoc.data().displayName,
+            messages: await this.fetchMessages(conversationId),
+          });
+        }
+      }
+    },
+    async fetchMessages(conversationId) {
+      const messagesSnapshot = await getDocs(
+        query(collection(doc(db, "conversations", conversationId), "messages"), orderBy("timestamp", "asc"))
+      );
+      return messagesSnapshot.docs.map((doc) => doc.data());
+    },
+    async sendMessage() {
+  if (!this.selectedUser) {
+    return;
+  }
+
+  // The rest of the sendMessage implementation
+},
+
+    getConversationId(user1, user2) {
+      const ids = [user1, user2].sort();
+      return `${ids[0]}_${ids[1]}`;
+    },
+  },
+};
 </script>
-
-<style scoped>
-.chat-container {
-  display: flex;
-  height: 100%;
-}
-
-.chat-list {
-  flex: 1 1 300px;
-  border-right: 1px solid #eee;
-  overflow-y: auto;
-}
-
-.conversation-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.conversation-item:hover {
-  background-color: #f7f7f7;
-}
-
-.active {
-  background-color: #f7f7f7;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.info {
-  flex: 1 1 auto;
-}
-
-.name {
-  font-weight: 600;
-}
-
-.time {
-  margin-left: auto;
-}
-
-.chat {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.name {
-  font-weight: 600;
-  margin-right: auto;
-}
-
-.close-button {
-  border: none;
-  background-color: transparent;
-  color: #999;
-  cursor: pointer;
-  font-size: 24px;
-  margin-left: 10px;
-}
-
-.close-button:hover {
-  color: #666;
-}
-
-.chat-messages {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.message {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.bubble {
-  background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 80%;
-}
-
-.bubble.mine {
-  background-color: #007bff;
-  color: #fff;
-  margin-left: auto;
-}
-
-.time {
-  font-size: 12px;
-  margin-left: 10px;
-  align-self: flex-end;
-}
-
-.chat-form {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-top: 1px solid #eee;
-}
-
-input[type="text"] {
-  flex: 1 1 auto;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  margin-right: 10px;
-}
-
-input[type="text"]:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-button[type="submit"] {
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button[type="submit"]:hover {
-  background-color: #0069d9;
-}
-
-@media screen and (max-width: 768px) {
-  .chat-container {
-    flex-direction: column;
-  }
-
-  .chat-list {
-    flex: 1 1 auto;
-    border-right: none;
-    border-bottom: 1px solid #eee;
-    overflow-y: hidden;
-  }
-
-  .chat-messages {
-    padding-top: 0;
-    padding-bottom: 10px;
-  }
-}
-</style>
-
