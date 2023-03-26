@@ -94,7 +94,7 @@
       
       const userData = userDoc.data();
       console.log(userData.role)
-      this.isManager = userData.role === "manager";
+      this.isManager = userData.role === "Manager";
       
     } catch (error) {
       console.error("Error getting user data:", error);
@@ -120,6 +120,7 @@
             
         alert(" Saving your data for Leave : " + duration)
             try {
+                
                 const docRef = await setDoc(doc(collection(db, "Leave")),{
                 Email : user.email, Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
                 console.log(docRef) 
