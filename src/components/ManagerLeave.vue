@@ -10,7 +10,6 @@
                 <th>Type</th>
                 <th>Duration</th>
                 <th>Days</th>
-                <th>Approving Employer</th>
                 <th>Status</th>
                 <th> Options</th>
             </tr>
@@ -23,22 +22,28 @@
 <script>
 import firebaseApp from '../firebase/firebase.js';
 import { getFirestore } from 'firebase/firestore'
-import {doc, collection, getDocs, deleteDoc, query, where, updateDoc} from "firebase/firestore";
+import {doc, collection, getDocs, deleteDoc, query, where, updateDoc, getDoc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth();
 const user = auth.currentUser;
- console.log("MANGER", user.email)
+ console.log("MANaGER", user.email)
 
 const db = getFirestore(firebaseApp);
+const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+      const userData = userDoc.data();
+      console.log(userData.team)
+const team = userData.team
+
 
 export default {
     mounted(){
 
     async function display(){
     
-
-    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Status", "==", "pending")));
+    
+    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Status", "==", "pending"), where("Team", "==",team)));
     console.log("manager")
 
     let index = 1
@@ -52,9 +57,9 @@ export default {
         let type = documentData.Type
         let duration = documentData.Duration
         let days = documentData.Days
-        let employer = documentData.Employer
+        
         let status = documentData.Status
-        let email = documentData.Email
+        
         
 
 
@@ -65,21 +70,16 @@ export default {
         let cell3= row.insertCell(2)
         let cell4= row.insertCell(3)
         let cell5= row.insertCell(4)
+        
         let cell6= row.insertCell(5)
         let cell7= row.insertCell(6)
-        let cell8= row.insertCell(7)
 
         cell1.innerHTML = index
         cell2.innerHTML = description
 
         cell3.innerHTML = type
         cell4.innerHTML = duration
-
-        
-    
-        
         cell5.innerHTML = days
-        cell6.innerHTML = employer 
         console.log(status)
         let badge = document.createElement('span');
         if (status=="pending") {
@@ -101,7 +101,7 @@ export default {
         // code to execute if all conditions are false
         }
         
-        cell7.appendChild(badge)
+        cell6.appendChild(badge)
         
         
         
@@ -116,8 +116,8 @@ export default {
 
        
 
-        cell8.appendChild(tickbtn)
-        cell8.append(crossbtn)
+        cell7.appendChild(tickbtn)
+        cell7.append(crossbtn)
         crossbtn.onclick = function() {
             rejectLeave(docid)
         }

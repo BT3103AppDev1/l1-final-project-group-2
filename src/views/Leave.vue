@@ -9,15 +9,24 @@
             <h3> Leave Request </h3>
               <br><br>
               <label for="type">Type of Leave</label>
-              <input type="text" placeholder="Type" id="type" required>
+              <select id="type" required>
+                <option value="">Select Type of Leave</option>
+                <option value="Annual">Annual</option>
+                <option value="Sick">Sick</option>
+                <option value="Others">Others</option>
+              </select>
               <label for="description">Description</label>
               <input type="text" placeholder="Description" id="description" required>
               <label for="duration">Duration</label>
               <input type="text" placeholder="ddmmyy - ddmmyy" id="duration" required>
               <label for="days">Number of Days</label>
               <input type="number" placeholder="Num of Days" id="days" required>
-              <label for="employer">Approving Employer</label>
-              <input type="text" placeholder="Name" id="employer" required>
+              <label for="team">Team</label>
+              <select id="team" required>
+                <option value="">Select Team</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Technology">Technology</option>
+              </select>
 
               <button class="btn" type="button" v-on:click="submitForm">Submit</button>
               <button class="btn" type="button" v-on:click="closeForm" >Close</button>
@@ -116,13 +125,13 @@
             let type = document.getElementById("type").value
             let duration = document.getElementById("duration").value
             let days = document.getElementById("days").value
-            let employer = document.getElementById("employer").value
+            let team = document.getElementById("team").value
             
         alert(" Saving your data for Leave : " + duration)
             try {
                 
                 const docRef = await setDoc(doc(collection(db, "Leave")),{
-                Email : user.email, Description: description, Type : type, Duration: duration, Days : days, Employer:employer, Status: "pending"})
+                Email : user.email, Description: description, Type : type, Duration: duration, Days : days, Team :team, Status: "pending"})
                 console.log(docRef) 
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();
@@ -158,34 +167,41 @@ div{
     background-color: #fff;
 }
 
-  .formli {
-    width: [form width];
-    height: 640px;
-    padding: [form padding];
-    background-color: #fff;
-  }
+.formli {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
 
-  .formli input[type=text],  
-  .formli input[type=date]{
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 20px 0;
-    border: 3px solid #999999;
-    background: #fff;
-    font-size: small;
-  }
+.formli label {
+  display: block;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.formli input,
+.formli select {
+  width: 100%;
+  padding: 10px;
+  border:1px solid black;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: white;
+}
+
+.formli button {
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
 
   
-
-  .formli .btn {
-    padding: 12px 20px;
-    background-color: #fff;
-    cursor: pointer;
-	 margin-bottom: 1rem;
-   opacity: 0.8;
-  margin: 10px;
-
-}
   
  
 
