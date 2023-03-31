@@ -10,7 +10,7 @@
       <label for="userSelect">Select user to send a message:</label>
       <select id="userSelect" v-model="selectedUser">
         <option disabled value="">Please select a user</option>
-        <option v-for="user in users" :key="user.id" :value="user.id">{{ user.displayName }}</option>
+        <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
       </select>
     </div>
     <form @submit.prevent="sendMessage">
@@ -24,8 +24,7 @@
 <script>
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, getDocs, getDoc, setDoc, query, orderBy } from "firebase/firestore";
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, query, orderBy, where } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ56Dc6lkHOcHa1bgjb0cQvFAsgF_cgas",
@@ -40,59 +39,52 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp); // add this line to initialize Firestore
+const db = getFirestore(firebaseApp);
 
 export default {
   data() {
-  return {
-    newMessage: "",
-    conversations: [],
-    selectedUser: "",
-    users: [],
-  };
-},
-async created() {
-  await this.fetchAndInitializeConversations();
-  await this.fetchUsers();
-},
+    return {
+      newMessage: "",
+      conversations: [],
+      selectedUser: "",
+      users: [],
+    };
+  },
+  async created() {
+    await this.fetchAndInitializeConversations();
+    await this.fetchUsers();
+  },
   methods: {
     async fetchUsers() {
-  const loggedInUserId = "logged_in_user_id"; // Replace with the actual logged-in user ID
-  const usersSnapshot = await getDocs(collection(db, "users"));
-
-  usersSnapshot.forEach((userDoc) => {
-    if (userDoc.id !== loggedInUserId) {
-      this.users.push({
-        id: userDoc.id,
-        displayName: userDoc.data().displayName,
-      });
-    }
-  });
-},
-
-    async fetchAndInitializeConversations() {
-      const loggedInUserId = auth.currentUser;
+      const loggedInUserId = auth.currentUser.uid;
       const usersSnapshot = await getDocs(collection(db, "users"));
 
-      for (const userDoc of usersSnapshot.docs) {
+      usersSnapshot.forEach((userDoc) => {
         if (userDoc.id !== loggedInUserId) {
-          const conversationId = this.getConversationId(loggedInUserId, userDoc.id);
-          const conversationRef = doc(db, "conversations", conversationId);
-
-          const conversationSnapshot = await getDoc(conversationRef);
-          if (!conversationSnapshot.exists()) {
-            await setDoc(conversationRef, {
-              participants: [loggedInUserId, userDoc.id],
-              messages: [],
-            });
-          }
-
-          this.conversations.push({
-            id: conversationId,
-            displayName: userDoc.data().displayName,
-            messages: await this.fetchMessages(conversationId),
+          this.users.push({
+            id: userDoc.id,
+            name: userDoc.data().name,
           });
         }
+      });
+    },
+
+    async fetchAndInitializeConversations() {
+      const loggedInUserId = auth.currentUser.uid;
+      const userConversationsSnapshot = await getDocs(
+        query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
+      );
+
+      for (const conversationDoc of userConversationsSnapshot.docs) {
+        const participants = conversationDoc.data().participants;
+        const otherUserId = participants.find((id) => id !== loggedInUserId);
+        const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
+
+        this.conversations.push({
+          id: conversationDoc.id,
+          name: otherUserDoc.data().name,
+          messages: await this.fetchMessages(conversationDoc.id),
+        });
       }
     },
     async fetchMessages(conversationId) {
@@ -102,12 +94,35 @@ async created() {
       return messagesSnapshot.docs.map((doc) => doc.data());
     },
     async sendMessage() {
-  if (!this.selectedUser) {
-    return;
-  }
+      if (!this.selectedUser || !this.newMessage.trim()) {
+        return;
+      }
 
-  // The rest of the sendMessage implementation
-},
+      const loggedInUserId = auth.currentUser.uid;
+      const conversationId = this.getConversationId(loggedInUserId, this.selectedUser);
+      const message = {
+        content: this.newMessage,
+        senderId: loggedInUserId,
+        timestamp: new Date(),
+      };
+
+      const conversationRef = doc(db, "conversations", conversationId);
+      const conversationSnapshot = await getDoc(conversationRef);
+
+      if (conversationSnapshot.exists()) {
+        await setDoc(conversationRef, {
+          participants: conversationSnapshot.data().participants,
+          messages: [...conversationSnapshot.data().messages, message],
+        });
+      } else {
+        await setDoc(conversationRef, {
+          participants: [loggedInUserId, this.selectedUser],
+          messages: [message],
+        });
+      }
+
+      this.newMessage = '';
+    },
 
     getConversationId(user1, user2) {
       const ids = [user1, user2].sort();
