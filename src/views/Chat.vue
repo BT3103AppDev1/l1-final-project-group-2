@@ -85,7 +85,7 @@ export default {
 },
 
 
-  async fetchAndInitializeConversations() {
+async fetchAndInitializeConversations() {
   const loggedInUserId = auth.currentUser.uid;
   const userConversationsSnapshot = await getDocs(
     query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
@@ -103,7 +103,12 @@ export default {
 
     console.log("Other user document:", otherUserDoc);
 
-    const messages = await this.fetchMessages(conversationDoc.id);
+    const messagesSnapshot = await getDocs(
+      collection(db, "conversations", conversationDoc.id, "messages")
+    );
+    console.log("Messages snapshot for conversation", conversationDoc.id, ":", messagesSnapshot);
+
+    const messages = messagesSnapshot.docs.map((doc) => doc.data());
 
     console.log("Messages for conversation", conversationDoc.id, ":", messages);
 
@@ -117,18 +122,21 @@ export default {
   console.log("Initialized conversations:", this.conversations);
 },
 
-
 async fetchMessages(conversationId) {
   const messagesSnapshot = await getDocs(collection(db, "conversations", conversationId, "messages"));
   const messages = messagesSnapshot.docs.map((doc) => {
+    const messageData = doc.data();
     return {
       id: doc.id,
-      ...doc.data()
+      content: messageData.content,
+      senderId: messageData.senderId,
+      timestamp: messageData.timestamp
     };
   });
 
   return messages;
 },
+
 
     async sendMessage() {
       if (!this.selectedUserId || !this.newMessage.trim()) {
