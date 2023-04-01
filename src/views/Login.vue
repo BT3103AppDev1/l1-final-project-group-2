@@ -54,7 +54,7 @@
   import { ref } from "vue";
   import { useStore } from "vuex";
   import firebaseApp from "../firebase/firebase.js";
-  import { getFirestore, addDoc, collection } from "firebase/firestore";
+  import { getFirestore, addDoc, collection, setDoc,doc} from "firebase/firestore";
   
   const db = getFirestore(firebaseApp);
   
@@ -80,8 +80,8 @@
 		  role: register_form.value.role,
 		};
 		try {
-		  const docRef = await addDoc(colRef, dataObj);
-		  const docRefTwo = await addDoc(colRefTwo, dataObj);
+		const docRef = await setDoc(doc(colRef, register_form.value.email), dataObj);
+        const docRefTwo = await setDoc(doc(colRefTwo, register_form.value.email), dataObj);
 		  console.log("Document was created with ID:", docRef.id);
 		  console.log("Document was created with ID:", docRefTwo.id);
 		} catch (error) {
