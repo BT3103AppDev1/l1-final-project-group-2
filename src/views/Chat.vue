@@ -22,24 +22,9 @@
 
 
 <script>
-import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, doc, getDocs, getDoc, setDoc, query, orderBy, where } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCJ56Dc6lkHOcHa1bgjb0cQvFAsgF_cgas",
-  authDomain: "workwise-5e049.firebaseapp.com",
-  projectId: "workwise-5e049",
-  storageBucket: "workwise-5e049.appspot.com",
-  messagingSenderId: "21430156356",
-  appId: "1:21430156356:web:800e3e02a87e6efb7c1011",
-};
-
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-
-const auth = getAuth(firebaseApp);
-const db = getFirestore(firebaseApp);
+import { auth, db } from '../firebase/firebase';
 
 export default {
   data() {
@@ -59,6 +44,8 @@ export default {
       const loggedInUserId = auth.currentUser.uid;
       const usersSnapshot = await getDocs(collection(db, "users"));
 
+      console.log("Fetched users:", usersSnapshot.docs); // Add this line to debug
+
       usersSnapshot.forEach((userDoc) => {
         if (userDoc.id !== loggedInUserId) {
           this.users.push({
@@ -70,23 +57,30 @@ export default {
     },
 
     async fetchAndInitializeConversations() {
-      const loggedInUserId = auth.currentUser.uid;
-      const userConversationsSnapshot = await getDocs(
-        query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
-      );
+  const loggedInUserId = auth.currentUser.uid;
+  const userConversationsSnapshot = await getDocs(
+    query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
+  );
 
-      for (const conversationDoc of userConversationsSnapshot.docs) {
-        const participants = conversationDoc.data().participants;
-        const otherUserId = participants.find((id) => id !== loggedInUserId);
-        const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
+  for (const conversationDoc of userConversationsSnapshot.docs) {
+    const participants = conversationDoc.data().participants;
+    const otherUserId = participants.find((id) => id !== loggedInUserId);
+    
+    console.log("otherUserId:", otherUserId); // Add this line to debug
+    
+    const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
 
-        this.conversations.push({
-          id: conversationDoc.id,
-          name: otherUserDoc.data().name,
-          messages: await this.fetchMessages(conversationDoc.id),
-        });
-      }
-    },
+    console.log("otherUserDoc:", otherUserDoc); // Add this line to debug
+    console.log("otherUserDoc.data():", otherUserDoc.data()); // Add this line to debug
+
+    this.conversations.push({
+      id: conversationDoc.id,
+      name: otherUserDoc.data().name,
+      messages: await this.fetchMessages(conversationDoc.id),
+    });
+  }
+},
+
     async fetchMessages(conversationId) {
       const messagesSnapshot = await getDocs(
         query(collection(doc(db, "conversations", conversationId), "messages"), orderBy("timestamp", "asc"))
