@@ -1,14 +1,15 @@
 <template>
-  <div>
+  <h1>Chat</h1>
+  <div class="chat-container">
     <div v-if="selectedRecipientMessages.length > 0">
       <div v-for="(message, index) in selectedRecipientMessages" :key="index">
-  <div>
-    {{ message.senderId }}: {{ message.content }}
-    ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
-  </div>
-</div>
-
-
+        <div class="message">
+          {{ message.senderId }}: {{ message.content }}
+          <span class="timestamp">
+            ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
+          </span>
+        </div>
+      </div>
     </div>
     <div>
       <label for="userSelect">Select user to send a message: </label>
@@ -235,4 +236,3 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 </style>
-
