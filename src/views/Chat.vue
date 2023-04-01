@@ -1,12 +1,13 @@
 <template>
   <div>
     <div v-if="selectedRecipientMessages.length > 0">
-      <div v-for="(message, index) in selectedRecipientMessages" :key="message.id">
+      <div v-for="(message, index) in selectedRecipientMessages" :key="index">
   <div>
     {{ message.senderId }}: {{ message.content }}
     ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
   </div>
 </div>
+
 
     </div>
     <div>
@@ -68,20 +69,21 @@ export default {
     },
 
     updateSelectedRecipientMessages() {
-    if (this.conversations.length > 0 && this.selectedUserId) {
-      const selectedConversation = this.conversations.find(conversation => {
-        return conversation.participants && conversation.participants.includes(this.selectedUserId);
-      });
+  if (this.conversations.length > 0 && this.selectedUserId) {
+    const selectedConversation = this.conversations.find(conversation => {
+      return conversation.participants && conversation.participants.includes(this.selectedUserId);
+    });
 
-      if (selectedConversation) {
-        this.selectedRecipientMessages = selectedConversation.messages;
-      } else {
-        this.selectedRecipientMessages = [];
-      }
+    if (selectedConversation && selectedConversation.messages) {
+      this.selectedRecipientMessages = selectedConversation.messages;
     } else {
       this.selectedRecipientMessages = [];
     }
-  },
+  } else {
+    this.selectedRecipientMessages = [];
+  }
+},
+
 
   async fetchAndInitializeConversations() {
   const loggedInUserId = auth.currentUser.uid;
