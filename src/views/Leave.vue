@@ -21,15 +21,13 @@
               <input type="text" placeholder="ddmmyy - ddmmyy" id="duration" required>
               <label for="days">Number of Days</label>
               <input type="number" placeholder="Num of Days" id="days" required>
-              <label for="team">Team</label>
-              <select id="team" required>
-                <option value="">Select Team</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Technology">Technology</option>
-              </select>
+              
+              
 
+              <div class="button-container">
               <button class="btn" type="button" v-on:click="submitForm">Submit</button>
-              <button class="btn" type="button" v-on:click="closeForm" >Close</button>
+             <button class="btn" type="button" v-on:click="closeForm">Close</button>
+              </div>
             </form>
             </div>
         </div>
@@ -38,27 +36,26 @@
             
         
     <div class = box>
-        <div class="box1">
-		    <h1>Annual Leave           <br>Remaining
-                <br>
-                8
-            </h1>
-		    
-	    </div>
+      <div class="box1">
+  <h1>Annual Leave<br>Taken<br>{{ annualleave }}</h1>
+  <CircularProgressBar heading="My Progress Bar" :value="50" />
+
+</div>
+            
 	    <div class="box2">
 		    
 		    <h1>Sick Leave           
-                <br>Remaining
+                <br>Taken
                 <br>
-                2
+                {{ sickleave }}
             </h1>
 	    </div>
 	    <div class="box3">
 		    
 		    <h1>Other Leave           
-                <br>Remaining
+                <br>Taken
                 <br>
-                2
+                {{ otherleave }}
             </h1>
 	    </div>
     </div>
@@ -74,15 +71,18 @@
 <script>
     import firebaseApp from '../firebase/firebase';
     import { getFirestore } from 'firebase/firestore'
-    import {getDoc,doc, setDoc, collection} from "firebase/firestore";
+    import {getDoc,getDocs,doc, setDoc, collection, query, where} from "firebase/firestore";
     const db = getFirestore(firebaseApp);
     import { getAuth } from "firebase/auth";
+    
+    
 
         const auth = getAuth();
         const user = auth.currentUser;
 
     import LeaveDisplay from '../components/LeaveDisplay.vue';
     import ManagerLeave from '../components/ManagerLeave.vue';
+
 
         export default {
             name: 'OnlyLeave',
@@ -92,10 +92,51 @@
             },
             data() {
     return {
-      isManager: false
+      isManager: false,
+      annualleave: null,
+      sickleave: null,
+      otherleave: null
     }
   },
+  async created(){
+    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Email", "==", user.email)));
+    let annualleave = 0
+    let sickleave =0
+    let otherleave = 0
 
+    allDocuments.forEach(doc => {
+      let documentData = doc.data()
+        
+        let type = documentData.Type
+        
+        let days = parseInt(documentData.Days)
+        
+        let status = documentData.Status
+
+        if (status == "approved" ) {
+          if (type == "Annual") {
+            annualleave += days
+            console.log("annual days " + days)
+          } else if (type == "Sick") {
+            sickleave += days
+          } else {
+            otherleave+= days
+          }
+        }
+
+    })
+    this.annualleave = annualleave
+    console.log("abc")
+    this.sickleave = sickleave
+    this.otherleave = otherleave
+    // Circular progress bar code
+    const progress = document.querySelector('.progress-bar');
+    const value = annualleave; // replace with actual value
+    const max = 14; // replace with maximum value
+
+    const angle = value / max * 360;
+    progress.style.transform = `rotate(${angle}deg)`;
+  },
   async mounted() {
     try {
         console.log(user.uid)
@@ -125,7 +166,10 @@
             let type = document.getElementById("type").value
             let duration = document.getElementById("duration").value
             let days = document.getElementById("days").value
-            let team = document.getElementById("team").value
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+            const userData = userDoc.data();
+            let team = userData.team
             
         alert(" Saving your data for Leave : " + duration)
             try {
@@ -198,6 +242,20 @@ div{
   border-radius: 3px;
   margin-top: 10px;
   cursor: pointer;
+  
+  /* New styles for displaying buttons on the same row with space in between */
+  display: inline-block;
+  width: 48%;
+  margin-right: 4%;
+  box-sizing: border-box;
+}
+
+.formli .button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  background-color: white;
 }
 
 
@@ -323,95 +381,22 @@ h1{
         
 			border-radius: 10px;
     }
-    
-  
-		/*.box1{
-			box-sizing: border-box;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: flex-start;
-			padding: 12px 12px 12px 20px;
-			gap: 16px;
-			
-			width: 397.73px;
-			height: 171.47px;
-			left: 106px;
-			top: 95px;
-			background: #FFEFE7;
-			border-radius: 10px;
-		}
-		.box1 h2 {
-			width: 365.73px;
-			height: 56px;
-			font-family: 'Poppins';
-			font-style: normal;
-			font-weight: 500;
-			font-size: 18px;
-			line-height: 28px;
-			font-feature-settings: 'salt' on, 'liga' off;
-			flex: none;
-			order: 0;
-			align-self: stretch;
-			flex-grow: 0;
-		}
-		.box1 h1 {
-			width: 365.73px;
-			height: 28px;
-			font-family: 'Poppins';
-			font-style: normal;
-			font-weight: 500;
-			font-size: 36px;
-			line-height: 28px;
-			display: flex;
-			align-items: center;
-			font-feature-settings: 'salt' on, 'liga' off;
-			flex: none;
-			order: 1;
-			align-self: stretch;
-			flex-grow: 0;
-		}
+    .progress-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 
-        .box2 {
-			display: inline-block;
-			width: 30%;
-			height: 200px;
-			background-color: #f2f2f2;
-			margin: 10px;
-			padding: 20px;
-			box-sizing: border-box;
-		}
-        .box3 {
-			box-sizing: border-box;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: flex-start;
-			padding: 12px 12px 12px 20px;
-			gap: 16px;
-			
-			width: 397.73px;
-			height: 171.47px;
-			left: 531.03px;
-			top: 95px;
-			background: #F0E8FB;
-			border-radius: 10px;
-		}
-		.box3 h2 {
-			width: 365.73px;
-			height: 28px;
-			font-family: 'Poppins';
-			font-style: normal;
-			font-weight: 500;
-			font-size: 18px;
-			line-height: 28px;
-			font-feature-settings: 'salt' on, 'liga' off;
-			flex: none;
-			order: 0;
-			align-self: stretch;
-			flex-grow: 0;
-        }
-*/
+.progress-bar {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  clip: rect(0px, 100px, 100px, 50px);
+  background-color: #f00;
+  transform-origin: center;
+}
+
 </style>
 
 

@@ -10,7 +10,7 @@
                 <th>Type</th>
                 <th>Duration</th>
                 <th>Days</th>
-                <th>Approving Employer</th>
+                
                 <th>Status</th>
                 <th> Options</th>
             </tr>
@@ -51,7 +51,7 @@ export default {
         let type = documentData.Type
         let duration = documentData.Duration
         let days = documentData.Days
-        let employer = documentData.Employer
+        
         let status = documentData.Status
         
     
@@ -64,9 +64,9 @@ export default {
         let cell3= row.insertCell(2)
         let cell4= row.insertCell(3)
         let cell5= row.insertCell(4)
+        
         let cell6= row.insertCell(5)
         let cell7= row.insertCell(6)
-        let cell8= row.insertCell(7)
 
         cell1.innerHTML = index
         cell2.innerHTML = description
@@ -78,7 +78,7 @@ export default {
     
         
         cell5.innerHTML = days
-        cell6.innerHTML = employer 
+        
         console.log(status)
         let badge = document.createElement('span');
         if (status=="pending") {
@@ -100,7 +100,7 @@ export default {
         // code to execute if all conditions are false
         }
         
-        cell7.appendChild(badge)
+        cell6.appendChild(badge)
         
         
         
@@ -136,7 +136,7 @@ export default {
         
        
 
-        cell8.appendChild(deletebtn)
+        cell7.appendChild(deletebtn)
         deletebtn.onclick = function() {
             deleteLeave(docid)
         }
