@@ -34,7 +34,13 @@
         </div>
         <form @submit.prevent="sendMessage">
           <input type="text" v-model="newMessage" placeholder="Type your message here..." />
-          <button type="submit" :disabled="!selectedUserEmail">Send</button>
+          <button type="submit" :disabled="!selectedUserEmail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24" height="24">
+    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+    <path d="M0 0h24v24H0z" fill="none"/>
+  </svg>
+</button>
+
         </form>
       </div>
     </div>
@@ -229,7 +235,7 @@ isSentByMe(message) {
 
   .selected-user {
     background-color: #4a5568;
-    color: white;
+    color: rgb(77, 71, 237);
   }
 
   .chat-container {
@@ -273,26 +279,38 @@ padding-top: 1rem;
 }
 
 input[type="text"] {
-flex: 1;
-padding: 0.5rem;
-border: 1px solid #ccc;
-border-radius: 4px;
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  height: 36px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+
 button[type="submit"] {
-margin-left: 0.5rem;
-padding: 0.5rem 1rem;
-background-color: #4a5568;
-color: #fff;
-border: none;
-border-radius: 4px;
-cursor: pointer;
+  margin-left: 0.5rem;
+  padding: 0 0.5rem;
+  height: 36px;
+  width: 36px;
+  background-color: #4a5568;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1;
 }
 
 button[type="submit"]:disabled {
-background-color: #ccc;
-cursor: not-allowed;
+  background-color: #ccc;
+  cursor: not-allowed;
 }
+
 
 input[type="text"]::placeholder {
 color: #999;
