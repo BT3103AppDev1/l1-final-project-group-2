@@ -45,7 +45,7 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    margin-top: -400px;
+    margin-top: -300px;
   }
   
   .button-container {
