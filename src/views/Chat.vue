@@ -16,20 +16,21 @@
   </div>
 </div>
 
-      <div class="chat-container">
+<div class="chat-container">
         <h1>Chat</h1>
-        <div v-if="filteredMessages.length > 0">
-          <div
-            v-for="(message, index) in filteredMessages"
-            :key="index"
-            :class="{ 'sent-by-me': isSentByMe(message) }"
-          >
-            <div class="message">
-              {{ message.content }}
-              <span class="timestamp">
-  ({{ formatTimestamp(message.timestamp) }})
-</span>
-
+        <div class="messages-container">
+          <div v-if="filteredMessages.length > 0">
+            <div
+              v-for="(message, index) in filteredMessages"
+              :key="index"
+              :class="{ 'sent-by-me': isSentByMe(message) }"
+            >
+              <div class="message">
+                {{ message.content }}
+                <span class="timestamp">
+                  ({{ formatTimestamp(message.timestamp) }})
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -369,5 +370,30 @@ color: #999;
   border-radius: 50%;
   margin-right: 10px;
 }
+
+.messages-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 240px);
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 800px;
+  padding: 1rem;
+}
+
+form {
+  margin-top: auto;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+}
+
 
 </style>
