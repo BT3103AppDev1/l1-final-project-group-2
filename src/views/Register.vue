@@ -50,9 +50,9 @@
   import { ref } from "vue";
   import { useStore } from "vuex";
   import {db,auth} from "../firebase/firebase.js";
-  import { getFirestore, addDoc, collection,setDoc , doc} from "firebase/firestore";
+  import { addDoc, collection,setDoc , doc} from "firebase/firestore";
   import { useRouter } from 'vue-router';
-  import { getAuth } from "@firebase/auth";
+  
   
   
 
@@ -190,8 +190,8 @@ form.register input:not([type="submit"]) {
 }
 
 form.register input[type="submit"] {
-	background-color: #FFF;
-	color: rgb(28, 79, 207);
+	background-color:rgb(28, 79, 207);
+	color: #FFF;
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;
