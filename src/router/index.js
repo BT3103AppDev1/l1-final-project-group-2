@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Landing from '../views/Landing.vue';
 import { auth } from '../firebase/firebase.js';
 import '../assets/main.css'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: {
@@ -41,6 +43,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/',
+    name: 'Landing',
+    component: Landing,
+
   }
 ]
 
@@ -50,17 +63,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' && auth.currentUser) {
-    next('/')
-    return;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const currentUser = auth.currentUser;
+
+  if (requiresAuth && !currentUser) {
+    next('/');
+  } else if (currentUser && (to.path === '/login' || to.path === '/register')) {
+    next('/');
+  } else {
+    next();
   }
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
-    next('/login')
-    return;
-  }
-
-  next();
+  
 })
 
 export default router

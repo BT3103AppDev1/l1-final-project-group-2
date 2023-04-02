@@ -1,8 +1,9 @@
 <template>
+    
 	<main class="login">
 	  <section class="forms">
 		<form class="register" @submit.prevent="register">
-		  <h2>Register</h2>
+            <h1 class = "title">Register</h1>
 		  <input
 			type="name"
 			placeholder="Name"
@@ -18,18 +19,26 @@
 			placeholder="Password"
 			v-model="register_form.password"
 		  />
-		  <input
-			type="team"
-			placeholder="Team"
-			v-model="register_form.team"
-		  />
-		  <input
-			type="role"
-			placeholder="Role"
-			v-model="register_form.role"
-		  />
+          <div class="select-container">
+            <label for="teamDropdown">Team</label>
+		  <select v-model="register_form.team" id = "teamDropdown">
+			<option value="" disabled selected>Select team</option>
+			<option value="team1">Business</option>
+			<option value="team2">Communications</option>
+			<option value="team3">Technology</option>
+			<option value="team4">Marketing</option>
+		  </select>
+          <label for="roleDropdown">Role</label>
+		  <select v-model="register_form.role" id = "roleDropdown">
+			<option value="" disabled>Select Role</option>
+			<option value="role1">Employee</option>
+			<option value="role2">Employer</option>
+		  </select>
+        </div>
+			
+		  
 		  <input type="submit" value="Register" />
-          <button @click="goBack">Back</button>
+          <button class = "back" @click="goBack">Back</button>
 		</form>
         
 		
@@ -108,14 +117,16 @@ form.register {
 	background-color: rgb(245, 66, 101);
 	background-image: linear-gradient(
 		to bottom right,
-		rgb(245, 66, 101) 0%,
-		rgb(189, 28, 60) 100%
+		rgb(20, 22, 145) 0%,
+		rgb(182, 17, 50) 100%
 	);
 }
-h2 {
+.title {
 	font-size: 2rem;
 	text-transform: uppercase;
 	margin-bottom: 2rem;
+    text-align: center;
+    
 }
 input {
 	appearance: none;
@@ -129,6 +140,24 @@ input {
 	font-size: 1.5rem;
 	margin-bottom: 2rem;
 	padding: 0.5rem 0rem;
+}
+select { 
+    width: 100%;
+	max-width: 400px;
+    background-color: #d72f7e;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+display:block;
+-webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
 }
 input:not([type="submit"]) {
 	opacity: 0.8;
@@ -144,27 +173,41 @@ form.register input:not([type="submit"]) {
 	color: #FFF;
 	border-bottom: 2px solid #FFF;
 }
-form.login input:not([type="submit"]) {
-	color: #2c3e50;
-	border-bottom: 2px solid #2c3e50;
-}
-form.login input[type="submit"] {
-	background-color: rgb(245, 66, 101);
-	color: #FFF;
-	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	text-transform: uppercase;
-}
+
 form.register input[type="submit"] {
 	background-color: #FFF;
-	color: rgb(245, 66, 101);
+	color: rgb(28, 79, 207);
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;
 	cursor: pointer;
 	text-transform: uppercase;
 }
+.back {
+    text-align: center;
+    background-color: #FFF;
+	color: rgb(28, 79, 207);
+	font-weight: 700;
+	padding: 1rem 2rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+.select-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.select-container select {
+  margin-bottom: 1rem;
+}
+
+
+
+
+
 
 </style>

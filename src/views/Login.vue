@@ -1,9 +1,12 @@
 <template>
 	<main class="login">
+		<section class="images">
+			//<img src="path/to/image.jpg" alt="Image description">
+		</section>
 	  <section class="forms">
 		
 		<form class="login" @submit.prevent="login">
-		  <h2>Login</h2>
+		  <h1>Login</h1>
   
 		  <input
 			type="email"
@@ -45,7 +48,6 @@
       router.push('/');
     };
 	  
-	  
   
 	  return {
 		login_form,
@@ -59,20 +61,22 @@
 
 <style>
 .forms {
-	display: flex;
-	min-height: 100vh;
+	flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 form {
 	flex: 1 1 0%;
 	padding: 8rem 1rem 1rem;
 }
-form.register {
+form.login {
 	color: #FFF;
 	background-color: rgb(245, 66, 101);
 	background-image: linear-gradient(
 		to bottom right,
-		rgb(245, 66, 101) 0%,
-		rgb(189, 28, 60) 100%
+		rgb(20, 22, 145) 0%,
+		rgb(182, 17, 50) 100%
 	);
 }
 h2 {
@@ -103,16 +107,13 @@ input:focus:not([type="submit"]) {
 input::placeholder {
 	color: inherit;
 }
-form.register input:not([type="submit"]) {
-	color: #FFF;
-	border-bottom: 2px solid #FFF;
-}
+
 form.login input:not([type="submit"]) {
-	color: #2c3e50;
+	color: #fff;
 	border-bottom: 2px solid #2c3e50;
 }
 form.login input[type="submit"] {
-	background-color: rgb(245, 66, 101);
+	background-color: rgb(21, 39, 241);
 	color: #FFF;
 	font-weight: 700;
 	padding: 1rem 2rem;
@@ -120,14 +121,6 @@ form.login input[type="submit"] {
 	cursor: pointer;
 	text-transform: uppercase;
 }
-form.register input[type="submit"] {
-	background-color: #FFF;
-	color: rgb(245, 66, 101);
-	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	text-transform: uppercase;
-}
+
 
 </style>
