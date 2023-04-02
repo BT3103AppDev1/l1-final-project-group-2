@@ -21,7 +21,16 @@ export default {
     onBeforeMount(() => {
       store.dispatch('fetchUser')
     })
-  }
+  },
+  beforeUnload() {
+  localStorage.setItem('lastRoute', this.$router.currentRoute.path)
+},
+mounted() {
+  window.addEventListener('beforeunload', this.beforeUnload);
+},
+beforeDestroy() {
+  window.removeEventListener('beforeunload', this.beforeUnload);
+},
 }
 </script>
 

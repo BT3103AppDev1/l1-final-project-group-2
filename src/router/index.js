@@ -66,6 +66,13 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const currentUser = auth.currentUser;
 
+  const lastRoute = localStorage.getItem('lastRoute');
+  if (lastRoute && to.path === '/') {
+    next(lastRoute);
+  } else {
+    next();
+  }
+
   if (requiresAuth && !currentUser) {
     next('/');
   } else if (currentUser && (to.path === '/login' || to.path === '/register')) {
