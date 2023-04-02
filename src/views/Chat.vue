@@ -2,16 +2,20 @@
   <div class="main-container">
     <div class="content">
       <div class="user-list">
-        <h1>Messages</h1>
-        <div
-          v-for="user in users"
-          :key="user.email"
-          @click="selectedUserEmail = user.email"
-          :class="{ 'selected-user': user.email === selectedUserEmail }"
-        >
-          {{ user.name }}
-        </div>
-      </div>
+  <h1>Messages</h1>
+  <div
+    v-for="user in users"
+    :key="user.email"
+    @click="selectedUserEmail = user.email"
+    :class="{ 'selected-user': user.email === selectedUserEmail }"
+  >
+    <div class="user-icon">
+      {{ user.name.charAt(0).toUpperCase() }}
+    </div>
+    {{ user.name }}
+  </div>
+</div>
+
       <div class="chat-container">
         <h1>Chat</h1>
         <div v-if="filteredMessages.length > 0">
@@ -100,17 +104,16 @@ export default {
         const otherUserEmail = participants.find((email) => email !== loggedInUserEmail);
 
         const otherUser = this.users.find(user => user.email === otherUserEmail);
-
         const messagesMap = conversationDoc.data().messages;
-        const messages = Object.values(messagesMap).map((messageData) => {
-          return {
-            id: messageData.id,
-            content: messageData        .content,
+    const messages = Object.values(messagesMap).map((messageData) => {
+      return {
+        id: messageData.id,
+        content: messageData.content,
         senderEmail: messageData.senderEmail,
         timestamp: messageData.timestamp,
       };
     })
-    .sort((a, b) => a.timestamp.toMillis() - b.timestamp.toMillis());
+    .sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
 
     this.conversations.push({
       id: conversationDoc.id,
@@ -162,11 +165,6 @@ getConversationId(email1, email2) {
 isSentByMe(message) {
   return message.senderEmail === auth.currentUser.email;
 },
-
-formatDate(timestamp) {
-  const date = new Date(timestamp.toDate());
-  return date.toLocaleString();
-},
 },
 };
 </script>
@@ -210,7 +208,7 @@ formatDate(timestamp) {
     background-color: #edf2f7;
   }
 
-  .user-list > h2 {
+  .user-list > h1 {
     margin-top: 0;
     margin-bottom: 1rem;
     font-size: 1.5rem;
@@ -239,14 +237,14 @@ formatDate(timestamp) {
     max-width: 800px;
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #f8f8f8;
-    border-radius: 4px;
-  }
+background-color: #f8f8f8;
+border-radius: 4px;
+}
 
-  .chat-container h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
+.chat-container h1 {
+font-size: 1.5rem;
+margin-bottom: 1rem;
+}
 
 .message {
 display: inline-block;
@@ -259,10 +257,6 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 .sent-by-me {
 text-align: right;
-}
-
-.received {
-text-align: left;
 }
 
 .timestamp {
@@ -303,4 +297,18 @@ cursor: not-allowed;
 input[type="text"]::placeholder {
 color: #999;
 }
+
+.user-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #4a5568;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
 </style>
