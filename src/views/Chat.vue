@@ -9,7 +9,7 @@
       </select>
     </div>
     <div v-if="filteredMessages.length > 0">
-      <div v-for="(message, index) in filteredMessages" :key="index">
+      <div v-for="(message, index) in filteredMessages" :key="index" :class="{ 'sent-by-me': isSentByMe(message) }">
         <div class="message">
           {{ message.senderEmail }}: {{ message.content }}
           <span class="timestamp">
@@ -24,7 +24,6 @@
     </form>
   </div>
 </template>
-
 
 <script>
 import { collection, doc, getDocs, getDoc, setDoc, query, orderBy, where } from "firebase/firestore";
@@ -94,65 +93,69 @@ export default {
         const messages = Object.values(messagesMap).map((messageData) => {
           return {
             id: messageData.id,
-            content: messageData.content,
-            senderEmail: messageData.senderEmail,
-            timestamp: messageData.timestamp,
-          };
-        })
-        .sort((a, b) => a.timestamp.toMillis() - b.timestamp.toMillis());
-
-        this.conversations.push({
-          id: conversationDoc.id,
-          displayName: otherUser.name,
-          participants: participants,
-          messages: messages,
-        });
-      }
-    },
-
-    async sendMessage() {
-      if (!this.selectedUserEmail || !this.newMessage.trim()) {
-        return;
-      }
-      const loggedInUserEmail = auth.currentUser.email;
-      const conversationId = this.getConversationId(loggedInUserEmail, this.selectedUserEmail);
-      const message = {
-        content: this.newMessage,
-        senderEmail: loggedInUserEmail,
-        timestamp: new Date(),
-        id: Date.now().toString(),
+            content: messageData        .content,
+        senderEmail: messageData.senderEmail,
+        timestamp: messageData.timestamp,
       };
+    })
+    .sort((a, b) => a.timestamp.toMillis() - b.timestamp.toMillis());
 
-      const conversationRef = doc(db, "conversations", conversationId);
-      const conversationSnapshot = await getDoc(conversationRef);
+    this.conversations.push({
+      id: conversationDoc.id,
+      displayName: otherUser.name,
+      participants: participants,
+      messages: messages,
+    });
+  }
+},
 
-      if (conversationSnapshot.exists()) {
-        const currentMessages = conversationSnapshot.data().messages || {};
-        await setDoc(conversationRef, {
-          participants: conversationSnapshot.data().participants,
-          messages: { ...currentMessages, [message.id]: message },
-        });
-      } else {
-        await setDoc(conversationRef, {
-          participants: [loggedInUserEmail, this.selectedUserEmail],
-          messages: { [message.id]: message },
-        });
-      }
+async sendMessage() {
+  if (!this.selectedUserEmail || !this.newMessage.trim()) {
+    return;
+  }
+  const loggedInUserEmail = auth.currentUser.email;
+  const conversationId = this.getConversationId(loggedInUserEmail, this.selectedUserEmail);
+  const message = {
+    content: this.newMessage,
+    senderEmail: loggedInUserEmail,
+    timestamp: new Date(),
+    id: Date.now().toString(),
+  };
 
-      this.newMessage = '';
-      await this.fetchAndInitializeConversations();
-    },
+  const conversationRef = doc(db, "conversations", conversationId);
+  const conversationSnapshot = await getDoc(conversationRef);
 
-    getConversationId(email1, email2) {
-      const emails = [email1, email2].sort();
-      return `${emails[0]}_${emails[1]}`;
-    },
+  if (conversationSnapshot.exists()) {
+    const currentMessages = conversationSnapshot.data().messages || {};
+    await setDoc(conversationRef, {
+      participants: conversationSnapshot.data().participants,
+      messages: { ...currentMessages, [message.id]: message },
+    });
+  } else {
+    await setDoc(conversationRef, {
+      participants: [loggedInUserEmail, this.selectedUserEmail],
+      messages: { [message.id]: message },
+    });
+  }
 
-    formatDate(timestamp) {
-      const date = new Date(timestamp.toDate());
-      return date.toLocaleString();
-    },
-  },
+  this.newMessage = '';
+  await this.fetchAndInitializeConversations();
+},
+
+getConversationId(email1, email2) {
+  const emails = [email1, email2].sort();
+  return `${emails[0]}_${emails[1]}`;
+},
+
+isSentByMe(message) {
+  return message.senderEmail === auth.currentUser.email;
+},
+
+formatDate(timestamp) {
+  const date = new Date(timestamp.toDate());
+  return date.toLocaleString();
+},
+},
 };
 </script>
 
@@ -205,5 +208,9 @@ button[type="submit"] {
 button[type="submit"]:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.sent-by-me {
+  text-align: right;
 }
 </style>
