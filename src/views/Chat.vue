@@ -170,12 +170,22 @@ formatDate(timestamp) {
 }
 
 .message {
+  display: inline-block;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.sent-by-me {
+  text-align: right;
+}
+
+.received {
+  text-align: left;
+}
+
 
 .timestamp {
   font-size: 0.8rem;
@@ -210,7 +220,4 @@ button[type="submit"]:disabled {
   cursor: not-allowed;
 }
 
-.sent-by-me {
-  text-align: right;
-}
 </style>
