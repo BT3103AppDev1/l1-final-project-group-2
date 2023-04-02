@@ -1,32 +1,38 @@
 <template>
   <div class="main-container">
-    <div class="user-list">
-      <h2>Messages</h2>
-      <div
-        v-for="user in users"
-        :key="user.email"
-        @click="selectedUserEmail = user.email"
-        :class="{ 'selected-user': user.email === selectedUserEmail }"
-      >
-        {{ user.name }}
-      </div>
-    </div>
-    <div class="chat-container">
-      <h1>Chat</h1>
-      <div v-if="filteredMessages.length > 0">
-        <div v-for="(message, index) in filteredMessages" :key="index" :class="{ 'sent-by-me': isSentByMe(message) }">
-          <div class="message">
-            {{ message.content }}
-            <span class="timestamp">
-              ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
-            </span>
-          </div>
+    <div class="content">
+      <div class="user-list">
+        <h1>Messages</h1>
+        <div
+          v-for="user in users"
+          :key="user.email"
+          @click="selectedUserEmail = user.email"
+          :class="{ 'selected-user': user.email === selectedUserEmail }"
+        >
+          {{ user.name }}
         </div>
       </div>
-      <form @submit.prevent="sendMessage">
-        <input type="text" v-model="newMessage" />
-        <button type="submit" :disabled="!selectedUserEmail">Send</button>
-      </form>
+      <div class="chat-container">
+        <h1>Chat</h1>
+        <div v-if="filteredMessages.length > 0">
+          <div
+            v-for="(message, index) in filteredMessages"
+            :key="index"
+            :class="{ 'sent-by-me': isSentByMe(message) }"
+          >
+            <div class="message">
+              {{ message.content }}
+              <span class="timestamp">
+                ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
+              </span>
+            </div>
+          </div>
+        </div>
+        <form @submit.prevent="sendMessage">
+          <input type="text" v-model="newMessage" placeholder="Type your message here..." />
+          <button type="submit" :disabled="!selectedUserEmail">Send</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -166,22 +172,48 @@ formatDate(timestamp) {
 </script>
 
 <style scoped>
+  * {
+    box-sizing: border-box;
+  }
 
-.main-container {
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .main-container {
     display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  header {
+    background-color: #2d3748;
+    padding: 1rem;
+  }
+
+  header h1 {
+    color: #fff;
+    margin: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-grow: 1;
   }
 
   .user-list {
     width: 250px;
-    max-height: 90vh;
+    max-height: calc(100vh - 64px);
     overflow-y: auto;
     border-right: 1px solid #ccc;
-    padding: 5px;
-    margin-right: 1rem;
+    padding: 1rem;
+    background-color: #edf2f7;
   }
 
   .user-list > h2 {
     margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
   }
 
   .user-list > div {
@@ -198,108 +230,77 @@ formatDate(timestamp) {
   }
 
   .selected-user {
-    background-color: #007bff;
+    background-color: #4a5568;
     color: white;
   }
 
   .chat-container {
     flex-grow: 1;
     max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #f8f8f8;
-    border-radius: 4px;
-  }
-.chat-container {
-    max-width: 800px;
-    margin: 0 auto;
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #f8f8f8;
     border-radius: 4px;
   }
 
-  .user-list {
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
+  .chat-container h1 {
+    font-size: 1.5rem;
     margin-bottom: 1rem;
   }
 
-  .user-list > div {
-    padding: 5px;
-    cursor: pointer;
-  }
-
-  .user-list > div:hover {
-    background-color: #eee;
-  }
-
-  .selected-user {
-    background-color: #007bff;
-    color: white;
-  }
-.chat-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #f8f8f8;
-  border-radius: 4px;
-}
-
 .message {
-  display: inline-block;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+display: inline-block;
+padding: 0.5rem;
+margin-bottom: 0.5rem;
+background-color: #fff;
+border-radius: 4px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sent-by-me {
-  text-align: right;
+text-align: right;
 }
 
 .received {
-  text-align: left;
+text-align: left;
 }
 
-
 .timestamp {
-  font-size: 0.8rem;
-  color: #777;
-  margin-left: 1rem;
+font-size: 0.8rem;
+color: #777;
+margin-left: 1rem;
 }
 
 form {
-  display: flex;
-  margin-top: 1rem;
+display: flex;
+margin-top: 1rem;
+border-top: 1px solid #ccc;
+padding-top: 1rem;
 }
 
 input[type="text"] {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+flex: 1;
+padding: 0.5rem;
+border: 1px solid #ccc;
+border-radius: 4px;
 }
 
 button[type="submit"] {
-  margin-left: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+margin-left: 0.5rem;
+padding: 0.5rem 1rem;
+background-color: #4a5568;
+color: #fff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
 }
 
 button[type="submit"]:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+background-color: #ccc;
+cursor: not-allowed;
 }
 
+input[type="text"]::placeholder {
+color: #999;
+}
 </style>
