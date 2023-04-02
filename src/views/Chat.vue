@@ -11,7 +11,7 @@
     <div v-if="filteredMessages.length > 0">
       <div v-for="(message, index) in filteredMessages" :key="index" :class="{ 'sent-by-me': isSentByMe(message) }">
         <div class="message">
-          {{ message.senderEmail }}: {{ message.content }}
+          {{ message.content }}
           <span class="timestamp">
             ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
           </span>
