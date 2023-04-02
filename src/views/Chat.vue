@@ -1,27 +1,33 @@
 <template>
-  <h1>Chat</h1>
-  <div class="chat-container">
-    <div>
-      <label for="userSelect">Select user to send a message: </label>
-      <select id="userSelect" v-model="selectedUserEmail">
-        <option disabled value="">Please select a user</option>
-        <option v-for="user in users" :key="user.email" :value="user.email">{{ user.name }}</option>
-      </select>
-    </div>
-    <div v-if="filteredMessages.length > 0">
-      <div v-for="(message, index) in filteredMessages" :key="index" :class="{ 'sent-by-me': isSentByMe(message) }">
-        <div class="message">
-          {{ message.content }}
-          <span class="timestamp">
-            ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
-          </span>
-        </div>
+  <div class="main-container">
+    <div class="user-list">
+      <h2>Messages</h2>
+      <div
+        v-for="user in users"
+        :key="user.email"
+        @click="selectedUserEmail = user.email"
+        :class="{ 'selected-user': user.email === selectedUserEmail }"
+      >
+        {{ user.name }}
       </div>
     </div>
-    <form @submit.prevent="sendMessage">
-      <input type="text" v-model="newMessage" />
-      <button type="submit" :disabled="!selectedUserEmail">Send</button>
-    </form>
+    <div class="chat-container">
+      <h1>Chat</h1>
+      <div v-if="filteredMessages.length > 0">
+        <div v-for="(message, index) in filteredMessages" :key="index" :class="{ 'sent-by-me': isSentByMe(message) }">
+          <div class="message">
+            {{ message.content }}
+            <span class="timestamp">
+              ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
+            </span>
+          </div>
+        </div>
+      </div>
+      <form @submit.prevent="sendMessage">
+        <input type="text" v-model="newMessage" />
+        <button type="submit" :disabled="!selectedUserEmail">Send</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -160,6 +166,82 @@ formatDate(timestamp) {
 </script>
 
 <style scoped>
+
+.main-container {
+    display: flex;
+  }
+
+  .user-list {
+    width: 250px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    padding: 5px;
+    margin-right: 1rem;
+  }
+
+  .user-list > h2 {
+    margin-top: 0;
+  }
+
+  .user-list > div {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .user-list > div:hover {
+    background-color: #eee;
+  }
+
+  .selected-user {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .chat-container {
+    flex-grow: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    border-radius: 4px;
+  }
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    border-radius: 4px;
+  }
+
+  .user-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 1rem;
+  }
+
+  .user-list > div {
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .user-list > div:hover {
+    background-color: #eee;
+  }
+
+  .selected-user {
+    background-color: #007bff;
+    color: white;
+  }
 .chat-container {
   max-width: 800px;
   margin: 0 auto;
