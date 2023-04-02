@@ -67,14 +67,22 @@ router.beforeEach((to, from, next) => {
   const currentUser = auth.currentUser;
 
   if (requiresAuth && !currentUser) {
-    next('/');
-  } else if (currentUser && (to.path === '/login' || to.path === '/register')) {
-    next('/');
+    next('/login');
   } else {
-    next();
+    // Store last visited route in local storage
+    localStorage.setItem('lastRoute', to.path);
+    
+    // If user logs out, redirect to landing page
+    if (to.path === '/logout') {
+      next('/');
+    } else if (currentUser && to.path === '/') {
+      // If user is authenticated and home page is requested, redirect to dashboard instead
+      next('/home');
+    } else {
+      // Continue to requested page
+      next();
+    }
   }
-
-  
 })
 
 export default router

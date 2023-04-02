@@ -49,57 +49,62 @@
   <script>
   import { ref } from "vue";
   import { useStore } from "vuex";
-  import firebaseApp from "../firebase/firebase.js";
-  import { getFirestore, addDoc, collection } from "firebase/firestore";
+  import {db,auth} from "../firebase/firebase.js";
+  import { addDoc, collection,setDoc , doc,updateDoc} from "firebase/firestore";
   import { useRouter } from 'vue-router';
+  import { onAuthStateChanged } from "firebase/auth";
   
-  const db = getFirestore(firebaseApp);
+  
+
   
   export default {
-	setup() {
-	  
-	  const register_form = ref({});
-	  const store = useStore();
-      const router = useRouter();
-	  
-	  const register = async () => {
-		store.dispatch("register", register_form.value);
-		await createUser();
-	  };
-	  const createUser = async () => {
-		const colRef = collection(db, "users");
-		const colRefTwo = collection(db, "teams",register_form.value.team,"users");
-		const dataObj = {
-		  name: register_form.value.name,
-		  email: register_form.value.email,
-		  team: register_form.value.team,
-		  role: register_form.value.role,
-		};
-		try {
-		  const docRef = await addDoc(colRef, dataObj);
-		  const docRefTwo = await addDoc(colRefTwo, dataObj);
-		  console.log("Document was created with ID:", docRef.id);
-		  console.log("Document was created with ID:", docRefTwo.id);
-		} catch (error) {
-		  console.error("Error adding document: ", error);
-		}
-	  };
-     
-    
-    
+  setup() {
+    const register_form = ref({});
+    const store = useStore();
+    const router = useRouter();
+    const uid = ref(null);
+
+    const register = async () => {
+      store.dispatch("register", register_form.value);
+    };
+
+    const createUser = async (uid) => {
+      const colRef = collection(db, "users");
+
+      const colRefTwo = collection(db, "teams",register_form.value.team,"users");
+      const dataObj = {
+        name: register_form.value.name,
+        email: register_form.value.email,
+        team: register_form.value.team,
+        role: register_form.value.role,
+      };
+      try {
+        const docRef = await setDoc(doc(colRef, uid), dataObj);
+        const docRefTwo = await setDoc(doc(colRefTwo, uid), dataObj);
+        console.log("Document was created with ID:", docRef.id);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    };
+
     const goBack = () => {
       router.push('/');
     };
-  
-	  return {
-		
-		register_form,
-		register,
-		createUser,
-        goBack
-	  };
-	}
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        uid.value = user.uid;
+        createUser(uid.value);
+      }
+    });
+
+    return {
+      register_form,
+      register,
+      goBack
+    };
   }
+}
   </script>
   
 
@@ -175,8 +180,8 @@ form.register input:not([type="submit"]) {
 }
 
 form.register input[type="submit"] {
-	background-color: #FFF;
-	color: rgb(28, 79, 207);
+	background-color:rgb(28, 79, 207);
+	color: #FFF;
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;

@@ -22,6 +22,7 @@ export default {
       store.dispatch('fetchUser')
     })
   }
+  
 }
 </script>
 

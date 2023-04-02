@@ -6,7 +6,7 @@
 	  <section class="forms">
 		
 		<form class="login" @submit.prevent="login">
-		  <h1>Login</h1>
+		  <h1 class = "title">Login</h1>
   
 		  <input
 			type="email"
@@ -19,7 +19,7 @@
 			v-model="login_form.password"
 		  />
 		  <input type="submit" value="Login" />
-		  <button @click="goBack">Back</button>
+		  <button class = "back" @click="goBack">Back</button>
 		</form>
 	  </section>
 	</main>
@@ -83,6 +83,23 @@ h2 {
 	font-size: 2rem;
 	text-transform: uppercase;
 	margin-bottom: 2rem;
+}
+.title {
+	font-size: 2rem;
+	text-transform: uppercase;
+	margin-bottom: 2rem;
+    text-align: center;
+    
+}
+.back {
+    text-align: center;
+    background-color: #FFF;
+	color: rgb(28, 79, 207);
+	font-weight: 700;
+	padding: 1rem 2rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	text-transform: uppercase;
 }
 input {
 	appearance: none;
