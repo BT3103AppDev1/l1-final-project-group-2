@@ -50,71 +50,61 @@
   import { ref } from "vue";
   import { useStore } from "vuex";
   import {db,auth} from "../firebase/firebase.js";
-  import { addDoc, collection,setDoc , doc} from "firebase/firestore";
+  import { addDoc, collection,setDoc , doc,updateDoc} from "firebase/firestore";
   import { useRouter } from 'vue-router';
-  
+  import { onAuthStateChanged } from "firebase/auth";
   
   
 
   
   export default {
-      
-	setup() {
-	  
-	  const register_form = ref({});
-	  const store = useStore();
-      const router = useRouter();
-      const uid = ref(null);
+  setup() {
+    const register_form = ref({});
+    const store = useStore();
+    const router = useRouter();
+    const uid = ref(null);
 
-      
-	  
-	  const register = async () => {
-		store.dispatch("register", register_form.value);
-		await createUser();
-	  };
-	  const createUser = async () => {
-		const colRef = collection(db, "users");
-        
-		const colRefTwo = collection(db, "teams",register_form.value.team,"users");
-		const dataObj = {
-		  name: register_form.value.name,
-		  email: register_form.value.email,
-		  team: register_form.value.team,
-		  role: register_form.value.role,
-		};
-		try {
-            const docRef = await addDoc(colRef, dataObj);
-    const docRefTwo = await addDoc(colRef, dataObj);
-		  console.log("Document was created with ID:", docRef.id);
-		  console.log("Document was created with ID:", docRefTwo.id);
-          const uidDocRef = doc(db, "users", docRef.id);
-          await setDoc(uidDocRef, { uid: docRef.id });
-		} catch (error) {
-		  console.error("Error adding document: ", error);
-		}
-	  };
-     
-    
-    
+    const register = async () => {
+      store.dispatch("register", register_form.value);
+    };
+
+    const createUser = async (uid) => {
+      const colRef = collection(db, "users");
+
+      const colRefTwo = collection(db, "teams",register_form.value.team,"users");
+      const dataObj = {
+        name: register_form.value.name,
+        email: register_form.value.email,
+        team: register_form.value.team,
+        role: register_form.value.role,
+      };
+      try {
+        const docRef = await setDoc(doc(colRef, uid), dataObj);
+        const docRefTwo = await setDoc(doc(colRefTwo, uid), dataObj);
+        console.log("Document was created with ID:", docRef.id);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    };
+
     const goBack = () => {
       router.push('/');
     };
 
-    const user = auth.currentUser;
-    if (user) {
-      uid.value = user.uid;
-    }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        uid.value = user.uid;
+        createUser(uid.value);
+      }
+    });
 
-  
-	  return {
-		
-		register_form,
-		register,
-		createUser,
-        goBack
-	  };
-	}
+    return {
+      register_form,
+      register,
+      goBack
+    };
   }
+}
   </script>
   
 
