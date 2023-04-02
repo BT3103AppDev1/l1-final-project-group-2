@@ -1,8 +1,6 @@
 <template>
 	<main class="login">
-		<section class="images">
-			//<img src="path/to/image.jpg" alt="Image description">
-		</section>
+	
 	  <section class="forms">
 		
 		<form class="login" @submit.prevent="login">

@@ -1,23 +1,73 @@
 
   
   <template>
+    <section class="images">
+      <div class="img-container">
+        <img src="../photos/landing.png">
+      </div>
+    </section>
     <div class="landing">
-      <h1>Welcome to my app</h1>
-      <router-link to="/login">
-        <button>Login</button>
-      </router-link>
-      <router-link to="/register">
-        <button>Register</button>
-      </router-link>
+      <h1>Empowering Teams, Streamlining Workflows </h1>
+      <div class="button-container">
+        <router-link to="/login">
+          <button>Login</button>
+        </router-link>
+        <router-link to="/register">
+          <button>Register</button>
+        </router-link>
+      </div>
     </div>
   </template>
   
-  <script>
-  export default {
-    name: 'Landing',
-  }
-  </script>
-  
   <style>
-  /* Add your landing page styles here */
+  .images {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .img-container {
+    height: 80%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .img-container img {
+    object-fit: contain;
+    max-height: 100%;
+    max-width: 100%;
+  }
+  
+  .landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: -400px;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 20px;
+    
+  }
+  
+  button {
+    background-color: blue;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+    
+  
+  h1 {
+  margin-bottom: 20px;
+}
   </style>
+  
+  

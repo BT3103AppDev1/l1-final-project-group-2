@@ -23,16 +23,16 @@
             <label for="teamDropdown">Team</label>
 		  <select v-model="register_form.team" id = "teamDropdown">
 			<option value="" disabled selected>Select team</option>
-			<option value="team1">Business</option>
-			<option value="team2">Communications</option>
-			<option value="team3">Technology</option>
-			<option value="team4">Marketing</option>
+			<option value="Business">Business</option>
+			<option value="Communications">Communications</option>
+			<option value="Technology">Technology</option>
+			<option value="Marketing">Marketing</option>
 		  </select>
           <label for="roleDropdown">Role</label>
 		  <select v-model="register_form.role" id = "roleDropdown">
 			<option value="" disabled>Select Role</option>
-			<option value="role1">Employee</option>
-			<option value="role2">Employer</option>
+			<option value="Employee">Employee</option>
+			<option value="Employer">Employer</option>
 		  </select>
         </div>
 			
