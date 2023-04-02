@@ -49,18 +49,24 @@
   <script>
   import { ref } from "vue";
   import { useStore } from "vuex";
-  import firebaseApp from "../firebase/firebase.js";
-  import { getFirestore, addDoc, collection } from "firebase/firestore";
+  import {db,auth} from "../firebase/firebase.js";
+  import { getFirestore, addDoc, collection,setDoc , doc} from "firebase/firestore";
   import { useRouter } from 'vue-router';
+  import { getAuth } from "@firebase/auth";
   
-  const db = getFirestore(firebaseApp);
+  
+
   
   export default {
+      
 	setup() {
 	  
 	  const register_form = ref({});
 	  const store = useStore();
       const router = useRouter();
+      const uid = ref(null);
+
+      
 	  
 	  const register = async () => {
 		store.dispatch("register", register_form.value);
@@ -68,6 +74,7 @@
 	  };
 	  const createUser = async () => {
 		const colRef = collection(db, "users");
+        
 		const colRefTwo = collection(db, "teams",register_form.value.team,"users");
 		const dataObj = {
 		  name: register_form.value.name,
@@ -76,10 +83,12 @@
 		  role: register_form.value.role,
 		};
 		try {
-		  const docRef = await addDoc(colRef, dataObj);
-		  const docRefTwo = await addDoc(colRefTwo, dataObj);
+            const docRef = await addDoc(colRef, dataObj);
+    const docRefTwo = await addDoc(colRef, dataObj);
 		  console.log("Document was created with ID:", docRef.id);
 		  console.log("Document was created with ID:", docRefTwo.id);
+          const uidDocRef = doc(db, "users", docRef.id);
+          await setDoc(uidDocRef, { uid: docRef.id });
 		} catch (error) {
 		  console.error("Error adding document: ", error);
 		}
@@ -90,6 +99,12 @@
     const goBack = () => {
       router.push('/');
     };
+
+    const user = auth.currentUser;
+    if (user) {
+      uid.value = user.uid;
+    }
+
   
 	  return {
 		
