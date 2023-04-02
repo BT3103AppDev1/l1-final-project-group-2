@@ -27,8 +27,9 @@
             <div class="message">
               {{ message.content }}
               <span class="timestamp">
-                ({{ new Date(message.timestamp.seconds * 1000).toLocaleString() }})
-              </span>
+  ({{ formatTimestamp(message.timestamp) }})
+</span>
+
             </div>
           </div>
         </div>
@@ -73,6 +74,7 @@ export default {
 
       return selectedConversation ? selectedConversation.messages : [];
     },
+
   },
 
   async created() {
@@ -160,8 +162,47 @@ async sendMessage() {
   }
 
   this.newMessage = '';
-  await this.fetchAndInitializeConversations();
+
+  // Find the current conversation in the 'conversations' array and update its messages.
+  const currentConversationIndex = this.conversations.findIndex(conversation => {
+    return conversation.participants && conversation.participants.includes(this.selectedUserEmail);
+  });
+
+  if (currentConversationIndex !== -1) {
+    this.conversations[currentConversationIndex].messages.push(message);
+    this.conversations = [...this.conversations];
+    this.updateFilteredMessages();
+  } else {
+    // If the conversation doesn't exist yet, fetch and initialize the conversations again.
+    await this.fetchAndInitializeConversations();
+  }
 },
+
+updateFilteredMessages() {
+      if (!this.selectedUserEmail || this.conversations.length === 0) {
+        this.filteredMessages = [];
+        return;
+      }
+
+      const selectedConversation = this.conversations.find(conversation => {
+        return conversation.participants && conversation.participants.includes(this.selectedUserEmail);
+      });
+
+      this.filteredMessages = selectedConversation ? selectedConversation.messages : [];
+    },
+
+    formatTimestamp(timestamp) {
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleString();
+  }
+
+  if (timestamp.seconds) {
+    return new Date(timestamp.seconds * 1000).toLocaleString();
+  }
+
+  return "Invalid date";
+},
+
 
 getConversationId(email1, email2) {
   const emails = [email1, email2].sort();
