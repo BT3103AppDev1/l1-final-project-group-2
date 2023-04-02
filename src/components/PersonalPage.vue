@@ -96,7 +96,8 @@
                 <div id = "taskDescription"> {{ item.description }} </div>
                 <br>
                 <div id = "taskDuedate"> {{ item.duedate }}</div>
-
+                <br>
+                <button class='task_delete' v-on:click="deleteTask(item.id)">Delete Task</button>
               </div>   
             </div>
           </div>
@@ -365,8 +366,15 @@
 <script>
 import firebaseApp from '../firebase/firebase.js';
 import {getFirestore} from "firebase/firestore"
-import {doc, setDoc, getDocs, collection, updateDoc} from "firebase/firestore";
-const db = getFirestore(firebaseApp);
+import {doc, setDoc, getDocs, deleteDoc, collection, updateDoc} from "firebase/firestore";
+
+import { getAuth } from "firebase/auth";
+
+const auth = getAuth();
+const user = auth.currentUser;
+
+
+const db = getFirestore(firebaseApp); 
 
 export default {
   
@@ -375,7 +383,8 @@ export default {
     return {
       doData: [],
       reviewData: [],
-      completeData: []
+      completeData: [],
+      userEmail: ''
    };
   }, 
 
@@ -390,12 +399,13 @@ export default {
       let due_date = document.getElementById("task_duedate1").value
       let description = document.getElementById("task_desc1").value
 
+
       try{
-        const docRef = await setDoc(doc(db, "Tasks", name), {
-          Name: name, Due_Date: due_date, Description: description, Status: "ToDo"
-        
+
+        const docRef = await setDoc(doc(collection(db, "Tasks")), {
+          Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: this.userEmail, Assigner: this.userEmail 
         })
-        console.log(docRef)
+        console.log("SAVED!")
         document.getElementById("task_name1").value = "";
         document.getElementById("task_duedate1").value = "";
         document.getElementById("task_desc1").value = "";
@@ -414,13 +424,21 @@ export default {
     },
 
     async readTasks() {
+
       this.doData = [];
       this.reviewData = [];
       this.completeData = [];
       let allDocuments = await getDocs(collection(db, "Tasks"))
-      allDocuments.forEach((docs) => {
-        let documentData = docs.data()
 
+      allDocuments.forEach((docs) => {
+
+      auth.onAuthStateChanged((user) => {
+        if (user){
+        let documentData = docs.data()
+        this.userEmail = user.email
+
+        if (documentData.Assignee == user.email) {
+        let id = (docs.id)
         let name = (documentData.Name)
         let description = (documentData.Description)
         let duedate = (documentData.Due_Date)
@@ -431,39 +449,41 @@ export default {
           console.log(status)
 
           this.doData.push(
-          {name: name, description:description ,duedate:duedate, status:status});
+          {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
 
         if (status == "Review") {
           console.log(status)
 
           this.reviewData.push(
-          {name: name, description:description ,duedate:duedate, status:status});
+          {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
 
         if (status == "Complete") {
           console.log(status)
 
           this.completeData.push(
-          {name: name, description:description ,duedate:duedate, status:status});
+          {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
 
         
-      })
+      }}
+    })
+    })
 
     },
 
     startDrag(evt, item) {
       evt.dataTransfer.dropEffect = 'move'
       evt.dataTransfer.effectAllowed = 'move'
-      evt.dataTransfer.setData('itemName', item.name)
+      evt.dataTransfer.setData('itemId', item.id)
       console.log('.')
     },
 
     async onDrop(evt, status) {
-      const itemName = evt.dataTransfer.getData('itemName')
+      const itemId = evt.dataTransfer.getData('itemId')
       try {
-          const update = await updateDoc(doc(db, "Tasks", itemName), {
+          const update = await updateDoc(doc(db, "Tasks", itemId), {
            Status: status
 
         })
@@ -476,11 +496,14 @@ export default {
       }
 
       console.log(status)
-    }
-    
+    },
 
-
+    async deleteTask(itemId) {
+      await deleteDoc(doc(db,"Tasks", itemId))
+      console.log(itemId)
+      this.$emit("deleted")
   },
+},
 
   mounted(){
     this.readTasks();
