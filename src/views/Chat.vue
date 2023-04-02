@@ -1,8 +1,8 @@
 <template>
   <h1>Chat</h1>
   <div class="chat-container">
-    <div v-if="selectedRecipientMessages.length > 0">
-      <div v-for="(message, index) in selectedRecipientMessages" :key="index">
+    <div v-if="filteredMessages.length > 0">
+      <div v-for="(message, index) in filteredMessages" :key="index">
         <div class="message">
           {{ message.senderId }}: {{ message.content }}
           <span class="timestamp">
@@ -36,12 +36,20 @@ export default {
       conversations: [],
       selectedUserId: "",
       users: [],
-      selectedRecipientMessages: [],
     };
   },
-  watch: {
-    selectedUserId(newValue) {
-      this.updateSelectedRecipientMessages();
+
+  computed: {
+    filteredMessages() {
+      if (!this.selectedUserId || this.conversations.length === 0) {
+        return [];
+      }
+      
+      const selectedConversation = this.conversations.find(conversation => {
+        return conversation.participants && conversation.participants.includes(this.selectedUserId);
+      });
+
+      return selectedConversation ? selectedConversation.messages : [];
     },
   },
 
@@ -69,119 +77,79 @@ export default {
       });
     },
 
-    updateSelectedRecipientMessages() {
-  if (this.conversations.length > 0 && this.selectedUserId) {
-    const selectedConversation = this.conversations.find(conversation => {
-      return conversation.participants && conversation.participants.includes(this.selectedUserId);
-    });
+    async fetchAndInitializeConversations() {
+      const loggedInUserId = auth.currentUser.uid;
+      const userConversationsSnapshot = await getDocs(
+        query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
+      );
 
-    if (selectedConversation && selectedConversation.messages) {
-      this.selectedRecipientMessages = selectedConversation.messages;
-    } else {
-      this.selectedRecipientMessages = [];
-    }
-  } else {
-    this.selectedRecipientMessages = [];
-  }
-},
+      for (const conversationDoc of userConversationsSnapshot.docs) {
+        const participants = conversationDoc.data().participants;
+        const otherUserId = participants.find((id) => id !== loggedInUserId);
 
+        const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
 
-async fetchAndInitializeConversations() {
-  const loggedInUserId = auth.currentUser.uid;
-  const userConversationsSnapshot = await getDocs(
-    query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserId))
-  );
+        const messagesMap = conversationDoc.data().messages;
+        const messages = Object.values(messagesMap).map((messageData) => {
+          return {
+            id: messageData.id,
+            content: messageData.content,
+            senderId: messageData.senderId,
+            timestamp: messageData.timestamp,
+          };
+        });
 
-  console.log("User conversations snapshot:", userConversationsSnapshot);
-
-  for (const conversationDoc of userConversationsSnapshot.docs) {
-    const participants = conversationDoc.data().participants;
-    const otherUserId = participants.find((id) => id !== loggedInUserId);
-
-    console.log("Other user ID:", otherUserId);
-
-    const otherUserDoc = await getDoc(doc(db, "users", otherUserId));
-
-    console.log("Other user document:", otherUserDoc);
-
-    const messagesSnapshot = await getDocs(
-      collection(db, "conversations", conversationDoc.id, "messages")
-    );
-    console.log("Messages snapshot for conversation", conversationDoc.id, ":", messagesSnapshot);
-
-    const messages = messagesSnapshot.docs.map((doc) => doc.data());
-
-    console.log("Messages for conversation", conversationDoc.id, ":", messages);
-
-    this.conversations.push({
-      id: conversationDoc.id,
-      displayName: otherUserDoc.data().name,
-      messages: messages,
-    });
-  }
-
-  console.log("Initialized conversations:", this.conversations);
-},
-
-async fetchMessages(conversationId) {
-  const messagesSnapshot = await getDocs(collection(db, "conversations", conversationId, "messages"));
-  const messages = messagesSnapshot.docs.map((doc) => {
-    const messageData = doc.data();
-    return {
-      id: doc.id,
-      content: messageData.content,
-      senderId: messageData.senderId,
-      timestamp: messageData.timestamp
-    };
-  });
-
-  return messages;
-},
-
+        this.conversations.push({
+          id: conversationDoc.id,
+          displayName: otherUserDoc.data().name,
+          messages: messages,
+        });
+      }
+    },
 
     async sendMessage() {
       if (!this.selectedUserId || !this.newMessage.trim()) {
         return;
       }
-
       const loggedInUserId = auth.currentUser.uid;
-      const conversationId = this.getConversationId(loggedInUserId, this.selectedUserId);
-      const message = {
-        content: this.newMessage,
-        senderId: loggedInUserId,
-        timestamp: new Date(),
-      };
+  const conversationId = this.getConversationId(loggedInUserId, this.selectedUserId);
+  const message = {
+    content: this.newMessage,
+    senderId: loggedInUserId,
+    timestamp: new Date(),
+    id: Date.now().toString(),
+  };
 
-      const conversationRef = doc(db, "conversations", conversationId);
-      const conversationSnapshot = await getDoc(conversationRef);
+  const conversationRef = doc(db, "conversations", conversationId);
+  const conversationSnapshot = await getDoc(conversationRef);
 
-      if (conversationSnapshot.exists()) {
-        await setDoc(conversationRef, {
-          participants: conversationSnapshot.data().participants,
-          messages: [...conversationSnapshot.data().messages, message],
-        });
-      } else {
-        await setDoc(conversationRef, {
-          participants: [loggedInUserId, this.selectedUserId],
-          messages: [message],
-        });
-      }
+  if (conversationSnapshot.exists()) {
+    const currentMessages = conversationSnapshot.data().messages || {};
+    await setDoc(conversationRef, {
+      participants: conversationSnapshot.data().participants,
+      messages: { ...currentMessages, [message.id]: message },
+    });
+  } else {
+    await setDoc(conversationRef, {
+      participants: [loggedInUserId, this.selectedUserId],
+      messages: { [message.id]: message },
+    });
+  }
 
-      this.newMessage = '';
-      this.updateSelectedRecipientMessages();
-      
-    },
+  this.newMessage = '';
+  await this.fetchAndInitializeConversations();
+},
 
-    getConversationId(user1, user2) {
-      const ids = [user1, user2].sort();
-      return `${ids[0]}_${ids[1]}`;
-    },
+getConversationId(user1, user2) {
+  const ids = [user1, user2].sort();
+  return `${ids[0]}_${ids[1]}`;
+},
 
-    formatDate(timestamp) {
-      const date = new Date(timestamp.toDate());
-      return date.toLocaleString();
-    },
-  },
+formatDate(timestamp) {
+  const date = new Date(timestamp.toDate());
+  return date.toLocaleString();
+},
+},
 };
 </script>
 
