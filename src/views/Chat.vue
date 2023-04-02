@@ -97,7 +97,8 @@ export default {
             senderEmail: messageData.senderEmail,
             timestamp: messageData.timestamp,
           };
-        });
+        })
+        .sort((a, b) => a.timestamp.toMillis() - b.timestamp.toMillis());
 
         this.conversations.push({
           id: conversationDoc.id,
