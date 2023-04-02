@@ -1,6 +1,13 @@
 <template>
   <h1>Chat</h1>
   <div class="chat-container">
+    <div>
+      <label for="userSelect">Select user to send a message: </label>
+      <select id="userSelect" v-model="selectedUserEmail">
+        <option disabled value="">Please select a user</option>
+        <option v-for="user in users" :key="user.email" :value="user.email">{{ user.name }}</option>
+      </select>
+    </div>
     <div v-if="filteredMessages.length > 0">
       <div v-for="(message, index) in filteredMessages" :key="index">
         <div class="message">
@@ -11,19 +18,13 @@
         </div>
       </div>
     </div>
-    <div>
-      <label for="userSelect">Select user to send a message: </label>
-      <select id="userSelect" v-model="selectedUserEmail">
-        <option disabled value="">Please select a user</option>
-        <option v-for="user in users" :key="user.email" :value="user.email">{{ user.name }}</option>
-      </select>
-    </div>
     <form @submit.prevent="sendMessage">
       <input type="text" v-model="newMessage" />
       <button type="submit" :disabled="!selectedUserEmail">Send</button>
     </form>
   </div>
 </template>
+
 
 <script>
 import { collection, doc, getDocs, getDoc, setDoc, query, orderBy, where } from "firebase/firestore";
