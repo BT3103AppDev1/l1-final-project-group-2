@@ -31,34 +31,49 @@
             </form>
             </div>
         </div>
+        <div class = bars>
+        <div class="progress-bar-container">
+          <h3>Annual Leave Taken</h3>
+    <div class="progress-bar-wrapper">
+      <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
+        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
+          :style="{ strokeDasharray: (annualleave / 127 * 120) + ' 999' }"></circle>
+      </svg>
+      <div class="progress-bar-label">{{ annualleave }} / 25 days</div>
+    </div>
+  </div>
+
+  <div class="progress-bar-container">
+          <h3>Sick leave Leave Taken</h3>
+    <div class="progress-bar-wrapper">
+      <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
+        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
+          :style="{ strokeDasharray: (sickleave / 14 * 120) + ' 999' }"></circle>
+      </svg>
+      <div class="progress-bar-label">{{ sickleave }} / 14 days</div>
+    </div>
+  </div>
+  <div class="progress-bar-container">
+          <h3>Other leave Leave Taken</h3>
+    <div class="progress-bar-wrapper">
+      <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
+        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
+          :style="{ strokeDasharray: (otherleave / 14 * 120) + ' 999' }"></circle>
+      </svg>
+      <div class="progress-bar-label">{{otherleave }} / 14 days</div>
+    </div>
+  </div>
+  </div>
+
+
 
             
             
         
-    <div class = box>
-      <div class="box1">
-  <h1>Annual Leave<br>Taken<br>{{ annualleave }}</h1>
-  <CircularProgressBar heading="My Progress Bar" :value="50" />
-
-</div>
-            
-	    <div class="box2">
-		    
-		    <h1>Sick Leave           
-                <br>Taken
-                <br>
-                {{ sickleave }}
-            </h1>
-	    </div>
-	    <div class="box3">
-		    
-		    <h1>Other Leave           
-                <br>Taken
-                <br>
-                {{ otherleave }}
-            </h1>
-	    </div>
-    </div>
+    
     <br> <br>
     
         <LeaveDisplay :key="refreshComp"/>
@@ -79,24 +94,31 @@
 
         const auth = getAuth();
         const user = auth.currentUser;
+        console.log("checking getauth" + user.email)
 
     import LeaveDisplay from '../components/LeaveDisplay.vue';
     import ManagerLeave from '../components/ManagerLeave.vue';
+    
 
 
         export default {
             name: 'OnlyLeave',
             components:{
                 LeaveDisplay,
-                ManagerLeave
+                ManagerLeave,
+                
             },
             data() {
     return {
+      
       isManager: false,
       annualleave: null,
       sickleave: null,
-      otherleave: null
+      otherleave: null,
+      progress: 0,
+      progressValue: 0
     }
+    
   },
   async created(){
     let allDocuments = await getDocs(query(collection(db,"Leave"), where("Email", "==", user.email)));
@@ -129,13 +151,10 @@
     console.log("abc")
     this.sickleave = sickleave
     this.otherleave = otherleave
-    // Circular progress bar code
-    const progress = document.querySelector('.progress-bar');
-    const value = annualleave; // replace with actual value
-    const max = 14; // replace with maximum value
-
-    const angle = value / max * 360;
-    progress.style.transform = `rotate(${angle}deg)`;
+    const totalAnnualLeave = 200; // Replace with your total annual leave value
+    this.progressValue = Math.round(this.annualleave / totalAnnualLeave * 100);
+    this.progress = this.progressValue / 100 * 360;
+    
   },
   async mounted() {
     try {
@@ -192,6 +211,13 @@
 <style>
 div{
     background-color: #EBF0F7;
+}
+.bars{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 .form-popup{
     position:relative;
@@ -321,82 +347,96 @@ h1{
   outline: none;
   border: 2px solid #4285f4;
 }
-    .box{
-        
-        
-        display: flex;
-        justify-content: space-between;
-       
 
+  .progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: white;
+    color: black;
+  }
 
-        
-    }
-    .box1 h1{
-        color: black;
-        box-sizing: border-box;
-        background-color: #FFEFE7;
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        width: 360px;
-        height: 150px;
-        text-align: center;
-        
-    
+  .progress-bar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color: white;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .progress-bar-background {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 3.8;
+    color: white;
+    background-color: white;
+  }
+
+  .progress-bar-foreground {
+    fill: none;
+    stroke: cyan;
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    stroke-dasharray: 0 999;
+    transition: stroke-dasharray 0.5s ease 0s;
+  }
+
+  .progress-bar-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    background: white;
+  }
+
+  .progress-bar-background2 {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 3.8;
+    color: white;
+    background-color: white;
+  }
+
+  .progress-bar-foreground2 {
+    fill: none;
+    stroke: orange (240, 132, 0, 0.908);
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    stroke-dasharray: 0 999;
+    transition: stroke-dasharray 0.5s ease 0s;
+  }
+
+  .progress-bar-background3 {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 3.8;
+    color: white;
+    background-color: white;
+  }
+
+  .progress-bar-foreground3 {
+    fill: none;
+    stroke: red (240, 132, 0, 0.908);
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    stroke-dasharray: 0 999;
+    transition: stroke-dasharray 0.5s ease 0s;
+  }
   
-        
-			border-radius: 10px;
-    }
-    .box2 h1{
-        color: black;
-        box-sizing: border-box;
-        background-color: #e2d4f6;
-        
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        width:360px;
-        height: 150px;
-        text-align: center;
-        
-    
-  
-        
-			border-radius: 10px;
-    }
-    .box3 h1{
-        color: black;
-        box-sizing: border-box;
-        background-color: #FDEBF9;
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        width: 360px;
-        height: 150px;
-        text-align: left;
-        text-align: center;
-        
-    
-  
-        
-			border-radius: 10px;
-    }
-    .progress-ring {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.progress-bar {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
-  clip: rect(0px, 100px, 100px, 50px);
-  background-color: #f00;
-  transform-origin: center;
-}
-
 </style>
+
 
 
