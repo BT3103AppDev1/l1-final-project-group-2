@@ -17,7 +17,8 @@
 </div>
 
 <div class="chat-container">
-        <h1>Chat</h1>
+  <h1 v-text="selectedUserDisplayName"></h1>
+
         <div class="messages-container">
           <div v-if="filteredMessages.length > 0">
             <div
@@ -75,6 +76,11 @@ export default {
 
       return selectedConversation ? selectedConversation.messages : [];
     },
+
+    selectedUserDisplayName() {
+    const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
+    return selectedUser ? selectedUser.name : "Chat";
+  },
 
   },
 
