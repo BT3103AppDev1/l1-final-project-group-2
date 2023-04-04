@@ -1,7 +1,7 @@
 <template>
     
         
-            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave">+ Add Leave</button></h1>
+            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Add Leave</button></h1>
         
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
@@ -9,12 +9,12 @@
             <h3> Leave Request </h3>
               <br><br>
               <label for="type">Type of Leave</label>
-              <select id="type" required>
-                <option value="">Select Type of Leave</option>
-                <option value="Annual">Annual</option>
-                <option value="Sick">Sick</option>
-                <option value="Others">Others</option>
-              </select>
+<select id="type" required onchange="this.style.color = 'black';">
+  <option value="" style="color:gray;">Select Type of Leave</option>
+  <option value="Annual" style="color:black;">Annual</option>
+  <option value="Sick" style="color:black;">Sick</option>
+  <option value="Others" style="color:black;">Others</option>
+</select>
               <label for="description">Description</label>
               <input type="text" placeholder="Description" id="description" required>
               <label for="duration">Duration</label>
@@ -32,38 +32,38 @@
             </div>
         </div>
         <div class = bars>
-        <div class="progress-bar-container">
+        <div class="progress-bar-container progress-bar-container-1">
           <h3>Annual Leave Taken</h3>
-    <div class="progress-bar-wrapper">
+    <div class="progress-bar-wrapper progress-bar-wrapper-1">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
-        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
-        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
-          :style="{ strokeDasharray: (annualleave / 127 * 120) + ' 999' }"></circle>
+        <circle class="progress-bar-background progress-bar-background-1" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground progress-bar-foreground-1" cx="21" cy="21" r="19"
+          :style="{ strokeDasharray: (annualleave / 21 * 120) + ' 999' }"></circle>
       </svg>
-      <div class="progress-bar-label">{{ annualleave }} / 25 days</div>
+      <div class="progress-bar-label progress-bar-label-1">{{ annualleave }} / 21 days</div>
     </div>
   </div>
 
-  <div class="progress-bar-container">
+  <div class="progress-bar-container progress-bar-container-2">
           <h3>Sick leave Leave Taken</h3>
-    <div class="progress-bar-wrapper">
+    <div class="progress-bar-wrapper progress-bar-wrapper-2">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
-        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
-        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
+        <circle class="progress-bar-background progress-bar-background-2" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground progress-bar-foreground-2" cx="21" cy="21" r="19"
           :style="{ strokeDasharray: (sickleave / 14 * 120) + ' 999' }"></circle>
       </svg>
-      <div class="progress-bar-label">{{ sickleave }} / 14 days</div>
+      <div class="progress-bar-label progress-bar-label-2">{{ sickleave }} / 14 days</div>
     </div>
   </div>
-  <div class="progress-bar-container">
-          <h3>Other leave Leave Taken</h3>
-    <div class="progress-bar-wrapper">
+  <div class="progress-bar-container progress-bar-container-3">
+          <h3>Other Leave Taken</h3>
+    <div class="progress-bar-wrapper progress-bar-wrapper-3">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
-        <circle class="progress-bar-background" cx="21" cy="21" r="19"></circle>
-        <circle class="progress-bar-foreground" cx="21" cy="21" r="19"
+        <circle class="progress-bar-background progress-bar-background-3" cx="21" cy="21" r="19"></circle>
+        <circle class="progress-bar-foreground progress-bar-foreground-3" cx="21" cy="21" r="19"
           :style="{ strokeDasharray: (otherleave / 14 * 120) + ' 999' }"></circle>
       </svg>
-      <div class="progress-bar-label">{{otherleave }} / 14 days</div>
+      <div class="progress-bar-label progress-bar-label-3">{{otherleave }} / 14 days</div>
     </div>
   </div>
   </div>
@@ -80,6 +80,7 @@
         <br>
        
         <ManagerLeave v-if="isManager" />
+        <br>
         
 </template>
 
@@ -204,20 +205,31 @@
                 console.error ("Error adding document: ", error);
                 }
                 this.showForm=false;
+                location.reload();
                 }
             }
     }
 </script>
-<style>
-div{
-    background-color: #EBF0F7;
+<style scoped>
+
+h1{
+  background-color: #EBF0F7;
 }
+h1 button {
+    color: black;
+  }
+
+
+
+
+
 .bars{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  background-color: #EBF0F7;
 }
 .form-popup{
     position:relative;
@@ -274,6 +286,7 @@ div{
   width: 48%;
   margin-right: 4%;
   box-sizing: border-box;
+  color: black;
 }
 
 .formli .button-container {
@@ -290,17 +303,12 @@ div{
  
 
 
-h5{
-    background-color: whitesmoke;
-    text-align: center;
-}
-h1{
-    text-align: left;
-    color: black;
-    background-color: white;
-}
 
 
+
+select option:checked {
+  color: black;
+}
 .applyLeave{
   align-items: center;
   appearance: none;
@@ -348,23 +356,80 @@ h1{
   border: 2px solid #4285f4;
 }
 
-  .progress-bar-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    background-color: white;
-    color: black;
-  }
+.progress-bar-container-1 h3 {
+  text-align: left;
+}
 
-  .progress-bar-wrapper {
+  .progress-bar-container-1 {
+    display: flex;
+  justify-content: space-between;
+  
+    display: flex;
+
+    
+    justify-content: center;
+    
+    height: 200px;
+    
+    color: black;
+   
+  background-color: #FFEFE7;
+  padding: 20px; /* add some padding to the container */
+  border-radius: 10px;
+
+}
+
+.progress-bar-container-2 {
+  display: flex;
+  justify-content: space-between;
+  
+    display: flex;
+
+    
+    justify-content: center;
+    
+    height: 200px;
+    
+    color: black;
+   
+   
+  background-color: #F0E8FB;
+  padding: 20px; /* add some padding to the container */
+  border-radius: 10px;
+
+}
+
+
+.progress-bar-container-3 {
+  display: flex;
+  justify-content: space-between;
+  
+    display: flex;
+
+    
+    justify-content: center;
+    
+    height: 200px;
+    
+    color: black;
+   
+  background-color: #FDEBF9;
+  padding: 20px; /* add some padding to the container */
+  border-radius: 10px;
+
+}
+  
+
+  .progress-bar-wrapper-1 {
     position: relative;
     width: 150px;
     height: 150px;
     text-align: center;
     font-size: 1.2rem;
-    background-color: white;
+    background-color:default;
+    display: flex;
+  align-items: flex-start;
+  background-color: #FFEFE7;
   }
 
   .progress-bar {
@@ -376,15 +441,15 @@ h1{
     transform: rotate(-90deg);
   }
 
-  .progress-bar-background {
+  .progress-bar-background-1 {
     fill: none;
     stroke: #e6e6e6;
     stroke-width: 3.8;
-    color: white;
-    background-color: white;
+    color: #FFEFE7;
+    background-color: #FFEFE7;
   }
 
-  .progress-bar-foreground {
+  .progress-bar-foreground-1 {
     fill: none;
     stroke: cyan;
     stroke-width: 3.8;
@@ -393,49 +458,110 @@ h1{
     transition: stroke-dasharray 0.5s ease 0s;
   }
 
-  .progress-bar-label {
+  .progress-bar-label-1 {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: black;
-    background: white;
+    background: #FFEFE7;
   }
 
-  .progress-bar-background2 {
+  .progress-bar-wrapper-2 {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color:default;
+    display: flex;
+  align-items: flex-start;
+  background-color:  #F0E8FB;
+;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .progress-bar-background-2 {
     fill: none;
     stroke: #e6e6e6;
     stroke-width: 3.8;
-    color: white;
-    background-color: white;
+    color: #FFEFE7;
+    background-color: #F0E8FB;
   }
 
-  .progress-bar-foreground2 {
+  .progress-bar-foreground-2 {
     fill: none;
-    stroke: orange (240, 132, 0, 0.908);
+    stroke: rgb(255, 170, 0);
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
     transition: stroke-dasharray 0.5s ease 0s;
   }
 
-  .progress-bar-background3 {
+  .progress-bar-label-2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    background: #F0E8FB;
+  }
+  .progress-bar-wrapper-3 {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color:default;
+    display: flex;
+  align-items: flex-start;
+  background-color:  #FDEBF9;
+;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .progress-bar-background-3 {
     fill: none;
     stroke: #e6e6e6;
     stroke-width: 3.8;
-    color: white;
-    background-color: white;
+    color: #FFEFE7;
+    background-color: #FDEBF9;
   }
 
-  .progress-bar-foreground3 {
+  .progress-bar-foreground-3 {
     fill: none;
-    stroke: red (240, 132, 0, 0.908);
+    stroke: greenyellow;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
     transition: stroke-dasharray 0.5s ease 0s;
   }
-  
+
+  .progress-bar-label-3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    background: #FDEBF9;
+  }
+
 </style>
 
 

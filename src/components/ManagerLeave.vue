@@ -102,22 +102,21 @@ export default {
         }
         
         cell6.appendChild(badge)
-        
-        
-        
+        const buttonContainer = document.createElement("div")
+        buttonContainer.className = "button-container"
+
         const tickbtn = document.createElement("button");
-        tickbtn.className= "tickbwt"
-        tickbtn.innerHTML="&#10003;"
-        
+        tickbtn.className = "tickbwt"
+        tickbtn.innerHTML = "&#10003;"
+
         const crossbtn = document.createElement("button");
-        crossbtn.className= "crossbwt"
-        crossbtn.innerHTML="&#10007"
-        
+        crossbtn.className = "crossbwt"
+        crossbtn.innerHTML = "&#10007"
 
-       
+        buttonContainer.appendChild(tickbtn)
+        buttonContainer.appendChild(crossbtn)
 
-        cell7.appendChild(tickbtn)
-        cell7.append(crossbtn)
+        cell7.appendChild(buttonContainer)
         crossbtn.onclick = function() {
             rejectLeave(docid)
         }
@@ -140,6 +139,7 @@ export default {
         }
         
         display()
+        location.reload()
     }
     async function approveLeave(docid) {
         alert("You are going to approve Leave " + docid)
@@ -151,6 +151,7 @@ export default {
         }
         
         display()
+        location.reload()
 
     }
     
@@ -160,30 +161,28 @@ export default {
 
 </script>
 <style>
-
-h1,h2{
-    text-align: center;
-    background-color: rgb(129,184,99);
-    font: 700;
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-
+div {
+    background-color: white;
 }
+
+h1{
+    text-align: left;
+    color: black;
+    background-color: white;
+}
+
+
+
 table{
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     color: #050505;
-    background-color: whitesmoke;
+    background-color: white;
     border: none;
 }
-tr:nth-child(even){
-    background-color: whitesmoke;
+#pending table tr{
+    background-color: white;
     
 
 }
@@ -203,7 +202,7 @@ th,td {
   align-items: center;
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
-  background-color: #ffffff;
+  background-color: whitesmoke;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -218,34 +217,48 @@ th,td {
 }
 
 
+
 .tickbwt {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    text-align: center;
-    font-size: 16px;
-    line-height: 18px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #4CAF50;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(42, 244, 42);
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .crossbwt {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    text-align: center;
-    font-size: 16px;
-    line-height: 18px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #f44336;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(244, 42, 42);
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: white;
+}
+
+
+
+
 
 </style>
 
