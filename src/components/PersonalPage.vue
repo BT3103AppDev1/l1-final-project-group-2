@@ -8,7 +8,7 @@
       <div class='project-column'>
 		    <div class='project-column-heading'>
           <h2 class='project-column-heading__title'>To Do</h2>
-          <button class='task_add' v-on:click="addTask">Add Task</button>
+          <button class='task_add' v-on:click="addTask"><span>&#43;</span></button>
         </div>
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
@@ -108,6 +108,10 @@
 
 <style>
 
+html {
+  background-color:var(--bg);
+}
+
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
   width: 100px; /* Set the width of the sidebar */
@@ -152,18 +156,23 @@
 	 grid-column-gap: 1.5rem;
 }
  .project-column-heading {
-	 margin-bottom: 1rem;
+
 	 display: flex;
 	 align-items: center;
 	 justify-content: space-between;
-   background: transparent;
-	 color: black;
-	 font-size: 18px;
-	 border: 0;
-	 cursor: pointer;
+   background-color: var(--white);
+
+	 border-radius: 8px;
+	 width: 100%;
+	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+	 margin-bottom: 1rem;
+	 border: 3px dashed transparent;
+
+	 
 }
  .project-column-heading__title {
-	 font-size: 20px;
+	font-size: 18px;
+  padding: 10px 20px;
 }
 
  .task {
@@ -342,8 +351,11 @@
   }
 
   .formli .btn {
-    padding: 12px 20px;
-    background-color: #fff;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid #999999;
+    font-size:medium;
     cursor: pointer;
 	  margin-bottom: 1rem;
     opacity: 0.8;
@@ -352,12 +364,18 @@
 
 
   .drop-zone {
-    background-color: #eee;
+    background-color: transparent;
     margin-bottom: 10px;
-    padding: 12px 20px;
-    height: 550px;
-    width: 300px
 
+    height: 550px;
+    width: 300px;
+
+  }
+
+  .task_add {
+    background-color: #7784ee;
+    padding: 10px 2how0px;
+    margin-left: -50px
   }
 
 </style>
