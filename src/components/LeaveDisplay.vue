@@ -166,6 +166,10 @@ export default {
 div{
     background-color: white;
 }
+#table th {
+    border-bottom: 1px solid rgb(199, 199, 199)!important;
+    color: rgb(173, 173, 173);
+}
 
 
 table{

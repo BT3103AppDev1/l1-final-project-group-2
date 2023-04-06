@@ -6,6 +6,7 @@
     <table id = "pending table" class = "auto-index">
         <tr>
                 <th>S.No</th>
+                <th>Employee Name</th>
                 <th>Description</th>
                 <th>Type</th>
                 <th>Duration</th>
@@ -59,6 +60,7 @@ export default {
         let days = documentData.Days
         
         let status = documentData.Status
+        let name = documentData.Name
         
         
 
@@ -73,13 +75,15 @@ export default {
         
         let cell6= row.insertCell(5)
         let cell7= row.insertCell(6)
+        let cell8= row.insertCell(7)
 
         cell1.innerHTML = index
-        cell2.innerHTML = description
+        cell2.innerHTML = name
+        cell3.innerHTML = description
 
-        cell3.innerHTML = type
-        cell4.innerHTML = duration
-        cell5.innerHTML = days
+        cell4.innerHTML = type
+        cell5.innerHTML = duration
+        cell6.innerHTML = days
         console.log(status)
         let badge = document.createElement('span');
         if (status=="pending") {
@@ -101,7 +105,7 @@ export default {
         // code to execute if all conditions are false
         }
         
-        cell6.appendChild(badge)
+        cell7.appendChild(badge)
         const buttonContainer = document.createElement("div")
         buttonContainer.className = "button-container"
 
@@ -116,7 +120,7 @@ export default {
         buttonContainer.appendChild(tickbtn)
         buttonContainer.appendChild(crossbtn)
 
-        cell7.appendChild(buttonContainer)
+        cell8.appendChild(buttonContainer)
         crossbtn.onclick = function() {
             rejectLeave(docid)
         }
@@ -172,14 +176,14 @@ h1{
 }
 
 
-
 table{
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     color: #050505;
     background-color: white;
-    border: none;
+    
+    
 }
 #pending table tr{
     background-color: white;
@@ -195,6 +199,10 @@ th,td {
     border-bottom: none;
     text-align: center;
     padding: 8px;
+}
+th {
+  border-bottom: 1px solid rgb(199, 199, 199)!important;
+  color: rgb(173, 173, 173);
 }
 
 .pending {

@@ -1,7 +1,7 @@
 <template>
     
         
-            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Add Leave</button></h1>
+            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
         
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
@@ -148,13 +148,7 @@
         }
 
     })
-    this.annualleave = annualleave
-    console.log("abc")
-    this.sickleave = sickleave
-    this.otherleave = otherleave
-    const totalAnnualLeave = 200; // Replace with your total annual leave value
-    this.progressValue = Math.round(this.annualleave / totalAnnualLeave * 100);
-    this.progress = this.progressValue / 100 * 360;
+    
     
   },
   async mounted() {
@@ -190,12 +184,13 @@
       
             const userData = userDoc.data();
             let team = userData.team
+            let name = userData.name
             
         alert(" Saving your data for Leave : " + duration)
             try {
                 
                 const docRef = await setDoc(doc(collection(db, "Leave")),{
-                Email : user.email, Description: description, Type : type, Duration: duration, Days : days, Team :team, Status: "pending"})
+                Name: name, Description: description, Type : type, Duration: duration, Days : days, Team :team, Status: "pending"})
                 console.log(docRef) 
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();
@@ -211,7 +206,9 @@
     }
 </script>
 <style scoped>
-
+body {
+  width: 100vw;
+}
 h1{
   background-color: #EBF0F7;
 }
@@ -451,7 +448,7 @@ select option:checked {
 
   .progress-bar-foreground-1 {
     fill: none;
-    stroke: cyan;
+    stroke: #FF5151;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
@@ -499,7 +496,7 @@ select option:checked {
 
   .progress-bar-foreground-2 {
     fill: none;
-    stroke: rgb(255, 170, 0);
+    stroke: #3786F1;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
@@ -546,7 +543,7 @@ select option:checked {
 
   .progress-bar-foreground-3 {
     fill: none;
-    stroke: greenyellow;
+    stroke: #EE61CF;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
