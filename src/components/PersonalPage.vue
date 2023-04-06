@@ -374,7 +374,7 @@ html {
 
   .task_add {
     background-color: #7784ee;
-    padding: 10px 2how0px;
+    padding: 10px 20px;
     margin-left: -50px
   }
 
