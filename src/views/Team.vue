@@ -12,7 +12,6 @@ export default {
   name: "Team",
   components: {
     TaskCard,
-    Avatar
     },
   data(){
     return{
