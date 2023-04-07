@@ -1,7 +1,13 @@
 
   
   <template>
+     <div class="logo-container">
+    <img class="logo" src="../photos/logo.png">
+  </div>
     <section class="images">
+      
+       
+   
       <div class="img-container">
         <img src="../photos/landing.png">
       </div>
@@ -25,6 +31,16 @@
     display: flex;
     justify-content: center;
   }
+  .logo { 
+    height: 25%;
+    width: 25%;
+
+  }
+  .logo-container {
+  position: absolute;
+ 
+}
+
   
   .img-container {
     height: 80%;
@@ -59,7 +75,7 @@
   color: white;
   padding: 15px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1.2rem;
 }

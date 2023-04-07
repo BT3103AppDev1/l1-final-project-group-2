@@ -2,6 +2,9 @@
     
 	<main class="login">
 	  <section class="forms">
+        <div class="image-container">
+            <img src="../photos/logo.png">
+      </div>
 		<form class="register" @submit.prevent="register">
             <h1 class = "title">Register</h1>
 		  <input
@@ -119,12 +122,8 @@ form {
 }
 form.register {
 	color: #FFF;
-	background-color: rgb(245, 66, 101);
-	background-image: linear-gradient(
-		to bottom right,
-		rgb(20, 22, 145) 0%,
-		rgb(182, 17, 50) 100%
-	);
+	background-color:grey;
+	
 }
 .title {
 	font-size: 2rem;
@@ -147,20 +146,21 @@ input {
 	padding: 0.5rem 0rem;
 }
 select { 
-    width: 100%;
-	max-width: 400px;
-    background-color: #d72f7e;
-  color: white;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  outline: black;
+  color: black;
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 0.5rem;
   margin-bottom: 2rem;
-display:block;
--webkit-appearance: none;
+  display: block;
+  -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23000' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
 }
@@ -209,6 +209,29 @@ form.register input[type="submit"] {
 .select-container select {
   margin-bottom: 1rem;
 }
+.image-container {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    background-clip: WHITE;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .register {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10pt;
+  }
+  body {
+  background-color: rgb(255, 255, 255);
+}
+
+
 
 
 
