@@ -1,6 +1,5 @@
 <script>
 import TaskCard from '../components/TaskCard.vue'
-
 import firebaseApp from '../firebase/firebase';
 import { onMounted } from 'vue';
 import { getFirestore } from 'firebase/firestore'
@@ -12,7 +11,8 @@ const db = getFirestore(firebaseApp);
 export default {
   name: "Team",
   components: {
-    TaskCard
+    TaskCard,
+    Avatar
     },
   data(){
     return{
@@ -115,20 +115,17 @@ export default {
 </script>
 
 <template>
-
   <main class='project'>
     <div class='project-info'>
       <h1>Team Dashboard</h1>
     </div>
     <div class='project-tasks'>
-      <div v-for="(tasks, name) in teamTask" :key='name'>
-          <div class='project-column'>
+        <div class='project-column' v-for="(tasks, name) in teamTask" :key='name'>
             <div class = "form-popup" >
               <div class = "popup" id = "myform">    
                 <form action="/action_page.php" class = "formli">         
                   <h1> Create Task </h1>
                   <p id="assignee"> Member </p>
-                  <br><br>
                   <label for="task_name1">Input Task Name</label>
                   <input type="text" placeholder="Task Name" id="task_name1" required>
                   <label for="task_duedate1">Input Due Date</label>
@@ -149,20 +146,17 @@ export default {
             </div>
 		        <div class='project-column-heading'>
               <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
-                <button class='task_add' v-on:click="addTask(name)">Add Task</button>
+                <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
             </div>
 
-
-
-            <div v-for="task in tasks" :key='task.id'>
-                <TaskCard
+            <div class="drop-zone">
+            <TaskCard v-for="task in tasks" :key='task.id'
                   :Task='task.Name'
                   :Description='task.Description'
                   :DueDate='task.Due_Date'
-                />
+            />
             </div>
-      </div> 
-        </div>
+      </div>
 
       
     </div>
@@ -170,6 +164,10 @@ export default {
 </template>
 
 <style>
+
+html {
+  background-color:var(--bg);
+}
 
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
@@ -199,7 +197,8 @@ export default {
 
  h1 {
 	 font-size: 30px;
-}
+   margin-bottom: 0.5px;
+  }
  .project-info {
 	 padding: 2rem 0;
 	 display: flex;
@@ -215,156 +214,23 @@ export default {
 	 grid-column-gap: 1.5rem;
 }
  .project-column-heading {
-	 margin-bottom: 1rem;
+
 	 display: flex;
 	 align-items: center;
 	 justify-content: space-between;
-   background: transparent;
-	 color: black;
-	 font-size: 18px;
-	 border: 0;
-	 cursor: pointer;
-}
- .project-column-heading__title {
-	 font-size: 20px;
-}
-
- .task {
-	 cursor: move;
-	 background-color: var(--white);
-	 padding: 1rem;
+   background-color: var(--white);
+    padding: 0px 10px;
 	 border-radius: 8px;
 	 width: 100%;
 	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 	 margin-bottom: 1rem;
 	 border: 3px dashed transparent;
-}
- .task:hover {
-	 box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
-	 border-color: rgba(162, 179, 207, .2) !important;
-}
- .task p {
-	 font-size: 14px;
-	 margin: 1.2rem 0;
-}
- .taskDisplay {
-	 border-radius: 100px;
-	 padding: 2px 13px;
-	 font-size: 12px;
-	 color: var(--tag-4-text);
-	 background-color: var(--tag-4);
-	 width: 100%;
-	 display: flex;
-	 align-items: center;
-	 justify-content: space-between;
-}
 
- #taskName, #taskDescription {
-	 background: transparent;
-	 border: 0;
-	 color: var(--light-grey);
-	 font-size: 15px;
 }
- #taskDuedate {
-	 position: relative;
-	 width: 100%;
-	 color: var(--light-grey);
-	 font-size: 12px;
-	 margin-right: 1rem;
-}
-
- .task-hover {
-	 border: 3px dashed var(--light-grey) !important;
-}
- .task-details {
-	 width: 24%;
-	 border-left: 1px solid #d9e0e9;
-	 display: inline-block;
-	 height: 100%;
-	 vertical-align: top;
-	 padding: 3rem 2rem;
-}
- .tag-progress {
-	 margin: 1.5rem 0;
-}
- .tag-progress h2 {
-	 font-size: 16px;
-	 margin-bottom: 1rem;
-}
- .tag-progress p {
-	 display: flex;
-	 width: 100%;
-	 justify-content: space-between;
-}
- .tag-progress p span {
-	 color: #b4b4b4;
-}
- .tag-progress .progress {
-	 width: 100%;
-	 -webkit-appearance: none;
-	 appearance: none;
-	 border: none;
-	 border-radius: 10px;
-	 height: 10px;
-}
- .tag-progress .progress::-webkit-progress-bar, .tag-progress .progress::-webkit-progress-value {
-	 border-radius: 10px;
-}
- .tag-progress .progress--copyright::-webkit-progress-bar {
-	 background-color: #ecd8e6;
-}
- .tag-progress .progress--copyright::-webkit-progress-value {
-	 background: #d459e8;
-}
- .tag-progress .progress--illustration::-webkit-progress-bar {
-	 background-color: #dee7e3;
-}
- .tag-progress .progress--illustration::-webkit-progress-value {
-	 background-color: #46bd84;
-}
- .tag-progress .progress--design::-webkit-progress-bar {
-	 background-color: #d8e7f4;
-}
- .tag-progress .progress--design::-webkit-progress-value {
-	 background-color: #08a0f7;
-}
- .task-activity h2 {
-	 font-size: 16px;
-	 margin-bottom: 1rem;
-}
- .task-activity li {
-	 list-style: none;
-	 margin: 1rem 0;
-	 padding: 0rem 1rem 1rem 3rem;
-	 position: relative;
-}
- .task-activity time {
-	 display: block;
-	 color: var(--light-grey);
-}
- .task-icon {
-	 width: 30px;
-	 height: 30px;
-	 border-radius: 100rem;
-	 position: absolute;
-	 top: 0;
-	 left: 0;
-	 display: flex;
-	 align-items: center;
-	 justify-content: center;
-}
- .task-icon svg {
-	 font-size: 12px;
-	 color: var(--white);
-}
- .task-icon--attachment {
-	 background-color: #fba63c;
-}
- .task-icon--comment {
-	 background-color: #5dc983;
-}
- .task-icon--edit {
-	 background-color: #7784ee;
+ .project-column-heading__title {
+	font-size: 20px;
+  padding: 10px;
+  text-transform: uppercase;
 }
 
   .form-popup{
@@ -377,7 +243,7 @@ export default {
     display: none;
     position: fixed;
     left: 50%;
-    top: 10%;
+    top: 5%;
     transform: translate(-50%,10%);
     border: 3px solid #999999;
     z-index:9;
@@ -385,7 +251,7 @@ export default {
 
   .formli {
     width: 400px;
-    height: 550px;
+    height: 580px;
     padding: 20px;
     background-color: #fff;
   }
@@ -405,25 +271,35 @@ export default {
   }
 
   .formli .btn {
-    padding: 12px 20px;
-    background-color: #fff;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid #999999;
+    font-size:medium;
     cursor: pointer;
 	  margin-bottom: 1rem;
     opacity: 0.8;
   }
 
 
-
-  .drop-zone {
-    background-color: #eee;
-    margin-bottom: 10px;
-    padding: 12px 20px;
-    height: 550px;
-    width: 300px
-
+  .task_add {
+    background-color: #7784ee;
+    padding: 2px 10px;
+    margin-left: -50px
   }
 
-  </style>
+  .task_delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    color: black;
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+  }
+
+</style>
 
 
 
