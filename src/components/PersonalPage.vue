@@ -37,10 +37,10 @@
         <div class ="drop-zone" @drop="onDrop($event,'ToDo')" @dragover.prevent @dragenter.prevent>
           <div v-for = "(item, index) in doData" :key="index">
             <div class = "task" draggable = "true" @dragstart="startDrag($event, item)">
-              <div class = "taskDisplay"> Task: </div>
+              <div class = "taskDisplay"> Task </div>
               <div id = "taskName"> {{ item.name }} </div>
               <br>
-              <div class = "taskDisplay"> Description: </div>
+              <div class = "taskDisplay"> Description </div>
               <div id = "taskDescription"> {{ item.description }} </div>
               <br>
               <div id = "taskDuedate"> {{ item.duedate }}</div>
@@ -65,10 +65,10 @@
         <div class ="drop-zone" @drop="onDrop($event,'Review')" @dragover.prevent @dragenter.prevent>
           <div v-for = "(item, index) in reviewData" :key="index">
             <div class = "task" draggable = "true" @dragstart="startDrag($event, item)">
-              <div class = "taskDisplay"> Task: </div>
+              <div class = "taskDisplay"> Task </div>
               <div id = "taskName"> {{ item.name }} </div>
               <br>
-              <div class = "taskDisplay"> Description: </div>
+              <div class = "taskDisplay"> Description </div>
               <div id = "taskDescription"> {{ item.description }} </div>
               <br>
               <div id = "taskDuedate"> {{ item.duedate }}</div>
@@ -89,15 +89,15 @@
           <div class ="drop-zone" @drop="onDrop($event,'Complete')" @dragover.prevent @dragenter.prevent>
             <div v-for = "(item, index) in completeData" :key="index">
               <div class = "task">
-                <div class = "taskDisplay"> Task: </div>
+                <div class = "taskDisplay"> Task </div>
                 <div id = "taskName"> {{ item.name }} </div>
                 <br>
-                <div class = "taskDisplay"> Description: </div>
+                <div class = "taskDisplay"> Description </div>
                 <div id = "taskDescription"> {{ item.description }} </div>
                 <br>
                 <div id = "taskDuedate"> {{ item.duedate }}</div>
-                <br>
-                <button class='task_delete' v-on:click="deleteTask(item.id)">Delete Task</button>
+                
+                <button class='task_delete' v-on:click="deleteTask(item.id)"><span>&#8854;</span></button>
               </div>   
             </div>
           </div>
@@ -161,7 +161,7 @@ html {
 	 align-items: center;
 	 justify-content: space-between;
    background-color: var(--white);
-
+    padding: 0px 10px;
 	 border-radius: 8px;
 	 width: 100%;
 	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
@@ -171,8 +171,9 @@ html {
 	 
 }
  .project-column-heading__title {
-	font-size: 18px;
-  padding: 10px 20px;
+	font-size: 20px;
+  padding: 10px;
+  text-transform: none;
 }
 
  .task {
@@ -194,29 +195,28 @@ html {
 	 margin: 1.2rem 0;
 }
  .taskDisplay {
-	 border-radius: 100px;
-	 padding: 2px 13px;
-	 font-size: 12px;
-	 color: var(--tag-4-text);
-	 background-color: var(--tag-4);
-	 width: 100%;
-	 display: flex;
-	 align-items: center;
-	 justify-content: space-between;
+  background: transparent;
+	 border: 0;
+	 color: black;
+	 font-size: 15px;
+   text-decoration-line: underline;
 }
 
  #taskName, #taskDescription {
 	 background: transparent;
 	 border: 0;
-	 color: var(--light-grey);
+	 color: black;
 	 font-size: 15px;
 }
  #taskDuedate {
 	 position: relative;
-	 width: 100%;
-	 color: var(--light-grey);
+   width: 35%;
+   padding: 2px;
+	 color: black;
 	 font-size: 12px;
 	 margin-right: 1rem;
+   border: 1px solid var(--light-grey);
+   border-radius: 3px;
 }
 
  .task-hover {
@@ -229,88 +229,6 @@ html {
 	 height: 100%;
 	 vertical-align: top;
 	 padding: 3rem 2rem;
-}
- .tag-progress {
-	 margin: 1.5rem 0;
-}
- .tag-progress h2 {
-	 font-size: 16px;
-	 margin-bottom: 1rem;
-}
- .tag-progress p {
-	 display: flex;
-	 width: 100%;
-	 justify-content: space-between;
-}
- .tag-progress p span {
-	 color: #b4b4b4;
-}
- .tag-progress .progress {
-	 width: 100%;
-	 -webkit-appearance: none;
-	 appearance: none;
-	 border: none;
-	 border-radius: 10px;
-	 height: 10px;
-}
- .tag-progress .progress::-webkit-progress-bar, .tag-progress .progress::-webkit-progress-value {
-	 border-radius: 10px;
-}
- .tag-progress .progress--copyright::-webkit-progress-bar {
-	 background-color: #ecd8e6;
-}
- .tag-progress .progress--copyright::-webkit-progress-value {
-	 background: #d459e8;
-}
- .tag-progress .progress--illustration::-webkit-progress-bar {
-	 background-color: #dee7e3;
-}
- .tag-progress .progress--illustration::-webkit-progress-value {
-	 background-color: #46bd84;
-}
- .tag-progress .progress--design::-webkit-progress-bar {
-	 background-color: #d8e7f4;
-}
- .tag-progress .progress--design::-webkit-progress-value {
-	 background-color: #08a0f7;
-}
- .task-activity h2 {
-	 font-size: 16px;
-	 margin-bottom: 1rem;
-}
- .task-activity li {
-	 list-style: none;
-	 margin: 1rem 0;
-	 padding: 0rem 1rem 1rem 3rem;
-	 position: relative;
-}
- .task-activity time {
-	 display: block;
-	 color: var(--light-grey);
-}
- .task-icon {
-	 width: 30px;
-	 height: 30px;
-	 border-radius: 100rem;
-	 position: absolute;
-	 top: 0;
-	 left: 0;
-	 display: flex;
-	 align-items: center;
-	 justify-content: center;
-}
- .task-icon svg {
-	 font-size: 12px;
-	 color: var(--white);
-}
- .task-icon--attachment {
-	 background-color: #fba63c;
-}
- .task-icon--comment {
-	 background-color: #5dc983;
-}
- .task-icon--edit {
-	 background-color: #7784ee;
 }
 
   .form-popup{
@@ -376,6 +294,17 @@ html {
     background-color: #7784ee;
     padding: 10px 20px;
     margin-left: -50px
+  }
+
+  .task_delete {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    color: black;
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
   }
 
 </style>
