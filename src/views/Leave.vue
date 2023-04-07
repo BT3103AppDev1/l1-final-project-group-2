@@ -146,6 +146,10 @@
             otherleave+= days
           }
         }
+        this.annualleave = annualleave
+    console.log("abc")
+    this.sickleave = sickleave
+    this.otherleave = otherleave
 
     })
     
@@ -215,6 +219,7 @@ h1{
 h1 button {
     color: black;
   }
+
 
 
 
