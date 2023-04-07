@@ -6,6 +6,7 @@
     <table id = "pending table" class = "auto-index">
         <tr>
                 <th>S.No</th>
+                <th>Employee Name</th>
                 <th>Description</th>
                 <th>Type</th>
                 <th>Duration</th>
@@ -59,6 +60,7 @@ export default {
         let days = documentData.Days
         
         let status = documentData.Status
+        let name = documentData.Name
         
         
 
@@ -73,13 +75,15 @@ export default {
         
         let cell6= row.insertCell(5)
         let cell7= row.insertCell(6)
+        let cell8= row.insertCell(7)
 
         cell1.innerHTML = index
-        cell2.innerHTML = description
+        cell2.innerHTML = name
+        cell3.innerHTML = description
 
-        cell3.innerHTML = type
-        cell4.innerHTML = duration
-        cell5.innerHTML = days
+        cell4.innerHTML = type
+        cell5.innerHTML = duration
+        cell6.innerHTML = days
         console.log(status)
         let badge = document.createElement('span');
         if (status=="pending") {
@@ -101,23 +105,22 @@ export default {
         // code to execute if all conditions are false
         }
         
-        cell6.appendChild(badge)
-        
-        
-        
+        cell7.appendChild(badge)
+        const buttonContainer = document.createElement("div")
+        buttonContainer.className = "button-container"
+
         const tickbtn = document.createElement("button");
-        tickbtn.className= "tickbwt"
-        tickbtn.innerHTML="&#10003;"
-        
+        tickbtn.className = "tickbwt"
+        tickbtn.innerHTML = "&#10003;"
+
         const crossbtn = document.createElement("button");
-        crossbtn.className= "crossbwt"
-        crossbtn.innerHTML="&#10007"
-        
+        crossbtn.className = "crossbwt"
+        crossbtn.innerHTML = "&#10007"
 
-       
+        buttonContainer.appendChild(tickbtn)
+        buttonContainer.appendChild(crossbtn)
 
-        cell7.appendChild(tickbtn)
-        cell7.append(crossbtn)
+        cell8.appendChild(buttonContainer)
         crossbtn.onclick = function() {
             rejectLeave(docid)
         }
@@ -140,6 +143,7 @@ export default {
         }
         
         display()
+        location.reload()
     }
     async function approveLeave(docid) {
         alert("You are going to approve Leave " + docid)
@@ -151,6 +155,7 @@ export default {
         }
         
         display()
+        location.reload()
 
     }
     
@@ -160,30 +165,28 @@ export default {
 
 </script>
 <style>
-
-h1,h2{
-    text-align: center;
-    background-color: rgb(129,184,99);
-    font: 700;
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-
+div {
+    background-color: white;
 }
+
+h1{
+    text-align: left;
+    color: black;
+    background-color: white;
+}
+
+
 table{
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     color: #050505;
-    background-color: whitesmoke;
-    border: none;
+    background-color: white;
+    
+    
 }
-tr:nth-child(even){
-    background-color: whitesmoke;
+#pending table tr{
+    background-color: white;
     
 
 }
@@ -197,13 +200,17 @@ th,td {
     text-align: center;
     padding: 8px;
 }
+th {
+  border-bottom: 1px solid rgb(199, 199, 199)!important;
+  color: rgb(173, 173, 173);
+}
 
 .pending {
   display: inline-flex;
   align-items: center;
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
-  background-color: #ffffff;
+  background-color: whitesmoke;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -217,35 +224,51 @@ th,td {
   
 }
 
+button{
+    padding: 0%;
+}
 
 .tickbwt {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    text-align: center;
-    font-size: 16px;
-    line-height: 18px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #4CAF50;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .crossbwt {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    text-align: center;
-    font-size: 16px;
-    line-height: 18px;
-    cursor: pointer;
-    color: #fff;
-    background-color: #f44336;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: white;
+}
+
+
+
+
 
 </style>
 

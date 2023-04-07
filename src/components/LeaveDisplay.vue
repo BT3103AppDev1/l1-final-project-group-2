@@ -163,32 +163,27 @@ export default {
 
 </script>
 <style>
-
-h1,h2{
-    text-align: center;
-    background-color: rgb(129,184,99);
-    font: 700;
-    display: block;
-    font-size: 2em;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-
+div{
+    background-color: white;
 }
+#table th {
+    border-bottom: 1px solid rgb(199, 199, 199)!important;
+    color: rgb(173, 173, 173);
+}
+
+
 table{
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     color: #050505;
-    background-color: whitesmoke;
+    background-color: white;
     border: none;
 }
-tr:nth-child(even){
-    background-color: whitesmoke;
-    
 
+
+#table tr {
+  background-color: white;
 }
 
 th,td {
@@ -203,7 +198,7 @@ th,td {
 
 
 
-.approved {
+#table .approved {
   display: inline-flex;
   align-items: center;
   margin: 0.5rem;
@@ -217,29 +212,30 @@ th,td {
   transition: background-color 0.2s ease-in-out;
 }
 
-.approved:hover {
+#table .approved:hover {
   background-color: #9ae6b4;
   
 }
-.pending {
+#table .pending {
   display: inline-flex;
   align-items: center;
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
-  background-color: #ffffff;
+  background-color: whitesmoke;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
   color: #979797;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  
 }
 
-.pending:hover {
+#table .pending:hover {
   background-color: #8e8e8e;
   
 }
-.rejected {
+#table .rejected {
   display: inline-flex;
   align-items: center;
   margin: 0.5rem;
@@ -254,7 +250,7 @@ th,td {
   transition: background-color 0.2s ease-in-out;
 }
 
-.rejected:hover {
+#table .rejected:hover {
   background-color: #ff0202;
   
 }
@@ -296,7 +292,9 @@ svg {
     color: rgb(231, 50, 50);
     font-weight: 600;
     transition: .3s;
+    background-color: white;
 }
+
 .bwt:focus {
     width: 150px;
     height: 50px;
@@ -306,6 +304,10 @@ svg {
     opacity: 1;
     transition: .3s;
 }
+.bwt {
+    background-color: white;
+}
+
 </style>
 
 
