@@ -2,6 +2,9 @@
   <main class='project'>
     <div class='project-info'>
       <h1>Task Dashboard</h1>
+      <div class="circle">
+  <div class="circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
+</div>
     </div>
 
     <div class='project-tasks'>
@@ -110,6 +113,7 @@
 
 html {
   background-color:var(--bg);
+
 }
 
 .sidenav {
@@ -135,7 +139,7 @@ html {
 
  body {
 	 color: #2e2e2f;
-   width: 100%;
+   width: 93%;
 }
 
  h1 {
@@ -307,6 +311,30 @@ html {
     font-size: 30px;
   }
 
+  .circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* display: inline-block;  */
+    background-color: var(--light-grey);
+    margin: 10px; 
+    border-radius: 50%;
+  }
+
+  
+  .circle-inner {
+  text-transform: capitalize;
+  color: black;
+  display: table-cell; 
+  vertical-align: middle;  
+  text-align: center;
+  text-decoration: none;
+  height: 80px; 
+  width: 80px;   
+  font-size: 20px; 
+
+}
+
 </style>
 
 
@@ -383,6 +411,7 @@ export default {
         if (user){
         let documentData = docs.data()
         this.userEmail = user.email
+
 
         if (documentData.Assignee == user.email) {
         let id = (docs.id)
