@@ -2,9 +2,7 @@
     
 	<main class="login">
 	  <section class="forms">
-        <div class="image-container">
-            <img src="../photos/logo.png">
-      </div>
+       
 		<form class="register" @submit.prevent="register">
             <h1 class = "title">Register</h1>
 		  <input
@@ -41,7 +39,7 @@
 			
 		  
 		  <input type="submit" value="Register" />
-          <button class = "back" @click="goBack">Back</button>
+          <button class = "back-btn" @click="goBack">&#8592;</button>
 		</form>
         
 		
@@ -118,11 +116,17 @@
 }
 form {
 	flex: 1 1 0%;
-	padding: 8rem 1rem 1rem;
+	
 }
 form.register {
 	color: #FFF;
-	background-color:grey;
+	background-color: black;
+	background-image: linear-gradient(
+		to bottom right,
+		rgb(117, 119, 210) 0%,
+		rgb(176, 85, 135) 100%
+    
+	);
 	
 }
 .title {
@@ -180,24 +184,31 @@ form.register input:not([type="submit"]) {
 }
 
 form.register input[type="submit"] {
-	background-color:rgb(28, 79, 207);
-	color: #FFF;
+	background-color: rgb(12, 26, 182);
+	color: #fff;
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;
 	cursor: pointer;
 	text-transform: uppercase;
 }
-.back {
-    text-align: center;
-    background-color: #FFF;
-	color: rgb(28, 79, 207);
-	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	text-transform: uppercase;
+.back-btn {
+  color: white;
+  font-size: 60px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
+
+.back-btn:hover {
+  color: #cccccc;
+}
+
+.back-btn.clicked {
+  color: black;
+}
+
 .select-container {
   display: flex;
   flex-direction: column;
@@ -217,7 +228,7 @@ form.register input[type="submit"] {
   }
 
   .image-container img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
   }
 
@@ -230,12 +241,6 @@ form.register input[type="submit"] {
   body {
   background-color: rgb(255, 255, 255);
 }
-
-
-
-
-
-
 
 
 </style>

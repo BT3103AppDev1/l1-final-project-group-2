@@ -17,7 +17,7 @@
 			v-model="login_form.password"
 		  />
 		  <input type="submit" value="Login" />
-		  <button class = "back" @click="goBack">Back</button>
+		  <button class = "back-btn" @click="goBack">&#8592;</button>
 		</form>
 	  </section>
 	</main>
@@ -70,11 +70,12 @@ form {
 }
 form.login {
 	color: #FFF;
-	background-color: rgb(245, 66, 101);
+	background-color: black;
 	background-image: linear-gradient(
 		to bottom right,
-		rgb(20, 22, 145) 0%,
-		rgb(182, 17, 50) 100%
+		rgb(117, 119, 210) 0%,
+		rgb(176, 85, 135) 100%
+    
 	);
 }
 h2 {
@@ -89,16 +90,23 @@ h2 {
     text-align: center;
     
 }
-.back {
-    text-align: center;
-    background-color: #FFF;
-	color: rgb(28, 79, 207);
-	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	text-transform: uppercase;
+.back-btn {
+  color: white;
+  font-size: 60px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
+
+.back-btn:hover {
+  color: #cccccc;
+}
+
+.back-btn.clicked {
+  color: black;
+}
+
 input {
 	appearance: none;
 	border: none;
@@ -128,7 +136,7 @@ form.login input:not([type="submit"]) {
 	border-bottom: 2px solid #2c3e50;
 }
 form.login input[type="submit"] {
-	background-color: rgb(21, 39, 241);
+	background-color:rgb(12, 26, 182);
 	color: #FFF;
 	font-weight: 700;
 	padding: 1rem 2rem;
