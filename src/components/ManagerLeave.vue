@@ -224,14 +224,16 @@ th {
   
 }
 
-
+button{
+    padding: 0%;
+}
 
 .tickbwt {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: rgb(42, 244, 42);
+  background-color: rgb(0, 0, 0);
   color: white;
   border: none;
   font-size: 16px;
@@ -246,7 +248,7 @@ th {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: rgb(244, 42, 42);
+  background-color: black;
   color: white;
   border: none;
   font-size: 16px;

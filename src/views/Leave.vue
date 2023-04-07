@@ -189,12 +189,13 @@
             const userData = userDoc.data();
             let team = userData.team
             let name = userData.name
+            let email= userData.email
             
         alert(" Saving your data for Leave : " + duration)
             try {
                 
                 const docRef = await setDoc(doc(collection(db, "Leave")),{
-                Name: name, Description: description, Type : type, Duration: duration, Days : days, Team :team, Status: "pending"})
+                Email: email, Name: name, Description: description, Type : type, Duration: duration, Days : days, Team :team, Status: "pending"})
                 console.log(docRef) 
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();
@@ -205,7 +206,8 @@
                 }
                 this.showForm=false;
                 location.reload();
-                }
+                
+              }
             }
     }
 </script>
