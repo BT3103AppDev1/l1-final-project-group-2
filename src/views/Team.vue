@@ -55,6 +55,7 @@ export default {
         document.getElementById("task_desc1").value = "";
         this.$emit("added")
         alert("Task added successfully")
+        location.reload()
 
       }
       catch(error) {
@@ -133,6 +134,7 @@ export default {
                   <input type="date" placeholder="Due Date" id="task_duedate1" required>
                   <label for="task_desc1">Input Task Description</label>
                   <textarea placeholder="Task Description" id="task_desc1" required></textarea>
+                  <br>
 
 
                   <div class="Add">
@@ -140,7 +142,7 @@ export default {
                   </div>
 
                   <div class="Close">
-                    <button class="btn" type="button" v-on:click="closeForm"> Close </button>
+                    <button class="btn_close" type="button" v-on:click="closeForm"><span>&times;</span></button>
                   </div>
                 </form>
               </div>
