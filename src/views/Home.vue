@@ -6,7 +6,7 @@
   </main>
 </template>
 
-<script>
+<script scoped>
 import PersonalPage from '@/components/PersonalPage.vue'
 
 export default {

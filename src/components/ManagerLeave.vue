@@ -165,9 +165,7 @@ export default {
 
 </script>
 <style>
-div {
-    background-color: white;
-}
+
 
 h1{
     text-align: left;
