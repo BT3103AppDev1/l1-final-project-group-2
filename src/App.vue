@@ -68,10 +68,11 @@ export default {
   background-color: #7784ee;
 }
 .logo-img {
+  display: flex;
   position: fixed;
   top: 10px;
-  left: 10px; 
-  width: 120px;
+
+  width: 100px;
   height: 100px;
   z-index: 2;
   justify-content: center;
