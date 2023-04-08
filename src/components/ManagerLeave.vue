@@ -106,8 +106,8 @@ export default {
         }
         
         cell7.appendChild(badge)
-        const buttonContainer = document.createElement("div")
-        buttonContainer.className = "button-container"
+        const btnContainer = document.createElement("div")
+        btnContainer.className = "button-container"
 
         const tickbtn = document.createElement("button");
         tickbtn.className = "tickbwt"
@@ -117,10 +117,10 @@ export default {
         crossbtn.className = "crossbwt"
         crossbtn.innerHTML = "&#10007"
 
-        buttonContainer.appendChild(tickbtn)
-        buttonContainer.appendChild(crossbtn)
+        btnContainer.appendChild(tickbtn)
+        btnContainer.appendChild(crossbtn)
 
-        cell8.appendChild(buttonContainer)
+        cell8.appendChild(btnContainer)
         crossbtn.onclick = function() {
             rejectLeave(docid,name)
         }
@@ -252,12 +252,13 @@ th {
   padding:0%
 
 }
-.button-container {
+.btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
   background-color: white;
+  margin-left: 100px;
 }
 
 

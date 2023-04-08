@@ -2,6 +2,7 @@
     
         
             <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
+            <br><br>
         
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
@@ -212,9 +213,7 @@
     }
 </script>
 <style scoped>
-body {
-  width: 100%;
-}
+
 h1{
   background-color: #EBF0F7;
 }
