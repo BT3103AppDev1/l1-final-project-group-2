@@ -136,10 +136,7 @@ html {
   color: #2e2e2f;
 }
 
- body {
-	 color: #2e2e2f;
-   width: 100%;
-}
+
 
  h1 {
 	 font-size: 30px;

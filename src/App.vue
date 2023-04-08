@@ -41,7 +41,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background-color:#EBF0F7;
-  width:93%;
+  width:100%;
 }
 #sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
