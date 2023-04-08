@@ -2,23 +2,24 @@
   <div class="main-container">
     <div class="content">
       <div class="user-list">
-  <h1>Messages</h1>
-  <div
-    v-for="user in users"
-    :key="user.email"
-    @click="selectedUserEmail = user.email"
-    :class="{ 'selected-user': user.email === selectedUserEmail }"
-  >
-    <div class="user-icon">
-      {{ user.name.charAt(0).toUpperCase() }}
-    </div>
-    {{ user.name }}
-  </div>
-</div>
+        <!-- Render the list of users -->
+        <h1>Messages</h1>
+        <div
+          v-for="user in users"
+          :key="user.email"
+          @click="selectedUserEmail = user.email"
+          :class="{ 'selected-user': user.email === selectedUserEmail }"
+        >
+          <div class="user-icon">
+            {{ user.name.charAt(0).toUpperCase() }}
+          </div>
+          {{ user.name }}
+        </div>
+      </div>
 
-<div class="chat-container">
-  <h1 v-text="selectedUserDisplayName"></h1>
-
+      <div class="chat-container">
+        <!-- Render the messages for the selected user -->
+        <h1 v-text="selectedUserDisplayName"></h1>
         <div class="messages-container" ref="messagesContainer">
           <div v-if="filteredMessages.length > 0">
             <div
@@ -35,20 +36,22 @@
             </div>
           </div>
         </div>
+
+        <!-- Form to send a new message -->
         <form @submit.prevent="sendMessage">
           <input type="text" v-model="newMessage" placeholder="Type your message here..." />
           <button type="submit" :disabled="!selectedUserEmail">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24" height="24">
-    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-    <path d="M0 0h24v24H0z" fill="none"/>
-  </svg>
-</button>
-
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24" height="24">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          </button>
         </form>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { collection, doc, getDocs, getDoc, setDoc, query, orderBy, where, onSnapshot } from "firebase/firestore";
@@ -69,47 +72,57 @@ export default {
       if (!this.selectedUserEmail || this.conversations.length === 0) {
         return [];
       }
-      
+
+      // Find the conversation with the selected user
       const selectedConversation = this.conversations.find(conversation => {
         return conversation.participants && conversation.participants.includes(this.selectedUserEmail);
       });
 
+      // Return the messages for the selected conversation
       return selectedConversation ? selectedConversation.messages : [];
     },
 
     selectedUserDisplayName() {
-    const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
-    return selectedUser ? selectedUser.name : "Chat";
-  },
-
+      // Find the selected user
+      const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
+      // Return the name of the selected user, or "Chat" if no user is selected
+      return selectedUser ? selectedUser.name : "Chat";
+    },
   },
 
   async created() {
+    // Fetch the list of users and conversations when the component is created
     const loggedInUser = auth.currentUser;
-
     console.log("Logged-in user:", loggedInUser);
 
-    await this.fetchUsers();
-    await this.fetchAndInitializeConversations();
-  },
+await this.fetchUsers();
+await this.fetchAndInitializeConversations();
+},
 
-  methods: {
-    async fetchUsers() {
-      const loggedInUserEmail = auth.currentUser.email;
-      const usersSnapshot = await getDocs(collection(db, "users"));
-
-      usersSnapshot.forEach((userDoc) => {
-        if (userDoc.data().email !== loggedInUserEmail) {
-          this.users.push({
-            email: userDoc.data().email,
-            name: userDoc.data().name,
-          });
-        }
-      });
-    },
-
-    async fetchAndInitializeConversations() {
+methods: {
+async fetchUsers() {
+  // Get the email of the logged-in user
   const loggedInUserEmail = auth.currentUser.email;
+
+  // Fetch the list of users from the Firestore "users" collection
+  const usersSnapshot = await getDocs(collection(db, "users"));
+
+  // Add each user to the "users" array, except for the logged-in user
+  usersSnapshot.forEach((userDoc) => {
+    if (userDoc.data().email !== loggedInUserEmail) {
+      this.users.push({
+        email: userDoc.data().email,
+        name: userDoc.data().name,
+      });
+    }
+  });
+},
+
+async fetchAndInitializeConversations() {
+  // Get the email of the logged-in user
+  const loggedInUserEmail = auth.currentUser.email;
+
+  // Construct a Firestore query to get the conversations that the user is a participant in
   const userConversationsSnapshot = query(
     collection(db, "conversations"),
     where("participants", "array-contains", loggedInUserEmail)
@@ -117,12 +130,14 @@ export default {
 
   // Set up a real-time listener for updates in the conversations collection
   const unsubscribe = onSnapshot(userConversationsSnapshot, async (querySnapshot) => {
+    // Reset the conversations array
     this.conversations = [];
 
+    // Loop through each conversation in the query snapshot
     for (const conversationDoc of querySnapshot.docs) {
+      // Get the participants and messages for the conversation
       const participants = conversationDoc.data().participants;
       const otherUserEmail = participants.find((email) => email !== loggedInUserEmail);
-
       const otherUser = this.users.find((user) => user.email === otherUserEmail);
       const messagesMap = conversationDoc.data().messages;
       const messages = Object.values(messagesMap)
@@ -136,6 +151,7 @@ export default {
         })
         .sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
 
+      // Add the conversation to the conversations array
       this.conversations.push({
         id: conversationDoc.id,
         displayName: otherUser.name,
@@ -144,6 +160,7 @@ export default {
       });
     }
 
+    // Update the filtered messages and scroll to the bottom of the message container
     this.updateFilteredMessages();
     this.scrollToBottom();
   });
@@ -154,13 +171,16 @@ export default {
   });
 },
 
-
 async sendMessage() {
+  // Get the email of the logged-in user
+  const loggedInUserEmail = auth.currentUser.email;
+
+  // If no user is selected or the new message is empty, do nothing
   if (!this.selectedUserEmail || !this.newMessage.trim()) {
     return;
   }
-  const loggedInUserEmail = auth.currentUser.email;
-  const conversationId = this.getConversationId(loggedInUserEmail, this.selectedUserEmail);
+
+  // Create a new message object
   const message = {
     content: this.newMessage,
     senderEmail: loggedInUserEmail,
@@ -168,69 +188,81 @@ async sendMessage() {
     id: Date.now().toString(),
   };
 
+  // Get the conversation ID for the conversation between the logged-in user and the selected user
+  const conversationId = this.getConversationId(loggedInUserEmail, this.selectedUserEmail);
+
+  // Get a reference to the Firestore document for the conversation
   const conversationRef = doc(db, "conversations", conversationId);
   const conversationSnapshot = await getDoc(conversationRef);
 
-  if (conversationSnapshot.exists()) {
-    const currentMessages = conversationSnapshot.data().messages || {};
-    await setDoc(conversationRef, {
-      participants: conversationSnapshot.data().participants,
-      messages: { ...currentMessages, [message.id]: message },
-    });
-  } else {
-    await setDoc(conversationRef, {
-      participants: [loggedInUserEmail, this.selectedUserEmail],
-      messages: { [message.id]: message },
-    });
-  }
+  // If the conversation already exists, add the message to the existing messages object
+  if (conversationSnapshot        .exists()) {
+        const currentMessages = conversationSnapshot.data().messages || {};
+        await setDoc(conversationRef, {
+          participants: conversationSnapshot.data().participants,
+          messages: { ...currentMessages, [message.id]: message },
+        });
+      } else {
+        // If the conversation doesn't exist yet, create a new conversation with the new message
+        await setDoc(conversationRef, {
+          participants: [loggedInUserEmail, this.selectedUserEmail],
+          messages: { [message.id]: message },
+        });
+      }
 
-  this.newMessage = '';
-  this.scrollToBottom();
-},
+      // Clear the new message input and scroll to the bottom of the message container
+      this.newMessage = '';
+      this.scrollToBottom();
+    },
 
-scrollToBottom() {
-  this.$nextTick(() => {
-    const container = this.$refs.messagesContainer;
-    container.scrollTop = container.scrollHeight;
-  });
-},
+    scrollToBottom() {
+      // Use the $nextTick method to wait for the DOM to update, then scroll to the bottom of the message container
+      this.$nextTick(() => {
+        const container = this.$refs.messagesContainer;
+        container.scrollTop = container.scrollHeight;
+      });
+    },
 
-
-updateFilteredMessages() {
+    updateFilteredMessages() {
+      // If no user is selected or the conversations array is empty, clear the filtered messages array
       if (!this.selectedUserEmail || this.conversations.length === 0) {
         this.filteredMessages = [];
         return;
       }
 
+      // Find the conversation with the selected user
       const selectedConversation = this.conversations.find(conversation => {
         return conversation.participants && conversation.participants.includes(this.selectedUserEmail);
       });
 
+      // Set the filtered messages array to the messages for the selected conversation
       this.filteredMessages = selectedConversation ? selectedConversation.messages : [];
     },
 
     formatTimestamp(timestamp) {
-  if (timestamp instanceof Date) {
-    return timestamp.toLocaleString();
-  }
+      // Format the timestamp as a string in the format "MM/DD/YYYY hh:mm:ss"
+      if (timestamp instanceof Date) {
+        return timestamp.toLocaleString();
+      }
 
-  if (timestamp.seconds) {
-    return new Date(timestamp.seconds * 1000).toLocaleString();
-  }
+      if (timestamp.seconds) {
+        return new Date(timestamp.seconds * 1000).toLocaleString();
+      }
 
-  return "Invalid date";
-},
+      return "Invalid date";
+    },
 
+    getConversationId(email1, email2) {
+      // Sort the two emails alphabetically and concatenate them with an underscore to create the conversation ID
+      const emails = [email1, email2].sort();
+      return `${emails[0]}_${emails[1]}`;
+    },
 
-getConversationId(email1, email2) {
-  const emails = [email1, email2].sort();
-  return `${emails[0]}_${emails[1]}`;
-},
-
-isSentByMe(message) {
-  return message.senderEmail === auth.currentUser.email;
-},
-},
+    isSentByMe(message) {
+      // Return true if the message was sent by the logged-in user, false otherwise
+      return message.senderEmail === auth.currentUser.email;
+    },
+  },
 };
 </script>
 
