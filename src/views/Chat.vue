@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { collection, doc, getDocs, getDoc, setDoc, query, orderBy, where } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, setDoc, query, orderBy, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from '../firebase/firebase';
 
 export default {
@@ -109,35 +109,50 @@ export default {
     },
 
     async fetchAndInitializeConversations() {
-      const loggedInUserEmail = auth.currentUser.email;
-      const userConversationsSnapshot = await getDocs(
-        query(collection(db, "conversations"), where("participants", "array-contains", loggedInUserEmail))
-      );
+  const loggedInUserEmail = auth.currentUser.email;
+  const userConversationsSnapshot = query(
+    collection(db, "conversations"),
+    where("participants", "array-contains", loggedInUserEmail)
+  );
 
-      for (const conversationDoc of userConversationsSnapshot.docs) {
-        const participants = conversationDoc.data().participants;
-        const otherUserEmail = participants.find((email) => email !== loggedInUserEmail);
+  // Set up a real-time listener for updates in the conversations collection
+  const unsubscribe = onSnapshot(userConversationsSnapshot, async (querySnapshot) => {
+    this.conversations = [];
 
-        const otherUser = this.users.find(user => user.email === otherUserEmail);
-        const messagesMap = conversationDoc.data().messages;
-    const messages = Object.values(messagesMap).map((messageData) => {
-      return {
-        id: messageData.id,
-        content: messageData.content,
-        senderEmail: messageData.senderEmail,
-        timestamp: messageData.timestamp,
-      };
-    })
-    .sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+    for (const conversationDoc of querySnapshot.docs) {
+      const participants = conversationDoc.data().participants;
+      const otherUserEmail = participants.find((email) => email !== loggedInUserEmail);
 
-    this.conversations.push({
-      id: conversationDoc.id,
-      displayName: otherUser.name,
-      participants: participants,
-      messages: messages,
-    });
-  }
+      const otherUser = this.users.find((user) => user.email === otherUserEmail);
+      const messagesMap = conversationDoc.data().messages;
+      const messages = Object.values(messagesMap)
+        .map((messageData) => {
+          return {
+            id: messageData.id,
+            content: messageData.content,
+            senderEmail: messageData.senderEmail,
+            timestamp: messageData.timestamp,
+          };
+        })
+        .sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+
+      this.conversations.push({
+        id: conversationDoc.id,
+        displayName: otherUser.name,
+        participants: participants,
+        messages: messages,
+      });
+    }
+
+    this.updateFilteredMessages();
+  });
+
+  // Cleanup the listener when the component is destroyed
+  this.$once("hook:beforeDestroy", () => {
+    unsubscribe();
+  });
 },
+
 
 async sendMessage() {
   if (!this.selectedUserEmail || !this.newMessage.trim()) {
