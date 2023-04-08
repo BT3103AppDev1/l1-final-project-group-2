@@ -53,7 +53,7 @@
   </div>
 
   <div class="progress-bar-container progress-bar-container-2">
-          <h3>Sick leave Leave Taken</h3>
+          <h3>Sick Leave Taken</h3>
     <div class="progress-bar-wrapper progress-bar-wrapper-2">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
         <circle class="progress-bar-background progress-bar-background-2" cx="21" cy="21" r="19"></circle>
@@ -87,7 +87,7 @@
         <LeaveDisplay :key="refreshComp"/>
         <br>
        
-        <ManagerLeave v-if="isManager" />
+        <ManagerLeave v-if="isEmployer" />
         <br>
 
         </div>
@@ -122,7 +122,7 @@
             data() {
     return {
       
-      isManager: false,
+      isEmployer: false,
       annualleave: null,
       sickleave: null,
       otherleave: null,
@@ -172,7 +172,7 @@
       
       const userData = userDoc.data();
       console.log(userData.role)
-      this.isManager = userData.role === "Manager";
+      this.isEmployer = userData.role === "Employer";
       
     } catch (error) {
       console.error("Error getting user data:", error);
