@@ -54,10 +54,12 @@ export default {
         document.getElementById("task_duedate1").value = "";
         document.getElementById("task_desc1").value = "";
         this.$emit("added")
+        alert("Task added successfully")
 
       }
       catch(error) {
         console.error("Error adding document: ", error);
+        alert("Add Task was unsuccessful")
       }
     },
 
@@ -130,7 +132,7 @@ export default {
                   <label for="task_duedate1">Input Due Date</label>
                   <input type="date" placeholder="Due Date" id="task_duedate1" required>
                   <label for="task_desc1">Input Task Description</label>
-                  <input type="text" placeholder="Task Description" id="task_desc1" required>
+                  <textarea placeholder="Task Description" id="task_desc1" required></textarea>
 
 
                   <div class="Add">
@@ -143,9 +145,15 @@ export default {
                 </form>
               </div>
             </div>
-		        <div class='project-column-heading'>
-              <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
-                <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
+            <div id="nameHeading">
+              <div class="circle">
+                  <div class="circle-inner"><div v-if = 'teamMail'></div> {{teamMail[name][0]}} </div>
+                </div>
+              <div class='project-column-heading'>
+                
+                <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
+                  <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
+              </div>
             </div>
 
             <div class="drop-zone">
@@ -198,6 +206,7 @@ html {
 	 font-size: 30px;
    margin-bottom: 0.5px;
   }
+
  .project-info {
 	 padding: 2rem 0;
 	 display: flex;
@@ -267,6 +276,11 @@ html {
 
   #task_desc1 {
     height: 100px;
+    display: flex;
+    width: 360px;
+    margin-bottom: 10px;
+    border: 3px solid #999999;
+    padding: 10px;
   }
 
   .formli .btn {
@@ -298,110 +312,33 @@ html {
     font-size: 30px;
   }
 
-</style>
-
-
-
- <!-- <style>
- .project-info {
-	 padding: 2rem 0;
-	 display: flex;
-	 width: 100%;
-	 justify-content: space-between;
-	 align-items: center;
-}
- .project-participants {
-	 display: flex;
-	 align-items: center;
-}
- .project-participants span, .project-participants__add {
-	 width: 30px;
-	 height: 30px;
-	 display: inline-block;
-	 background: grey;
-	 border-radius: 100rem;
-	 margin: 0 0.2rem;
-}
- .project-participants__add {
-	 background: transparent;
-	 border: 1px dashed #969696;
-	 font-size: 0;
-	 cursor: pointer;
-	 position: relative;
-}
- .project-participants__add:after {
-	 content: '+';
-	 font-size: 15px;
-	 color: #969696;
-}
- .project-tasks {
-	 display: flex;
-	 grid-template-columns: repeat(4, 1fr);
-	 width: 100%;
-	 grid-column-gap: 1.5rem;
-}
- .project-column-heading {
-	 margin-bottom: 1rem;
-	 display: flex;
-	 align-items: center;
-	 justify-content: space-between;
-}
- .project-column-heading__title {
-	 font-size: 20px;
-   background-color: transparent
-}
- .project-column-heading__options {
-	 background: transparent;
-	 color: black;
-	 font-size: 18px;
-	 border: 0;
-	 cursor: pointer;
-}
-
-.form-popup{
-    position:relative;
-    text-align: center;
-    width: 100%;
+  #nameHeading{
+    display: flex;
   }
 
-  .popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 10%;
-    transform: translate(-50%,10%);
-    border: 3px solid #999999;
-    z-index:9;
+  .circle {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: flex;
+    background-color: var(--light-grey);
+    margin-bottom: 1rem; 
+    border-radius: 50%;
   }
 
-  .formli {
-    width: 400px;
-    height: 550px;
-    padding: 20px;
-    background-color: #fff;
-  }
+  
+  .circle-inner {
+  text-transform: capitalize;
+  color: black;
+  display: table-cell; 
+  vertical-align: middle;  
+  text-align: center;
+  text-decoration: none;
+  height: 42px; 
+  width: 50px;   
+  font-size: 20px; 
+  margin-top: 8px
 
-  .formli input[type=text],  
-  .formli input[type=date]{
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 20px 0;
-    border: 3px solid #999999;
-    background: #fff;
-    font-size: small;
-  }
-
-  #task_desc1 {
-    height: 100px;
-  }
-
-  .formli .btn {
-    padding: 12px 20px;
-    background-color: #fff;
-    cursor: pointer;
-	 margin-bottom: 1rem;
-   opacity: 0.8;
-  }
+}
 
 </style>
--->
