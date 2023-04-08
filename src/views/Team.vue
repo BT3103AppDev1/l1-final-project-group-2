@@ -175,6 +175,10 @@ export default {
 
 <style>
 
+.project {
+  margin-left: 100px
+}
+
 html {
   background-color:var(--bg);
 }

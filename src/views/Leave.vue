@@ -1,5 +1,5 @@
 <template>
-    
+    <div id="leavePage">
         
             <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
             <br><br>
@@ -82,6 +82,8 @@
        
         <ManagerLeave v-if="isManager" />
         <br>
+
+        </div>
         
 </template>
 
@@ -219,6 +221,10 @@ h1{
 }
 h1 button {
     color: black;
+  }
+
+  #leavePage {
+    margin-left: 100px
   }
 
 
