@@ -1,23 +1,32 @@
 <template>
+	<!-- The main login page -->
 	<main class="login">
-	
+	  <!-- The section containing the login form -->
 	  <section class="forms">
-		
+		<!-- The login form -->
 		<form class="login" @submit.prevent="login">
-		  <h1 class = "title">Login</h1>
-  
+		  <!-- The form title -->
+		  <h1 class="title">Login</h1>
+	
+		  <!-- The input field for email -->
 		  <input
 			type="email"
 			placeholder="Email address"
 			v-model="login_form.email"
 		  />
+	
+		  <!-- The input field for password -->
 		  <input
 			type="password"
 			placeholder="Password"
 			v-model="login_form.password"
 		  />
+	
+		  <!-- The submit button -->
 		  <input type="submit" value="Login" />
-		  <button class = "back-btn" @click="goBack">&#8592;</button>
+	
+		  <!-- The button to go back to the home page -->
+		  <button class="back-btn" @click="goBack">&#8592;</button>
 		</form>
 	  </section>
 	</main>
@@ -27,25 +36,30 @@
   import { ref } from "vue";
   import { useStore } from "vuex";
   import firebaseApp from "../firebase/firebase.js";
-  import { getFirestore, addDoc, collection, setDoc,doc} from "firebase/firestore";
+  import { getFirestore, addDoc, collection, setDoc, doc } from "firebase/firestore";
   import { useRouter } from 'vue-router';
-
-  const db = getFirestore(firebaseApp);
   
+  const db = getFirestore(firebaseApp);
   
   export default {
 	setup() {
-	const router = useRouter();
+	  const router = useRouter();
+	  
+	  // The object containing the form data
 	  const login_form = ref({});
+	  
+	  // The Vuex store
 	  const store = useStore();
+	  
+	  // The login function to be called when the form is submitted
 	  const login = () => {
 		store.dispatch("login", login_form.value);
 	  };
-
+  
+	  // The function to go back to the home page
 	  const goBack = () => {
-      router.push('/');
-    };
-	  
+		router.push('/');
+	  };
   
 	  return {
 		login_form,
@@ -56,56 +70,65 @@
   };
   </script>
   
-
-<style>
-.forms {
+  <style>
+  .forms {
+	/* The section containing the form is aligned vertically and horizontally */
 	flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  }
+  
+  form {
+	/* The form takes up the entire width of the section */
 	flex: 1 1 0%;
 	padding: 8rem 1rem 1rem;
-}
-form.login {
+  }
+  
+  form.login {
+	/* The login form has a black background with a gradient */
 	color: #FFF;
 	background-color: black;
 	background-image: linear-gradient(
-		to bottom right,
-		rgb(117, 119, 210) 0%,
-		rgb(176, 85, 135) 100%
-    
+	  to bottom right,
+	  rgb(117, 119, 210) 0%,
+	  rgb(176, 85, 135) 100%
 	);
-}
-h2 {
+  }
+  
+  h2 {
+	/* The form title */
 	font-size: 2rem;
 	text-transform: uppercase;
 	margin-bottom: 2rem;
-}
-.title {
+  }
+  
+  .title {
+	/* The login form title */
 	font-size: 2rem;
 	text-transform: uppercase;
 	margin-bottom: 2rem;
-    text-align: center;
-    
-}
-.back-btn {
-  color: white;
-  font-size: 60px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.back-btn:hover {
-  color: #cccccc;
-}
-
-.back-btn.clicked {
-  color: black;
-}
+	text-align: center;
+  }
+  
+  .back-btn {
+	/* The button to go back to the home page */
+	color: white;
+	font-size: 60px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	transition: color 0.3s ease;
+  }
+  
+  .back-btn:hover {
+	color: #cccccc;
+  }
+  
+  .back-btn.clicked {
+	color: black;
+  }
+  
 
 input {
 	appearance: none;
