@@ -64,9 +64,6 @@ export default {
   color: #2e2e2f;
   margin-bottom: 20px;
 }
-#sidenav a:hover {
-  background-color: #7784ee;
-}
 .logo-img {
   position: fixed;
   top: 10px;
