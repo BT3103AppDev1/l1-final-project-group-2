@@ -21,12 +21,12 @@ export default {
       task: {
         Name: '',
         Description: '',
-        Due_Date: ''
+        Due_Date: '',
+        Assigner: '',
       },
       name: 'name',
       description: 'description',
       due_date: 'due_date',
-
     }
   },
   methods: {
@@ -95,7 +95,7 @@ export default {
       console.log(Object.keys(this.teamMail))
       console.log(this.teamTask)
 
-      const q = query(collection(db, "Tasks"), where("Assignee", "in", Object.keys(this.teamMail)))
+      const q = query(collection(db, "Tasks"), where("Assignee", "in", Object.keys(this.teamMail)), where("Status", "==", "ToDo"))
       const tasksRef = await getDocs(q)
 
       tasksRef.forEach(doc => {
@@ -161,6 +161,7 @@ export default {
                   :Task='task.Name'
                   :Description='task.Description'
                   :DueDate='task.Due_Date'
+                  :Assigner='teamMail[task.Assigner]'
             />
             </div>
       </div>
@@ -176,28 +177,10 @@ html {
   background-color:var(--bg);
 }
 
-.sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 100px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: white;
-  overflow-x: hidden; /* Disable horizontal scroll */;
-  padding: 200px 0px;
+ body {
+	 color: #2e2e2f;
+   width: 100%;
 }
-
-.sidenav a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  font-size: 25px;
-  color: #2e2e2f;
-}
-
- 
 
  h1 {
 	 font-size: 30px;
@@ -205,7 +188,6 @@ html {
   }
 
  .project-info {
-	 padding: 2rem 0;
 	 display: flex;
 	 width: 100%;
 	 justify-content: space-between;
@@ -259,6 +241,10 @@ html {
     height: 580px;
     padding: 20px;
     background-color: #fff;
+  }
+
+  #assignee {
+    color: white;
   }
 
   .formli input[type=text],  
@@ -319,22 +305,24 @@ html {
     right: 0;
     display: flex;
     background-color: var(--light-grey);
-    margin-bottom: 1rem; 
+    margin-bottom: 1rem;
+    margin-right: 10px;
     border-radius: 50%;
   }
 
   
   .circle-inner {
   text-transform: capitalize;
-  color: black;
-  display: table-cell; 
-  vertical-align: middle;  
-  text-align: center;
-  text-decoration: none;
-  height: 42px; 
-  width: 50px;   
-  font-size: 20px; 
-  margin-top: 8px
+    color: black;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    height: 40px;
+    width: 47px;
+    font-size: 20px;
+    margin: 5px;
+    padding: 7px;
 
 }
 

@@ -8,6 +8,9 @@
     <div class = "taskDisplay"> Description </div>
     <div id = "taskDescription"> {{Description}} </div>
     <br>
+	<div class = "taskDisplay"> Assigner </div>
+	<div id = "taskAssigner"> {{Assigner}} </div>
+	<br>
     <div id = "taskDuedate"> {{DueDate }}</div>
   </div>
   
@@ -25,6 +28,9 @@
 			type: String,
 		},
 		DueDate: {
+			type: String
+		},
+		Assigner: {
 			type: String
 		}
 	},
@@ -59,7 +65,7 @@
    	text-decoration-line: underline;
 }
 
- #taskName, #taskDescription {
+ #taskName, #taskDescription, #taskAssigner {
 	 background: transparent;
 	 border: 0;
 	 color: var(--text);
@@ -75,17 +81,5 @@
    	border: 1px solid var(--light-grey);
    	border-radius: 3px;
 }
-
- .task-details {
-	 width: 24%;
-	 border-left: 1px solid #d9e0e9;
-	 display: inline-block;
-	 height: 100%;
-	 vertical-align: top;
-	 padding: 3rem 2rem;
-	 color: var(--text);
-	 
-}
-
 
 </style>
