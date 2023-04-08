@@ -111,10 +111,6 @@
 
 <style>
 
-html {
-  background-color:var(--bg);
-
-}
 
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
@@ -253,7 +249,7 @@ html {
 
   .formli {
     width: 400px;
-    height: 550px;
+    height: 620px;
     padding: 20px;
     background-color: #fff;
   }
@@ -296,7 +292,7 @@ html {
 
   .task_add {
     background-color: #7784ee;
-    padding: 10px 20px;
+    padding: 5px 20px;
     margin-left: -50px
   }
 
