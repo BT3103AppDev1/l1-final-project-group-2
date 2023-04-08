@@ -77,7 +77,7 @@
     <br> <br>
     
         <LeaveDisplay :key="refreshComp"/>
-        <br><br>
+        <br>
        
         <ManagerLeave v-if="isManager" />
         <br>
@@ -214,14 +214,13 @@
 <style scoped>
 body {
   width: 100%;
-  
-  
 }
-
+h1{
+  background-color: #EBF0F7;
+}
 h1 button {
     color: black;
   }
-
 
 
 

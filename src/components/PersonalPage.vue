@@ -136,7 +136,6 @@
  body {
 	 color: #2e2e2f;
    width: 93%;
-   background-color: #EBF0F7;
 }
 
  h1 {
