@@ -247,6 +247,7 @@ isSentByMe(message) {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    margin-left: 100px
   }
 
   header {
