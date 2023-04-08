@@ -26,11 +26,11 @@
               <input type="text" placeholder="Task Description" id="task_desc1" required>
 
               <div class="Add">
-                <button class="btn" type="button" v-on:click="addtofs"> Add </button>
+                <button class="btn_add" type="button" v-on:click="addtofs"> Add </button>
               </div>
 
               <div class="Close">
-                <button class="btn" type="button" v-on:click="closeForm"> Close </button>
+                <button class="btn_close" type="button" v-on:click="closeForm"><span>&times;</span></button>
               </div>
             </form>
           </div>
@@ -249,7 +249,7 @@
 
   .formli {
     width: 400px;
-    height: 620px;
+    height: 580px;
     padding: 20px;
     background-color: #fff;
   }
@@ -268,8 +268,8 @@
     height: 100px;
   }
 
-  .formli .btn {
-    padding: 10px 20px;
+  .btn_add {
+    padding: 10px 25px;
     background-color: white;
     color: black;
     border: 2px solid #999999;
@@ -277,6 +277,18 @@
     cursor: pointer;
 	  margin-bottom: 1rem;
     opacity: 0.8;
+  }
+
+  .Close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .btn_close {
+    background-color: transparent;
+    color: black;
+    font-size: 30px
   }
 
 
