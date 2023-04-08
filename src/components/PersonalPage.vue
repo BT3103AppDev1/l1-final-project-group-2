@@ -2,8 +2,8 @@
   <main class='project'>
     <div class='project-info'>
       <h1>Task Dashboard</h1>
-      <div class="circle">
-  <div class="circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
+      <div class="profile_circle">
+  <div class="profile_circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
 </div>
     </div>
 
@@ -111,6 +111,9 @@
 
 <style>
 
+html {
+  background-color:var(--bg);
+}
 
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
@@ -135,7 +138,7 @@
 
  body {
 	 color: #2e2e2f;
-   width: 93%;
+   width: 100%;
 }
 
  h1 {
@@ -319,7 +322,7 @@
     font-size: 30px;
   }
 
-  .circle {
+  .profile_circle {
     position: absolute;
     top: 0;
     right: 0;
@@ -330,7 +333,7 @@
   }
 
   
-  .circle-inner {
+  .profile_circle-inner {
   text-transform: capitalize;
   color: black;
   display: table-cell; 
