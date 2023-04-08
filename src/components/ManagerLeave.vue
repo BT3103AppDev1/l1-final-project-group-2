@@ -2,7 +2,7 @@
     <div>
     <h1 id="Current Pending"> Pending Leave Requests</h1>
     
-
+        <!-- A table to display the leave data -->
     <table id = "pending table" class = "auto-index">
         <tr>
                 <th>S.No</th>
@@ -28,7 +28,7 @@ import { getAuth } from "firebase/auth";
 
 const auth = getAuth();
 const user = auth.currentUser;
- console.log("MANaGER", user.email)
+ console.log("Employer", user.email)
 
 const db = getFirestore(firebaseApp);
 const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -41,7 +41,7 @@ const team = userData.team
 export default {
     mounted(){
         
-
+        // Function to retrieve the leave documents of the current user
         async function display() {
   let allDocuments = await getDocs(query(collection(db, "Leave"), where("Status", "==", "pending"), where("Team", "==", team)));
   let index = 1;
@@ -135,6 +135,7 @@ export default {
             tb.deleteRow(1)
     }
     display()
+    // Function to reject the leave of the selected user
     async function rejectLeave(docid,name) {
         alert("You are going to reject Leave for " + name)
         console.log(document.body.offsetWidth)
@@ -148,6 +149,7 @@ export default {
         display()
         location.reload()
     }
+    // Function to approve the leave of the selected user
     async function approveLeave(docid,name) {
         alert("You are going to approve Leave for " + name)
         await updateDoc(doc(db, 'Leave', docid), {Status: "approved"});

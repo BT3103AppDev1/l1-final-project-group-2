@@ -2,7 +2,7 @@
     <div>
     <h1 id="Current"> My Leaves </h1>
     
-
+     <!-- A table to display the leave data -->
     <table id = "table" class = "auto-index">
         <tr>
                 <th>S.No</th>
@@ -34,15 +34,15 @@ const db = getFirestore(firebaseApp);
 
 export default {
     mounted(){
-
+    // Function to retrieve the leave documents of the current user   
     async function display(){
     
-
+    
     let allDocuments = await getDocs(query(collection(db,"Leave"), where("Email", "==", user.email)));
 
     let index = 1
     
-
+    
     allDocuments.forEach(doc => {
         let docid = doc.id
         console.log(docid, "document ID")
@@ -123,6 +123,7 @@ export default {
     })
 }
     display()
+    // Function to delete the leave documents of the current user
     async function deleteLeave(docid) {
         alert("You are going to delete Leave")
         console.log(document.body.offsetWidth)
