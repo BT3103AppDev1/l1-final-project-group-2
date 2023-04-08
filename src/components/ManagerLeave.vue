@@ -107,15 +107,15 @@ export default {
         
         cell7.appendChild(badge)
         const btnContainer = document.createElement("div")
-        btnContainer.className = "button-container"
+        btnContainer.className = "btn-container"
 
         const tickbtn = document.createElement("button");
         tickbtn.className = "tickbwt"
-        tickbtn.innerHTML = "&#10003;"
+        tickbtn.innerHTML = "&check;"
 
         const crossbtn = document.createElement("button");
         crossbtn.className = "crossbwt"
-        crossbtn.innerHTML = "&#10007"
+        crossbtn.innerHTML = "&#10005"
 
         btnContainer.appendChild(tickbtn)
         btnContainer.appendChild(crossbtn)
@@ -258,7 +258,6 @@ th {
   align-items: center;
   gap: 20px;
   background-color: white;
-  margin-left: 100px;
 }
 
 

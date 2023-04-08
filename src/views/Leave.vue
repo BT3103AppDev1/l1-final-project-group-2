@@ -5,10 +5,12 @@
             <br><br>
         
         <div class = "form-popup" >
-          <div class = "popup" id = "myform">    
+          <div class = "popup" id = "myform">
+            
           <form action="/action_page.php" class = "formli" id="leaveForm">         
             <h2> Leave Request </h2>
-              <br><br>
+            <br>
+              
               <label for="type">Type of Leave</label>
 <select id="type" required onchange="this.style.color = 'black';">
   <option value="" style="color:gray;">Select Type of Leave</option>
@@ -18,17 +20,22 @@
 </select>
               <label for="description">Description</label>
               <input type="text" placeholder="Description" id="description" required>
-              <label for="duration">Duration</label>
-              <input type="text" placeholder="ddmmyy - ddmmyy" id="duration" required>
+              <label for="startdate">Input Start Date</label>
+              <input type="date" placeholder="Start Date" id="startdate" required>
+              <label for="enddate">Input Due Date</label>
+              <input type="date" placeholder="End Date" id="enddate" required>
               <label for="days">Number of Days</label>
-              <input type="number" placeholder="Num of Days" id="days" required>
+              <input type="number" placeholder="Num of Days" id="days" required min="1">
               
               
 
-              <div class="button-container">
+              
               <button class="btn" type="button" v-on:click="submitForm">Submit</button>
-             <button class="btn" type="button" v-on:click="closeForm">Close</button>
+              <div class="Close">
+                <button class="btn_close" type="button" v-on:click="closeForm"><span>&times;</span></button>
               </div>
+             
+              
             </form>
             </div>
         </div>
@@ -185,7 +192,8 @@
               console.log("IN AC")
             let description = document.getElementById("description").value
             let type = document.getElementById("type").value
-            let duration = document.getElementById("duration").value
+            let duration = document.getElementById("startdate").value + " - " + document.getElementById("enddate").value
+
             let days = document.getElementById("days").value
             const userDoc = await getDoc(doc(db, "users", user.uid));
       
@@ -227,6 +235,7 @@ h1 button {
     margin-left: 100px
   }
 
+  
 
 
 
@@ -248,6 +257,8 @@ h1 button {
     width: 100%;
   }
 
+
+
   .popup {
     position: fixed;
     top: 50%;
@@ -259,12 +270,26 @@ h1 button {
     margin: [form margin];
     background-color: #fff;
 }
+.Close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .btn_close {
+    background-color: transparent;
+    color: black;
+    font-size: 30px;
+    border:none !important;
+  }
+
 
 .formli {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
+  height:620px !important;
 }
 
 .formli label {
@@ -273,11 +298,10 @@ h1 button {
   margin-bottom: 5px;
 }
 
-.formli input,
-.formli select {
+.formli input, .formli select {
   width: 100%;
   padding: 10px;
-  border:1px solid black;
+  border:1px solid black !important;
   border-radius: 3px;
   margin-bottom: 10px;
   box-sizing: border-box;
@@ -298,13 +322,6 @@ h1 button {
   margin-right: 4%;
   box-sizing: border-box;
   color: black;
-}
-
-.formli .button-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 10px;
   background-color: white;
 }
 

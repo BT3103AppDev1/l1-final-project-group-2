@@ -107,33 +107,10 @@ export default {
         
                 // create button element
         const deletebtn = document.createElement("button");
-        deletebtn.className= "bwt"
-
-        // create span element for button text
-        const span = document.createElement("span");
-        span.className="deletespan"
-        span.innerText = "Confirm Delete";
-
-        // create SVG element for icon
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("width", "25");
-        svg.setAttribute("height", "25");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "2");
-
-        // create path element for SVG icon
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
-        path.setAttribute("d", "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16");
-
-        // append child elements to button
-        svg.appendChild(path);
-        deletebtn.appendChild(span);
-        deletebtn.appendChild(svg);
-
+        
+        deletebtn.className = "bwt"
+        deletebtn.innerHTML = "&#8722;"
+        
         
        
 
@@ -157,6 +134,7 @@ export default {
         }
         
         display()
+        location.reload()
     }
 }
     }
@@ -254,57 +232,19 @@ th,td {
   
 }
 .bwt {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    border: 2px solid rgb(231, 50, 50);
-    
-    cursor: pointer;
-    box-shadow: 0 0 10px #333;
-    overflow: hidden;
-    transition: .3s;
-}
-.bwt:hover {
-    background-color: rgb(245, 207, 207);
-    transform: scale(1.2);
-    box-shadow: 0 0 4px #111;
-    transition: .3s;
-}
-svg {
-    color: rgb(231, 50, 50);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: .3s;
-}
-.bwt:focus svg {
-    opacity: 0;
-    transition: .3s;
-}
-.deletespan {
-    width: 150px;
-    position: absolute;
-    opacity: 0;
-    transform: translate(-50%, -50%);
-    color: rgb(231, 50, 50);
-    font-weight: 600;
-    transition: .3s;
-    background-color: white;
-}
+  
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding:0%
 
-.bwt:focus {
-    width: 150px;
-    height: 50px;
-    transition: .3s;
-}
-.bwt:focus span {
-    opacity: 1;
-    transition: .3s;
-}
-.bwt {
-    background-color: white;
 }
 
 </style>
