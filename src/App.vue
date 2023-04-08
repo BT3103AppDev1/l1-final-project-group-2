@@ -1,26 +1,30 @@
 
-
 <template>
-
-  <div id="sidenav" v-if="$store.state.user">
-    <a><router-link to="/">Home</router-link></a>
-    <a><router-link to="/team">Team</router-link></a>
-    <a><router-link to="/leave">Leave</router-link></a>
-    <a><router-link to="/chat">Chat</router-link></a>
-    <a><button @click="$store.dispatch('logout')">Logout</button></a>
+  <div v-if="$store.state.user">
+    <div id="sidenav">
+      <img src="../src/photos/logo.png" alt="Logo" class="logo-img">
+      <a><router-link to="/"><i class="fas fa-home"></i></router-link></a>
+      <a><router-link to="/team"><i class="fas fa-users"></i></router-link></a>
+      <a><router-link to="/leave"><i class="fas fa-calendar-times"></i></router-link></a>
+      <a><router-link to="/chat"><i class="fas fa-comments"></i></router-link></a>
+      <a><button @click="$store.dispatch('logout')"><i class="fas fa-sign-out-alt"></i></button></a>
+    </div>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
+
 <script>
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, computed } from 'vue'
 import { useStore } from 'vuex'
+
 export default {
   setup() {
     const store = useStore()
     onBeforeMount(() => {
       store.dispatch('fetchUser')
     })
+    
   }
   
 }
@@ -58,6 +62,17 @@ export default {
   text-decoration: none;
   font-size: 25px;
   color: #2e2e2f;
+  margin-bottom: 20px;
+}
+.logo-img {
+  position: fixed;
+  top: 10px;
+  left: 10px; 
+  width: 120px;
+  height: 100px;
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>

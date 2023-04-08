@@ -89,7 +89,7 @@
 }
 
 button {
-  background-color: rgb(12, 26, 182);;
+  background-color: #7784ee;
   color: white;
   padding: 15px 30px;
   border: none;
