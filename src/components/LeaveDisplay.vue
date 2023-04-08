@@ -54,6 +54,7 @@ export default {
         
         let status = documentData.Status
         
+        
     
 
 
@@ -111,7 +112,7 @@ export default {
         // create span element for button text
         const span = document.createElement("span");
         span.className="deletespan"
-        span.innerText = "CONFIRM DELETE";
+        span.innerText = "Confirm Delete";
 
         // create SVG element for icon
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -146,7 +147,7 @@ export default {
 }
     display()
     async function deleteLeave(docid) {
-        alert("You are going to delete Leave " + docid)
+        alert("You are going to delete Leave")
         console.log(document.body.offsetWidth)
         await deleteDoc(doc(db,"Leave", docid))
         console.log("Document successfully deleted!", docid);

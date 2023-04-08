@@ -122,18 +122,18 @@ export default {
 
         cell8.appendChild(buttonContainer)
         crossbtn.onclick = function() {
-            rejectLeave(docid)
+            rejectLeave(docid,name)
         }
         tickbtn.onclick = function() {
-            approveLeave(docid)
+            approveLeave(docid,name)
         }
         
         index+=1
     })
 }
     display()
-    async function rejectLeave(docid) {
-        alert("You are going to reject Leave " + docid)
+    async function rejectLeave(docid,name) {
+        alert("You are going to reject Leave for " + name)
         console.log(document.body.offsetWidth)
         await updateDoc(doc(db, 'Leave', docid), {Status: "rejected"});
         console.log("Document successfully rejected!", docid);
@@ -145,8 +145,8 @@ export default {
         display()
         location.reload()
     }
-    async function approveLeave(docid) {
-        alert("You are going to approve Leave " + docid)
+    async function approveLeave(docid,name) {
+        alert("You are going to approve Leave for " + name)
         await updateDoc(doc(db, 'Leave', docid), {Status: "approved"});
         console.log("Document successfully approved!", docid);
         let tb = document.getElementById("pending table")
