@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
 * {
   margin: 0;
   padding: 0;
@@ -40,7 +40,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-color:white;
+  background-color:#EBF0F7;
 
 }
 #sidenav {
@@ -73,6 +73,9 @@ export default {
   z-index: 2;
   justify-content: center;
   align-items: center;
+}
+button{
+  padding:15px, 30px;
 }
 
 </style>
