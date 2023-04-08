@@ -63,6 +63,7 @@ export default {
   font-size: 25px;
   color: #2e2e2f;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 #sidenav a:hover {
   background-color: #7784ee;
