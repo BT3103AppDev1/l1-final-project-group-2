@@ -184,21 +184,8 @@ async sendMessage() {
   }
 
   this.newMessage = '';
-
-  // Find the current conversation in the 'conversations' array and update its messages.
-  const currentConversationIndex = this.conversations.findIndex(conversation => {
-    return conversation.participants && conversation.participants.includes(this.selectedUserEmail);
-  });
-
-  if (currentConversationIndex !== -1) {
-    this.conversations[currentConversationIndex].messages.push(message);
-    this.conversations = [...this.conversations];
-    this.updateFilteredMessages();
-  } else {
-    // If the conversation doesn't exist yet, fetch and initialize the conversations again.
-    await this.fetchAndInitializeConversations();
-  }
 },
+
 
 updateFilteredMessages() {
       if (!this.selectedUserEmail || this.conversations.length === 0) {
