@@ -1,98 +1,100 @@
 <template>
-    <div id="leavePage">
-        
-            <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
-            <br><br>
-        
-        <div class = "form-popup" >
-          <div class = "popup" id = "myform">
-            
-          <form action="/action_page.php" class = "formli" id="leaveForm">         
-            <h2> Leave Request </h2>
-            <br>
-              
-              <label for="type">Type of Leave</label>
-<select id="type" required onchange="this.style.color = 'black';">
-  <option value="" style="color:gray;">Select Type of Leave</option>
-  <option value="Annual" style="color:black;">Annual</option>
-  <option value="Sick" style="color:black;">Sick</option>
-  <option value="Others" style="color:black;">Others</option>
-</select>
-              <label for="description">Description</label>
-              <input type="text" placeholder="Description" id="description" required>
-              <label for="startdate">Input Start Date</label>
-              <input type="date" placeholder="Start Date" id="startdate" required>
-              <label for="enddate">Input Due Date</label>
-              <input type="date" placeholder="End Date" id="enddate" required>
-              <label for="days">Number of Days</label>
-              <input type="number" placeholder="Num of Days" id="days" required min="1">
-              
-              
+  <div id="leavePage">
+    <!-- Title and request leave button -->
+    <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
+    <br><br>
 
-              
-              <button class="btn" type="button" v-on:click="submitForm">Submit</button>
-              <div class="Close">
-                <button class="btn_close" type="button" v-on:click="closeForm"><span>&times;</span></button>
-              </div>
-             
-              
-            </form>
-            </div>
-        </div>
-        <div class = bars>
+    <!-- Leave request form popup -->
+    <div class = "form-popup">
+      <div class = "popup" id = "myform">
+        <form action="/action_page.php" class = "formli" id="leaveForm">
+          <h2> Leave Request </h2>
+          <br>
+
+          <!-- Select leave type dropdown -->
+          <label for="type">Type of Leave</label>
+          <select id="type" required onchange="this.style.color = 'black';">
+            <option value="" style="color:gray;">Select Type of Leave</option>
+            <option value="Annual" style="color:black;">Annual</option>
+            <option value="Sick" style="color:black;">Sick</option>
+            <option value="Others" style="color:black;">Others</option>
+          </select>
+
+          <!-- Input fields for leave details -->
+          <label for="description">Description</label>
+          <input type="text" placeholder="Description" id="description" required>
+          <label for="startdate">Input Start Date</label>
+          <input type="date" placeholder="Start Date" id="startdate" required>
+          <label for="enddate">Input Due Date</label>
+          <input type="date" placeholder="End Date" id="enddate" required>
+          <label for="days">Number of Days</label>
+          <input type="number" placeholder="Num of Days" id="days" required min="1">
+
+          <!-- Submit and close buttons -->
+          <button class="btn" type="button" v-on:click="submitForm">Submit</button>
+          <div class="Close">
+            <button class="btn_close" type="button" v-on:click="closeForm"><span>&times;</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class = bars>
+        <!-- Progress bar for annual leave taken -->
         <div class="progress-bar-container progress-bar-container-1">
           <h3>Annual Leave Taken</h3>
     <div class="progress-bar-wrapper progress-bar-wrapper-1">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
         <circle class="progress-bar-background progress-bar-background-1" cx="21" cy="21" r="19"></circle>
+        <!-- Set the strokeDasharray attribute to display the progress bar percentage -->
         <circle class="progress-bar-foreground progress-bar-foreground-1" cx="21" cy="21" r="19"
           :style="{ strokeDasharray: (annualleave / 21 * 120) + ' 999' }"></circle>
       </svg>
+      <!-- Display the number of annual leaves taken and total allowed -->
       <div class="progress-bar-label progress-bar-label-1">{{ annualleave }} / 21 days</div>
     </div>
   </div>
 
+  <!-- Progress bar for sick leave taken -->
   <div class="progress-bar-container progress-bar-container-2">
           <h3>Sick Leave Taken</h3>
     <div class="progress-bar-wrapper progress-bar-wrapper-2">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
         <circle class="progress-bar-background progress-bar-background-2" cx="21" cy="21" r="19"></circle>
+        <!-- Set the strokeDasharray attribute to display the progress bar percentage -->
         <circle class="progress-bar-foreground progress-bar-foreground-2" cx="21" cy="21" r="19"
           :style="{ strokeDasharray: (sickleave / 14 * 120) + ' 999' }"></circle>
       </svg>
+      <!-- Display the number of sick leaves taken and total allowed -->
       <div class="progress-bar-label progress-bar-label-2">{{ sickleave }} / 14 days</div>
     </div>
   </div>
+  <!-- Progress bar for other leaves taken -->
   <div class="progress-bar-container progress-bar-container-3">
           <h3>Other Leave Taken</h3>
     <div class="progress-bar-wrapper progress-bar-wrapper-3">
       <svg class="progress-bar" width="100%" height="100%" viewBox="0 0 42 42">
         <circle class="progress-bar-background progress-bar-background-3" cx="21" cy="21" r="19"></circle>
+        <!-- Set the strokeDasharray attribute to display the progress bar percentage -->
         <circle class="progress-bar-foreground progress-bar-foreground-3" cx="21" cy="21" r="19"
           :style="{ strokeDasharray: (otherleave / 14 * 120) + ' 999' }"></circle>
       </svg>
+      <!-- Display the number of other leaves taken and total allowed -->
       <div class="progress-bar-label progress-bar-label-3">{{otherleave }} / 14 days</div>
     </div>
   </div>
   </div>
-
-
-
-            
-            
-        
-    
-    <br> <br>
-    
-        <LeaveDisplay :key="refreshComp"/>
-        <br>
-       
-        <ManagerLeave v-if="isEmployer" />
-        <br>
-
-        </div>
+  
+  <!-- Component to display the leave request history -->
+  <LeaveDisplay :key="refreshComp"/>
+  <br>
+  
+  <!-- Component to display leave requests for Employer (if the user is an employer) -->
+  <ManagerLeave v-if="isEmployer" />
+  <br>
+  </div>
         
 </template>
+
 
 <script>
     import firebaseApp from '../firebase/firebase';
