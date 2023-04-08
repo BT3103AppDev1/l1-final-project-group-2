@@ -17,14 +17,14 @@
           <div class = "popup" id = "myform">    
             <form action="/action_page.php" class = "formli">         
               <h1> Create Task </h1>
-              <br><br>
+              <br>
               <label for="task_name1">Input Task Name</label>
               <input type="text" placeholder="Task Name" id="task_name1" required>
               <label for="task_duedate1">Input Due Date</label>
               <input type="date" placeholder="Due Date" id="task_duedate1" required>
               <label for="task_desc1">Input Task Description</label>
-              <input type="text" placeholder="Task Description" id="task_desc1" required>
-
+              <textarea placeholder="Task Description" id="task_desc1" required></textarea>
+              <br>
               <div class="Add">
                 <button class="btn_add" type="button" v-on:click="addtofs"> Add </button>
               </div>
@@ -115,25 +115,8 @@ html {
   background-color:var(--bg);
 }
 
-.sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 100px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: white;
-  overflow-x: hidden; /* Disable horizontal scroll */;
-  padding: 200px 0px;
-}
-
-.sidenav a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  font-size: 25px;
-  color: #2e2e2f;
+.project {
+  margin-left: 100px
 }
 
 
@@ -173,7 +156,7 @@ html {
  .project-column-heading__title {
 	font-size: 20px;
   padding: 10px;
-  text-transform: none;
+  text-transform: uppercase;
 }
 
  .task {
@@ -266,6 +249,11 @@ html {
 
   #task_desc1 {
     height: 100px;
+    display: flex;
+    width: 360px;
+    margin-bottom: 10px;
+    border: 3px solid #999999;
+    padding: 10px;
   }
 
   .btn_add {
@@ -304,7 +292,7 @@ html {
 
   .task_add {
     background-color: #7784ee;
-    padding: 5px 20px;
+    padding: 2px 10px;
     margin-left: -50px
   }
 
