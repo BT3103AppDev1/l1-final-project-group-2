@@ -40,19 +40,16 @@ const team = userData.team
 
 export default {
     mounted(){
+        
 
-    async function display(){
-    
-    
-    let allDocuments = await getDocs(query(collection(db,"Leave"), where("Status", "==", "pending"), where("Team", "==",team)));
-    console.log("manager")
+        async function display() {
+  let allDocuments = await getDocs(query(collection(db, "Leave"), where("Status", "==", "pending"), where("Team", "==", team)));
+  let index = 1;
 
-    let index = 1
-    
 
-    allDocuments.forEach(doc => {
-        console.log("pending")
-        let docid = doc.id
+  allDocuments.forEach((doc) => {
+    let docid = doc.id;
+  
         let documentData = doc.data()
         let description = documentData.Description
         let type = documentData.Type
@@ -66,6 +63,8 @@ export default {
 
 
         let table = document.getElementById("pending table")
+        
+        
         let row = table.insertRow(index)
         let cell1= row.insertCell(0)
         let cell2= row.insertCell(1)
@@ -131,6 +130,10 @@ export default {
         index+=1
     })
 }
+    let tb = document.getElementById("pending table")
+    while(tb.rows.length > 1) {
+            tb.deleteRow(1)
+    }
     display()
     async function rejectLeave(docid,name) {
         alert("You are going to reject Leave for " + name)
