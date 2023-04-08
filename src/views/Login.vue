@@ -82,7 +82,7 @@
   form {
 	/* The form takes up the entire width of the section */
 	flex: 1 1 0%;
-	padding: 8rem 1rem 1rem;
+	padding: 20rem 1rem 1rem;
   }
   
   form.login {

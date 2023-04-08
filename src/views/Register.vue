@@ -1,3 +1,5 @@
+Here are the comments for the code:
+
 <template>
     
 	<main class="login">
@@ -45,30 +47,26 @@
 		
 	  </section>
 	</main>
-  </template>
+</template>
   
-  <script>
-  import { ref } from "vue";
-  import { useStore } from "vuex";
-  import {db,auth} from "../firebase/firebase.js";
-  import { addDoc, collection,setDoc , doc,updateDoc} from "firebase/firestore";
-  import { useRouter } from 'vue-router';
-  import { onAuthStateChanged } from "firebase/auth";
-  
-  
+<script>
+import { ref } from "vue";
+import { useStore } from "vuex";
+import {db,auth} from "../firebase/firebase.js";
+import { addDoc, collection,setDoc , doc,updateDoc} from "firebase/firestore";
+import { useRouter } from 'vue-router';
+import { onAuthStateChanged } from "firebase/auth";
 
-  
-  export default {
+// Exporting the component
+export default {
   setup() {
+    // Initializing the reactive variables
     const register_form = ref({});
     const store = useStore();
     const router = useRouter();
     const uid = ref(null);
 
-    const register = async () => {
-      store.dispatch("register", register_form.value);
-    };
-
+    // Function to create a new user
     const createUser = async (uid) => {
       const colRef = collection(db, "users");
 
@@ -88,10 +86,17 @@
       }
     };
 
+    // Function to register a new user
+    const register = async () => {
+      store.dispatch("register", register_form.value);
+    };
+
+    // Function to go back to the home page
     const goBack = () => {
       router.push('/');
     };
 
+    // Function to check if a user is authenticated
     onAuthStateChanged(auth, (user) => {
       if (user) {
         uid.value = user.uid;
@@ -99,6 +104,7 @@
       }
     });
 
+    // Returning the reactive variables and functions
     return {
       register_form,
       register,
@@ -106,8 +112,7 @@
     };
   }
 }
-  </script>
-  
+</script>
 
 <style scoped>
 .forms {
