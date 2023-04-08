@@ -109,7 +109,7 @@
   </script>
   
 
-<style>
+<style scoped>
 .forms {
 	display: flex;
 	min-height: 100vh;
