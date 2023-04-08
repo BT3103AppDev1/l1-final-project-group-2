@@ -3,8 +3,8 @@
     <div class='project-info'>
       <h1>Task Dashboard</h1>
       <div class="profile_circle">
-  <div class="profile_circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
-</div>
+        <div class="profile_circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
+      </div>
     </div>
 
     <div class='project-tasks'>
@@ -47,14 +47,9 @@
               <div id = "taskDescription"> {{ item.description }} </div>
               <br>
               <div id = "taskDuedate"> {{ item.duedate }}</div>
-
             </div>   
-
           </div>
         </div>
-
-
-
       </div>
       
 
@@ -343,14 +338,11 @@ import { getAuth } from "firebase/auth";
 
 const auth = getAuth();
 const user = auth.currentUser;
-
-
 const db = getFirestore(firebaseApp); 
 
 export default {
   
  data() {
-   console.log('hi')
     return {
       doData: [],
       reviewData: [],
@@ -361,7 +353,6 @@ export default {
 
   methods: {
     addTask() {
-      console.log("hi")
       document.getElementById("myform").style.display = "block";
     },
     
@@ -376,7 +367,6 @@ export default {
         const docRef = await setDoc(doc(collection(db, "Tasks")), {
           Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: this.userEmail, Assigner: this.userEmail 
         })
-        console.log("SAVED!")
         document.getElementById("task_name1").value = "";
         document.getElementById("task_duedate1").value = "";
         document.getElementById("task_desc1").value = "";
@@ -389,7 +379,6 @@ export default {
     },
 
     closeForm() {
-      console.log("bye")
       document.getElementById("myform").style.display = "none";
 
     },
@@ -418,22 +407,16 @@ export default {
 
         
         if (status == "ToDo") {
-          console.log(status)
-
           this.doData.push(
           {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
 
         if (status == "Review") {
-          console.log(status)
-
           this.reviewData.push(
           {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
 
         if (status == "Complete") {
-          console.log(status)
-
           this.completeData.push(
           {id:id, name: name, description:description ,duedate:duedate, status:status});
         }
@@ -449,7 +432,6 @@ export default {
       evt.dataTransfer.dropEffect = 'move'
       evt.dataTransfer.effectAllowed = 'move'
       evt.dataTransfer.setData('itemId', item.id)
-      console.log('.')
     },
 
     async onDrop(evt, status) {
@@ -466,13 +448,10 @@ export default {
       catch(error) {
         console.error("Error adding document: ", error);
       }
-
-      console.log(status)
     },
 
     async deleteTask(itemId) {
       await deleteDoc(doc(db,"Tasks", itemId))
-      console.log(itemId)
       this.$emit("deleted")
   },
 },
