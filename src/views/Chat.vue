@@ -393,7 +393,7 @@ color: #999;
   max-height: calc(100vh - 240px);
   margin-bottom: 1rem;
   padding: 0.5rem;
-  background-color: #f8f8f8;
+  background-color: #edf2f7;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
