@@ -164,16 +164,10 @@ export default {
 
 
 </script>
-<style scoped>
-div {
-    background-color: white;
-}
+<style>
 
-h1{
-    text-align: left;
-    color: black;
-    background-color: white;
-}
+
+
 
 
 table{
@@ -224,9 +218,7 @@ th {
   
 }
 
-button{
-    padding: 0%;
-}
+
 
 .tickbwt {
   display: flex;
@@ -241,6 +233,7 @@ button{
   height: 30px;
   border-radius: 50%;
   cursor: pointer;
+  padding:0%
 }
 
 .crossbwt {
@@ -256,6 +249,7 @@ button{
   height: 30px;
   border-radius: 50%;
   cursor: pointer;
+  padding:0%
 
 }
 .button-container {
