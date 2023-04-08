@@ -184,7 +184,7 @@ form.register input:not([type="submit"]) {
 }
 
 form.register input[type="submit"] {
-	background-color: rgb(12, 26, 182);
+	background-color: #7784ee;
 	color: #fff;
 	font-weight: 700;
 	padding: 1rem 2rem;

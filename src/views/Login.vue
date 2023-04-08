@@ -136,7 +136,7 @@ form.login input:not([type="submit"]) {
 	border-bottom: 2px solid #2c3e50;
 }
 form.login input[type="submit"] {
-	background-color:rgb(12, 26, 182);
+	background-color:#7784ee;
 	color: #FFF;
 	font-weight: 700;
 	padding: 1rem 2rem;
