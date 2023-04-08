@@ -1,5 +1,6 @@
 <template>
   <main class="home">
+    <!-- refresh page when called in PersonalPage -->
     <PersonalPage @added="change" @changedStatus="change" @deleted="change" :key="refreshComp"/>
     
 

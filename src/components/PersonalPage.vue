@@ -1,18 +1,22 @@
 <template>
   <main class='project'>
+    <!-- page heading -->
     <div class='project-info'>
       <h1>Task Dashboard</h1>
+      <!-- User initial profile circle -->
       <div class="profile_circle">
         <div class="profile_circle-inner"><div v-if = 'userEmail'></div> {{userEmail[0]}} </div>
       </div>
     </div>
-
+    
     <div class='project-tasks'>
       <div class='project-column'>
 		    <div class='project-column-heading'>
+          <!-- todo column with add task button -->
           <h2 class='project-column-heading__title'>To Do</h2>
           <button class='task_add' v-on:click="addTask"><span>&#43;</span></button>
         </div>
+        <!-- form to add task -->
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
             <form action="/action_page.php" class = "formli">         
@@ -36,7 +40,7 @@
           </div>
         </div>
           
-          
+        <!-- display user's todo task, allowing user to drag/drop to add/remove tasks -->
         <div class ="drop-zone" @drop="onDrop($event,'ToDo')" @dragover.prevent @dragenter.prevent>
           <div v-for = "(item, index) in doData" :key="index">
             <div class = "task" draggable = "true" @dragstart="startDrag($event, item)">
@@ -57,9 +61,10 @@
 
       <div class='project-column'>
 		    <div class='project-column-heading'>
+          <!-- review column -->
           <h2 class='project-column-heading__title'>Review</h2>  
         </div>
-
+        <!-- display user's review task, allowing user to drag/drop to add/remove tasks -->
         <div class ="drop-zone" @drop="onDrop($event,'Review')" @dragover.prevent @dragenter.prevent>
           <div v-for = "(item, index) in reviewData" :key="index">
             <div class = "task" draggable = "true" @dragstart="startDrag($event, item)">
@@ -81,9 +86,10 @@
 
         <div class='project-column'>
 		      <div class='project-column-heading'>
+            <!-- completed column -->
             <h2 class='project-column-heading__title'>Completed</h2>
           </div>
-           
+          <!-- display user's completed task, allowing user to drop to add tasks -->
           <div class ="drop-zone" @drop="onDrop($event,'Complete')" @dragover.prevent @dragenter.prevent>
             <div v-for = "(item, index) in completeData" :key="index">
               <div class = "task">
@@ -94,7 +100,7 @@
                 <div id = "taskDescription"> {{ item.description }} </div>
                 <br>
                 <div id = "taskDuedate"> {{ item.duedate }}</div>
-                
+                <!-- task delete button so user can delete completed tasks -->
                 <button class='task_delete' v-on:click="deleteTask(item.id)"><span>&#8854;</span></button>
               </div>   
             </div>
@@ -336,6 +342,7 @@ import {doc, setDoc, getDocs, deleteDoc, collection, updateDoc} from "firebase/f
 
 import { getAuth } from "firebase/auth";
 
+
 const auth = getAuth();
 const user = auth.currentUser;
 const db = getFirestore(firebaseApp); 
@@ -352,7 +359,10 @@ export default {
   }, 
 
   methods: {
+
+
     addTask() {
+      // open task form
       document.getElementById("myform").style.display = "block";
     },
     
@@ -363,13 +373,16 @@ export default {
 
 
       try{
-
+        // add inputs from task form to firestore database 
         const docRef = await setDoc(doc(collection(db, "Tasks")), {
           Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: this.userEmail, Assigner: this.userEmail 
         })
+
+        // reset form to blank
         document.getElementById("task_name1").value = "";
         document.getElementById("task_duedate1").value = "";
         document.getElementById("task_desc1").value = "";
+        // refresh the page to display the newly added task
         this.$emit("added")
 
       }
@@ -379,6 +392,7 @@ export default {
     },
 
     closeForm() {
+      // close task form
       document.getElementById("myform").style.display = "none";
 
     },
@@ -388,6 +402,8 @@ export default {
       this.doData = [];
       this.reviewData = [];
       this.completeData = [];
+
+      // get all the tasks from the current user & store tasks according to status to display in different columns
       let allDocuments = await getDocs(collection(db, "Tasks"))
 
       allDocuments.forEach((docs) => {
@@ -429,18 +445,21 @@ export default {
     },
 
     startDrag(evt, item) {
+      // save item that is dragged 
       evt.dataTransfer.dropEffect = 'move'
       evt.dataTransfer.effectAllowed = 'move'
       evt.dataTransfer.setData('itemId', item.id)
     },
 
     async onDrop(evt, status) {
+      //get item that is dragged and updated status to where it is dropped
       const itemId = evt.dataTransfer.getData('itemId')
       try {
           const update = await updateDoc(doc(db, "Tasks", itemId), {
            Status: status
 
         })
+        // refresh after dropping to display task in the updated column 
         this.$emit("changedStatus")
       }
       
@@ -451,12 +470,14 @@ export default {
     },
 
     async deleteTask(itemId) {
+      // delete task from database & refresh to remove the task from column
       await deleteDoc(doc(db,"Tasks", itemId))
       this.$emit("deleted")
   },
 },
 
   mounted(){
+    // display all tasks
     this.readTasks();
   }
 }
