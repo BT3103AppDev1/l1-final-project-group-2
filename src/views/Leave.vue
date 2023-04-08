@@ -6,7 +6,7 @@
         <div class = "form-popup" >
           <div class = "popup" id = "myform">    
           <form action="/action_page.php" class = "formli" id="leaveForm">         
-            <h3> Leave Request </h3>
+            <h2> Leave Request </h2>
               <br><br>
               <label for="type">Type of Leave</label>
 <select id="type" required onchange="this.style.color = 'black';">
@@ -213,7 +213,7 @@
 </script>
 <style scoped>
 body {
-  width: 100vw;
+  width: 100%;
 }
 h1{
   background-color: #EBF0F7;
@@ -221,6 +221,8 @@ h1{
 h1 button {
     color: black;
   }
+
+
 
 
 
