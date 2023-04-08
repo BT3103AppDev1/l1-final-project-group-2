@@ -19,7 +19,7 @@
 <div class="chat-container">
   <h1 v-text="selectedUserDisplayName"></h1>
 
-        <div class="messages-container">
+        <div class="messages-container" ref="messagesContainer">
           <div v-if="filteredMessages.length > 0">
             <div
               v-for="(message, index) in filteredMessages"
@@ -145,6 +145,7 @@ export default {
     }
 
     this.updateFilteredMessages();
+    this.scrollToBottom();
   });
 
   // Cleanup the listener when the component is destroyed
@@ -184,6 +185,14 @@ async sendMessage() {
   }
 
   this.newMessage = '';
+  this.scrollToBottom();
+},
+
+scrollToBottom() {
+  this.$nextTick(() => {
+    const container = this.$refs.messagesContainer;
+    container.scrollTop = container.scrollHeight;
+  });
 },
 
 
