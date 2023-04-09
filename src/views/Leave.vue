@@ -25,7 +25,7 @@
           <input type="text" placeholder="Description" id="description" required>
           <label for="startdate">Input Start Date</label>
           <input type="date" placeholder="Start Date" id="startdate" required>
-          <label for="enddate">Input Due Date</label>
+          <label for="enddate">Input End Date</label>
           <input type="date" placeholder="End Date" id="enddate" required>
           <label for="days">Number of Days</label>
           <input type="number" placeholder="Num of Days" id="days" required min="1">

@@ -377,7 +377,7 @@ export default {
         const docRef = await setDoc(doc(collection(db, "Tasks")), {
           Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: this.userEmail, Assigner: this.userEmail 
         })
-
+        alert('Task successfully added')
         // reset form to blank
         document.getElementById("task_name1").value = "";
         document.getElementById("task_duedate1").value = "";
@@ -471,7 +471,9 @@ export default {
 
     async deleteTask(itemId) {
       // delete task from database & refresh to remove the task from column
+
       await deleteDoc(doc(db,"Tasks", itemId))
+      alert('Task successfully deleted')
       this.$emit("deleted")
   },
 },
