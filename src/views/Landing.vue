@@ -38,12 +38,13 @@
 
   /* Styles for the main container */
   .container {
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 
   /* Styles for the landing page image section */
   .images {
@@ -59,6 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: -15px;
   }
 
   /* Styles for the project logo */
@@ -100,7 +102,7 @@
   .button-container {
     display: flex;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
   }
 
   /* Styles for the button element */
