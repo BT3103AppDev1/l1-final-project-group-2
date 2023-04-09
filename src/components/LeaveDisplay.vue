@@ -219,17 +219,17 @@ th,td {
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
   
-  background-color: #f47878;
+  background-color: #f59898;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #fd2626;
+  color: #ff3e3e;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
 
 #table .rejected:hover {
-  background-color: #ff0202;
+  background-color: #ff8787;
   
 }
 .bwt {
