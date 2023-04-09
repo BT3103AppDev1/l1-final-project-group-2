@@ -30,7 +30,9 @@ export default {
     }
   },
   methods: {
+    
     addTask(name) {
+      // open task form & change assignee
       console.log("hi")
       console.log("name")
       document.getElementById("assignee").innerHTML = name;
@@ -42,19 +44,23 @@ export default {
       let due_date = document.getElementById("task_duedate1").value
       let description = document.getElementById("task_desc1").value
       let assignee = document.getElementById("assignee").innerHTML
-      let assigner = getAuth().currentUser.email
-
+      let assigner = getAuth().currentUser.email // set assignee as current user email
       try{
-
+        
+        // add inputs from task form to firestore database
         const docRef = await setDoc(doc(collection(db, "Tasks")), {
           Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: assignee, Assigner: assigner 
         })
         console.log("SAVED!")
+
+        // reset form to blank
         document.getElementById("task_name1").value = "";
         document.getElementById("task_duedate1").value = "";
         document.getElementById("task_desc1").value = "";
         this.$emit("added")
         alert("Task added successfully")
+
+        // automatically reload page after adding new task
         location.reload()
 
       }
@@ -65,6 +71,7 @@ export default {
     },
 
     closeForm() {
+      // close task form
       console.log("bye")
       document.getElementById("myform").style.display = "none";
 
@@ -73,6 +80,7 @@ export default {
     async getTasks() {
       const email = getAuth().currentUser.email
       console.log(email)
+      // get all members who belong to same team as user
       let teamSnap = await getDocs(query(collection(db, "users"), where("email", "==", email)));
       this.team = ""
       teamSnap.forEach(doc => {
@@ -80,10 +88,12 @@ export default {
         });
         console.log(this.team)
 
+      // get all tasks from all members of team
       let teamQuery = await getDocs(query(collection(db,"users"), where("team", "==", this.team)));
       this.teamTask = {}
       this.teamMail = {}
 
+      // create task array for each team member
       teamQuery.forEach(doc => {
             var user_email = doc.data().email;
             var user_name = doc.data().name;
@@ -99,6 +109,7 @@ export default {
       const q = query(collection(db, "Tasks"), where("Assignee", "in", Object.keys(this.teamMail)), where("Status", "==", "ToDo"))
       const tasksRef = await getDocs(q)
 
+      // push tasks into each member's array
       tasksRef.forEach(doc => {
             var task = doc.data();
             console.log(task)
@@ -118,11 +129,14 @@ export default {
 
 <template>
   <main class='project'>
+    <!-- page heading -->
     <div class='project-info'>
       <h1>Team Dashboard</h1>
     </div>
+    <!-- each team member's todo task column --> 
     <div class='project-tasks'>
         <div class='project-column' v-for="(tasks, name) in teamTask" :key='name'>
+            <!--  add task form -->
             <div class = "form-popup" >
               <div class = "popup" id = "myform">    
                 <form action="/action_page.php" class = "formli">         
@@ -147,17 +161,20 @@ export default {
                 </form>
               </div>
             </div>
+            <!-- member's name and avatar icon -->
             <div id="nameHeading">
               <div class="circle">
                   <div class="circle-inner"><div v-if = 'teamMail'></div> {{teamMail[name][0]}} </div>
                 </div>
               <div class='project-column-heading'>
                 
+                <!-- add task button --> 
                 <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
                   <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
               </div>
             </div>
 
+            <!-- task card -->
             <div class="drop-zone">
             <TaskCard v-for="task in tasks" :key='task.id'
                   :Task='task.Name'

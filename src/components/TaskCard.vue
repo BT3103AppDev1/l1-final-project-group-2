@@ -1,6 +1,7 @@
 
               
 <template>
+	<!-- task card in team page -->
   <div class='task'>
     <div class = "taskDisplay"> Task </div>
     <div id = "taskName"> {{Task}} </div>
