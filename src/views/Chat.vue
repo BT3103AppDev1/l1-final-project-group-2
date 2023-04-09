@@ -335,7 +335,7 @@ async sendMessage() {
 
   .chat-container {
     flex-grow: 1;
-    max-width: 800px;
+    max-width: 1000px !important;
     padding: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 background-color: #f8f8f8;
