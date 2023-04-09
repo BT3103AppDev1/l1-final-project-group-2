@@ -316,6 +316,7 @@ html {
     background-color: var(--light-grey);
     margin: 10px; 
     border-radius: 50%;
+    margin-top: 2rem;
   }
 
   
@@ -326,10 +327,9 @@ html {
   vertical-align: middle;  
   text-align: center;
   text-decoration: none;
-  height: 80px; 
-  width: 80px;   
+  height: 60px; 
+  width: 60px;   
   font-size: 20px; 
-
 }
 
 </style>
