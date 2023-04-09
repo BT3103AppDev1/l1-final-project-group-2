@@ -302,14 +302,14 @@ async sendMessage() {
     max-height: calc(100vh - 64px);
     overflow-y: auto;
     border-right: 1px solid #ccc;
-    padding: 1rem;
+    padding-right: 1rem;
     background-color: #edf2f7;
   }
 
   .user-list > h1 {
     margin-top: 0;
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    padding: 2rem 0;
   }
 
   .user-list > div {

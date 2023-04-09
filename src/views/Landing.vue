@@ -33,6 +33,7 @@
   /* Styles for the body element */
   body {
     overflow-x: hidden;
+    padding-bottom: 50px;
   }
 
   /* Styles for the main container */

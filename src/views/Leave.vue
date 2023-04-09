@@ -2,7 +2,7 @@
   <div id="leavePage">
     <!-- Title and request leave button -->
     <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
-    <br><br>
+    
 
     <!-- Leave request form popup -->
     <div class = "form-popup">
@@ -228,6 +228,7 @@
 
 h1{
   background-color: #EBF0F7;
+  padding: 2rem 0;
 }
 h1 button {
     color: black;
