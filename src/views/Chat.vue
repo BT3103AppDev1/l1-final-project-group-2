@@ -274,6 +274,9 @@ async sendMessage() {
   body {
     font-family: Arial, sans-serif;
   }
+  h1{
+    margin-top: 1rem;
+  }
 
   .main-container {
     display: flex;
@@ -340,7 +343,7 @@ border-radius: 4px;
 }
 
 .chat-container h1 {
-font-size: 1.5rem;
+
 margin-bottom: 1rem;
 }
 
