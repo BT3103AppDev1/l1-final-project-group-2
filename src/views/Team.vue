@@ -131,7 +131,7 @@ export default {
   <main class='project'>
     <!-- page heading -->
     <div class='project-info'>
-      <h1>Team Dashboard</h1>
+      <h1>Team Dashboard </h1> <span class="teamid" >{{ team }}</span>
     </div>
     <!-- each team member's todo task column --> 
     <div class='project-tasks'>
@@ -211,10 +211,9 @@ html {
   }
 
  .project-info {
-	 display: flex;
-	 width: 100%;
-	 justify-content: space-between;
-	 align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 10px;
 }
 
  .project-tasks {
@@ -240,7 +239,7 @@ html {
  .project-column-heading__title {
 	font-size: 20px;
   padding: 10px;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
   .form-popup{
@@ -347,6 +346,21 @@ html {
     margin: 5px;
     padding: 7px;
 
+}
+.teamid {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: whitesmoke;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: fit-content;
+  
 }
 
 </style>
