@@ -238,19 +238,20 @@ async sendMessage() {
       // Set the filtered messages array to the messages for the selected conversation
       this.filteredMessages = selectedConversation ? selectedConversation.messages : [];
     },
-
+    
     formatTimestamp(timestamp) {
-      // Format the timestamp as a string in the format "MM/DD/YYYY hh:mm:ss"
-      if (timestamp instanceof Date) {
-        return timestamp.toLocaleString();
-      }
+  // Format the timestamp as a string in the format "MM/DD/YYYY hh:mm"
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleString();
+  }
 
-      if (timestamp.seconds) {
-        return new Date(timestamp.seconds * 1000).toLocaleString();
-      }
+  if (timestamp.seconds) {
+    return new Date(timestamp.seconds * 1000).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute:'2-digit'});
+  }
 
-      return "Invalid date";
-    },
+  return "Invalid date";
+},
+
 
     getConversationId(email1, email2) {
       // Sort the two emails alphabetically and concatenate them with an underscore to create the conversation ID
@@ -361,7 +362,7 @@ text-align: right;
 }
 
 .timestamp {
-font-size: 0.8rem;
+font-size: 0.6rem;
 color: #777;
 margin-left: 1rem;
 }
