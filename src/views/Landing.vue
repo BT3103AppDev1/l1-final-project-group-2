@@ -116,6 +116,10 @@
     font-size: 1.2rem;
   }
 
+  #sidenav button i {
+  transform: rotate(180deg);
+}
+
   /* Styles for the landing page heading */
   h1 {
     margin-bottom: 20px;
