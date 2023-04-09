@@ -30,57 +30,62 @@ export default {
 }
 </script>
 
-<style >
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  background-color:#EBF0F7;
-  width:100%;
-}
-#sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 100px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: white;
-  overflow-x: hidden; /* Disable horizontal scroll */;
-  padding: 200px 0px;
-}
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-#sidenav a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  font-size: 25px;
-  color: #2e2e2f;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-#sidenav a:hover {
-  background-color: #7784ee;
-}
-.logo-img {
-  display: flex;
-  position: fixed;
-  top: 10px;
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    background-color: #EBF0F7;
+    width: 100%;
+  }
 
-  width: 100px;
-  height: 100px;
-  z-index: 2;
-  justify-content: center;
-  align-items: center;
-}
-button{
-  padding:15px, 30px;
-}
+  #sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 100px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: white;
+    overflow-x: hidden; /* Disable horizontal scroll */;
+    overflow-y: hidden; /* Disable vertical scroll */;
+    padding: 200px 0px;
+  }
 
+  #sidenav a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 25px;
+    color: #2e2e2f;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  #sidenav a:hover {
+    background-color: #7784ee;
+  }
+
+  .logo-img {
+    display: flex;
+    position: fixed;
+    top: 10px;
+
+    width: 100px;
+    height: 100px;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    padding: 15px, 30px;
+  }
 </style>
