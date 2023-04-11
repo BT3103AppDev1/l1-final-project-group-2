@@ -216,11 +216,11 @@ html {
   grid-column-gap: 10px;
 }
 
- .project-tasks {
-	 display: flex;
-	 grid-template-columns: repeat(4, 1fr);
-	 width: 100%;
-	 grid-column-gap: 1.5rem;
+.project-tasks {
+	 display: grid;  
+   	grid-template-columns: auto auto auto;
+	  width: auto; 
+	  grid-column-gap: 3rem;
 }
  .project-column-heading {
 

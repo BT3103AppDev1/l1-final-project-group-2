@@ -134,10 +134,10 @@ html {
 }
 
  .project-tasks {
-	 display: flex;
-	 grid-template-columns: repeat(4, 1fr);
-	 width: 100%;
-	 grid-column-gap: 1.5rem;
+	 display: grid;  
+   	grid-template-columns: auto auto auto;
+	  width: auto; 
+	  grid-column-gap: 3rem;
 }
  .project-column-heading {
 
@@ -165,7 +165,7 @@ html {
 	 background-color: var(--white);
 	 padding: 1rem;
 	 border-radius: 8px;
-	 width: 100%;
+	 width: auto;
 	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 	 margin-bottom: 1rem;
 	 border: 3px dashed transparent;
@@ -285,9 +285,8 @@ html {
   .drop-zone {
     background-color: transparent;
     margin-bottom: 10px;
-
     height: 550px;
-    width: 300px;
+    width: auto;
 
   }
 
