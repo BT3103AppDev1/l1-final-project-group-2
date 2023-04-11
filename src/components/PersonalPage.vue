@@ -134,6 +134,7 @@ html {
 }
 
  .project-tasks {
+  overflow: auto;
 	 display: grid;  
    	grid-template-columns: auto auto auto;
 	  width: auto; 
