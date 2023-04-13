@@ -4,7 +4,10 @@ Here are the comments for the code:
     
 	<main class="login">
 	  <section class="forms">
-       
+      <div class="form-wrapper">
+        <img src="../photos/logo.png" alt="Image" class="image">
+       <!-- The button to go back to the home page -->
+		 <button class="back-btn" @click="goBack">&#8592;</button>
 		<form class="register" @submit.prevent="register">
             <h1 class = "title">Register</h1>
 		  <input
@@ -41,9 +44,9 @@ Here are the comments for the code:
 			
 		  
 		  <input type="submit" value="Register" />
-          <button class = "back-btn" @click="goBack">&#8592;</button>
+         
 		</form>
-        
+  </div>  
 		
 	  </section>
 	</main>
@@ -116,29 +119,54 @@ export default {
 
 <style scoped>
 .forms {
-	display: flex;
-	min-height: 100vh;
-}
-form {
-	flex: 1 1 0%;
-	
-}
+	/* The section containing the form is aligned vertically and horizontally */
+	flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 form.register {
 	color: #FFF;
 	background-color: black;
-	background-image: linear-gradient(
-		to bottom right,
-		rgb(117, 119, 210) 0%,
-		rgb(176, 85, 135) 100%
-    
-	);
+	background-image: grey
 	
 }
-.title {
+
+.register{
+ 
+  height: 40rem;
+}
+
+.form-wrapper {
+    /* The wrapper for the image and the form */
+    display: flex;
+    align-items: center;
+  }
+  .image {
+    /* The image takes up 50% of the width */
+   
+    height: auto;
+	
+	width: 50%;
+  
+    
+  }
+  .image img {
+    
+    max-width: 500px;
+  }
+
+  h2 {
+	/* The form title */
 	font-size: 2rem;
 	text-transform: uppercase;
 	margin-bottom: 2rem;
-    text-align: center;
+  }
+.title {
+	font-size: 2rem;
+	
+	margin-bottom: 2rem;
+  text-align: center;
     
 }
 input {
@@ -154,6 +182,7 @@ input {
 	margin-bottom: 2rem;
 	padding: 0.5rem 0rem;
 }
+
 select { 
   width: 100%;
   max-width: 400px;
@@ -198,7 +227,10 @@ form.register input[type="submit"] {
 	text-transform: uppercase;
 }
 .back-btn {
-  color: white;
+  position: absolute; /* position the button absolutely */
+  bottom: 0; /* align it to the bottom of the container */
+  left: 0; /* align it to the left of the container */
+  color: black;
   font-size: 60px;
   border: none;
   background-color: transparent;
@@ -225,17 +257,7 @@ form.register input[type="submit"] {
 .select-container select {
   margin-bottom: 1rem;
 }
-.image-container {
-    width: 50%;
-    display: inline-block;
-    vertical-align: top;
-    background-clip: WHITE;
-  }
 
-  .image-container img {
-    max-width: 80%;
-    height: auto;
-  }
 
   .register {
     width: 50%;
@@ -244,8 +266,9 @@ form.register input[type="submit"] {
     padding: 10pt;
   }
   body {
-  background-color: rgb(255, 255, 255);
+  overflow: hidden;
 }
+
 
 
 </style>

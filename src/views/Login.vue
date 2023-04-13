@@ -8,9 +8,9 @@
 		 <!-- The button to go back to the home page -->
 		 <button class="back-btn" @click="goBack">&#8592;</button>
 		<!-- The login form -->
-		<form class="login" @submit.prevent="login">
+		<form class="form-page1" @submit.prevent="login">
 		  <!-- The form title -->
-		  
+		  <div class="form-container">
 		  <h1 class="title">Login</h1>
 	
 		  <!-- The input field for email -->
@@ -30,7 +30,7 @@
 		  <!-- The submit button -->
 		  <input type="submit" value="Login" />
 	
-		 
+		</div>
 		</form>
 		</div>
 	  </section>
@@ -83,15 +83,19 @@
     align-items: center;
     justify-content: center;
   }
-  
-  form {
-	/* The form takes up the entire width of the section */
-	flex: 0 0 90%;
-    padding: 6rem 1rem 1rem;
-	display: flex;
-    flex-direction: column;
-    align-items: center;
+  form.form-page1 {
+	/* The login form has a black background with a gradient */
+	color: #FFF;
+	background-color: black;
+	background-image: grey
+  }
+
+  .form-page1 {
 	
+	height: 40rem;
+	justify-content: center;
+	align-items: center;
+	 
 	
 
   }
@@ -99,6 +103,8 @@
     /* The wrapper for the image and the form */
     display: flex;
     align-items: center;
+	background-color: white;
+	margin-top: 4rem;
   }
   .image {
     /* The image takes up 50% of the width */
@@ -114,12 +120,7 @@
     max-width: 500px;
   }
   
-  form.login {
-	/* The login form has a black background with a gradient */
-	color: #FFF;
-	background-color: black;
-	background-image: grey
-  }
+  
   
   h2 {
 	/* The form title */
@@ -128,37 +129,14 @@
 	margin-bottom: 2rem;
   }
   
-  .title {
-	/* The login form title */
-	font-size: 3rem;
-	text-transform: uppercase;
+  title {
+	font-size: 2rem;
+	
+	margin-top: 4rem; 
 	margin-bottom: 2rem;
-	text-align: center;
-	margin-top: 0.5rem;
-  }
-  
-  .back-btn {
-	/* The button to go back to the home page */
-	color: black;
-	font-size: 60px;
-	border: none;
-	background-color: transparent;
-	cursor: pointer;
-	transition: color 0.3s ease;
-	position: absolute; 
-	bottom: 1rem; 
-	left: 0.5rem; 
-	margin-left: 2rem;
-  }
-  
-  .back-btn:hover {
-	color: #cccccc;
-  }
-  
-  .back-btn.clicked {
-	color: black;
-  }
-  
+    text-align: center;
+    
+}
 
 input {
 	appearance: none;
@@ -166,13 +144,15 @@ input {
 	outline: none;
 	background: none;
 	display: block;
-	width: 50%;
+	width: 100%;
 	max-width: 400px;
 	margin: 0 auto;
 	font-size: 1.5rem;
 	margin-bottom: 2rem;
-	padding: 0.5rem 0rem;
+	padding: 0.5rem 0.5rem;
 }
+  
+
 input:not([type="submit"]) {
 	opacity: 0.8;
 	transition: 0.4s;
@@ -184,12 +164,12 @@ input::placeholder {
 	color: inherit;
 }
 
-form.login input:not([type="submit"]) {
+form.form-page1 input:not([type="submit"]) {
 	color: #fff;
-	border-bottom: 2px solid #2c3e50;
+	border-bottom: 2px solid #FFF;
 	
 }
-form.login input[type="submit"] {
+form.form-page1 input[type="submit"] {
 	background-color:#7784ee;
 	color: #FFF;
 	font-weight: 700;
@@ -199,14 +179,44 @@ form.login input[type="submit"] {
 	text-transform: uppercase;
 	margin-top: 1rem;
 }
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.back-btn {
+  position: absolute; /* position the button absolutely */
+  bottom: 0; /* align it to the bottom of the container */
+  left: 0; /* align it to the left of the container */
+  color: black;
+  font-size: 60px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+  
+  .back-btn:hover {
+	color: #cccccc;
+  }
+  
+  .back-btn.clicked {
+	color: black;
+  }
 body {
   overflow: hidden;
 }
-.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.form-page1 {
+	width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10pt;
 }
+
+
+  
 
 </style>
