@@ -3,7 +3,7 @@ import TaskCard from '../components/TaskCard.vue'
 import firebaseApp from '../firebase/firebase';
 import { onMounted } from 'vue';
 import { getFirestore } from 'firebase/firestore'
-import { collection, getDocs, setDoc, query, where, doc } from "firebase/firestore";
+import { collection, getDocs, setDoc, query, where, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
@@ -27,6 +27,7 @@ export default {
       name: 'name',
       description: 'description',
       due_date: 'due_date',
+      assignee_id: '',
     }
   },
   methods: {
@@ -40,17 +41,31 @@ export default {
     },
     
     async addtofs() {
+      const user = getAuth().currentUser
       let name = document.getElementById("task_name1").value 
       let due_date = document.getElementById("task_duedate1").value
       let description = document.getElementById("task_desc1").value
       let assignee = document.getElementById("assignee").innerHTML
       let assigner = getAuth().currentUser.email // set assignee as current user email
+      this.assignee_id = ""
       try{
         
         // add inputs from task form to firestore database
         const docRef = await setDoc(doc(collection(db, "Tasks")), {
           Name: name, Due_Date: due_date, Description: description, Status: "ToDo", Assignee: assignee, Assigner: assigner 
         })
+
+        
+        let userData = await getDocs(query(collection(db, "users"), where("email", "==", assignee)))
+        userData.forEach((doc) => {
+          console.log(doc.data())
+          this.assignee_id = doc.id
+        })
+        let assigneeRef = doc(db, "users", this.assignee_id)
+        console.log(assigneeRef)
+        await updateDoc(assigneeRef, {
+            notification: true
+          }).then(console.log("changed"))
         console.log("SAVED!")
 
         // reset form to blank
@@ -165,12 +180,11 @@ export default {
             <div id="nameHeading">
               <div class="circle">
                   <div class="circle-inner"><div v-if = 'teamMail'></div> {{teamMail[name][0]}} </div>
-                </div>
+              </div>
               <div class='project-column-heading'>
-                
                 <!-- add task button --> 
                 <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
-                  <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
+                <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
               </div>
             </div>
 

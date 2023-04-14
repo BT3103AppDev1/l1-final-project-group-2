@@ -25,6 +25,8 @@ import firebaseApp from '../firebase/firebase.js';
 import { getFirestore } from 'firebase/firestore'
 import {doc, collection, getDocs, deleteDoc, query, where, updateDoc, getDoc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import 'vue3-toastify/dist/index.css';
+import { toast } from 'vue3-toastify';
 
 const auth = getAuth();
 const user = auth.currentUser;
@@ -46,6 +48,23 @@ export default {
   let allDocuments = await getDocs(query(collection(db, "Leave"), where("Status", "==", "pending"), where("Team", "==", team)));
   let index = 1;
 
+
+    // Function for leave notifications
+    let teamRef = doc(db, "teams", team)
+      let teamData = await getDoc(teamRef)
+      let notification = teamData.data().leaveNotif
+
+      if (notification){
+          console.log(notification)
+          toast("You have new leave requests!", {
+        // toast options here
+          })
+          await updateDoc(teamRef, {
+            leaveNotif: false
+          })
+          notification = false
+          console.log(notification)
+      }
 
   allDocuments.forEach((doc) => {
     let docid = doc.id;

@@ -99,7 +99,7 @@
 <script>
     import firebaseApp from '../firebase/firebase';
     import { getFirestore } from 'firebase/firestore'
-    import {getDoc,getDocs,doc, setDoc, collection, query, where} from "firebase/firestore";
+    import {getDoc,getDocs,doc, setDoc, collection, query, where, updateDoc} from "firebase/firestore";
     const db = getFirestore(firebaseApp);
     import { getAuth } from "firebase/auth";
     
@@ -213,12 +213,18 @@
                 console.log("reset form")
                 document.getElementById('leaveForm').reset();
                 this.$emit("added")
+
+                let teamRef = doc(db, "teams", team)
+                console.log(teamRef)
+                await updateDoc(teamRef, {
+                    leaveNotif: true
+                  }).then(console.log("changed"))
             }
                 catch(error) {
                 console.error ("Error adding document: ", error);
                 }
                 this.showForm=false;
-                location.reload();
+                //location.reload();
                 
               }
             }

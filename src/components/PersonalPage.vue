@@ -338,8 +338,9 @@ html {
 <script>
 import firebaseApp from '../firebase/firebase.js';
 import {getFirestore} from "firebase/firestore"
-import {doc, setDoc, getDocs, deleteDoc, collection, updateDoc} from "firebase/firestore";
-
+import {doc, setDoc, getDocs, deleteDoc, collection, updateDoc, getDoc} from "firebase/firestore";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { getAuth } from "firebase/auth";
 
 
@@ -348,13 +349,13 @@ const user = auth.currentUser;
 const db = getFirestore(firebaseApp); 
 
 export default {
-  
  data() {
     return {
       doData: [],
       reviewData: [],
       completeData: [],
-      userEmail: ''
+      userEmail: '',
+      notfication: false,
    };
   }, 
 
@@ -399,15 +400,34 @@ export default {
 
     async readTasks() {
 
+      const user = getAuth().currentUser
       this.doData = [];
       this.reviewData = [];
       this.completeData = [];
+      this.notfication = false
+
+      let userRef = doc(db, "users", user.uid)
+      let userData = await getDoc(userRef)
+      this.notification = userData.data().notification
+
+      if (this.notification){
+          console.log(this.notification)
+          toast("You have a new task from your team!", {
+        // toast options here
+          })
+          await updateDoc(userRef, {
+            notification: false
+          })
+          this.notification = false
+          console.log(this.notification)
+      }
+      
 
       // get all the tasks from the current user & store tasks according to status to display in different columns
       let allDocuments = await getDocs(collection(db, "Tasks"))
 
       allDocuments.forEach((docs) => {
-
+      
       auth.onAuthStateChanged((user) => {
         if (user){
         let documentData = docs.data()

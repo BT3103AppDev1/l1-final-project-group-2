@@ -79,6 +79,7 @@ export default {
         email: register_form.value.email,
         team: register_form.value.team,
         role: register_form.value.role,
+        notification: false,
       };
       try {
         const docRef = await setDoc(doc(colRef, uid), dataObj);
