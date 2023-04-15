@@ -1,5 +1,5 @@
 <template>
-  <div id="leavePage">
+   <div id="leavePage" class="scroll-container">
     <!-- Title and request leave button -->
     <h1>Leave Dashboard <button class='applyLeave' v-on:click="addLeave" >+ Request Leave</button></h1>
     
@@ -231,6 +231,10 @@
     }
 </script>
 <style scoped>
+.scroll-container{
+  max-height: 100vh; /* 100px is the height of the header and footer */
+  overflow-y: auto; /* add scrollbar if content overflows */
+}
 
 h1{
   background-color: #EBF0F7;

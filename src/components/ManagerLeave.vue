@@ -33,18 +33,21 @@ const user = auth.currentUser;
  console.log("Employer", user.email)
 
 const db = getFirestore(firebaseApp);
-const userDoc = await getDoc(doc(db, "users", user.uid));
-      
-      const userData = userDoc.data();
-      console.log(userData.team)
-const team = userData.team
+
 
 
 export default {
     mounted(){
         
+
+        
         // Function to retrieve the leave documents of the current user
         async function display() {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+            const userData = userDoc.data();
+            console.log(userData.team)
+            const team = userData.team
   let allDocuments = await getDocs(query(collection(db, "Leave"), where("Status", "==", "pending"), where("Team", "==", team)));
   let index = 1;
 
