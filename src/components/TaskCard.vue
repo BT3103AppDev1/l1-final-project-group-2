@@ -2,7 +2,7 @@
               
 <template>
 	<!-- task card in team page -->
-  <div class='task'>
+  <div class='teamtask'>
     <div class = "taskDisplay"> Task </div>
     <div id = "taskName"> {{Task}} </div>
     <br>
@@ -42,7 +42,7 @@
 
 <style>
  
- .task {
+ .teamtask {
 	cursor: default;
 	 background-color: var(--white);
 	 padding: 1rem;
@@ -53,7 +53,7 @@
 	 border: none;
 	 font-weight: 500;
 }
- .task p {
+ .teamtask p {
 	 font-size: 14px;
 	 
 	 
