@@ -143,14 +143,14 @@ export default {
 </script>
 
 <template>
-  <main class='project'>
+  <main class='team'>
     <!-- page heading -->
-    <div class='project-info'>
+    <div class='team-info'>
       <h1>Team Dashboard </h1> <span class="teamid" >{{ team }}</span>
     </div>
     <!-- each team member's todo task column --> 
-    <div class='project-tasks'>
-        <div class='project-column' v-for="(tasks, name) in teamTask" :key='name'>
+    <div class='team-tasks'>
+        <div class='team-column' v-for="(tasks, name) in teamTask" :key='name'>
             <!--  add task form -->
             <div class = "form-popup" >
               <div class = "popup" id = "myform">    
@@ -181,9 +181,9 @@ export default {
               <div class="circle">
                   <div class="circle-inner"><div v-if = 'teamMail'></div> {{teamMail[name][0]}} </div>
               </div>
-              <div class='project-column-heading'>
+              <div class='team-column-heading'>
                 <!-- add task button --> 
-                <h2 class='project-column-heading__title'>{{teamMail[name]}}</h2>
+                <h2 class='team-column-heading__title'>{{teamMail[name]}}</h2>
                 <button class='task_add' v-on:click="addTask(name)"><span>&#43;</span></button>
               </div>
             </div>
@@ -206,7 +206,7 @@ export default {
 
 <style>
 
-.project {
+.team {
   margin-left: 100px
 }
 
@@ -224,19 +224,24 @@ html {
    margin-bottom: 0.5px;
   }
 
- .project-info {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: 10px;
+ .team-info {
+	 padding: 2rem 0;
+	 display: flex;
+	 width: 100%;
+	 align-items: center;
 }
 
-.project-tasks {
+.team-tasks {
 	 display: grid;  
    	grid-template-columns: auto auto auto;
-	  width: auto; 
-	  grid-column-gap: 3rem;
+	  width: -webkit-fill-available; 
+	  grid-column-gap: 1rem;
 }
- .project-column-heading {
+
+.team-column {
+  width: 450px
+}
+ .team-column-heading {
 
 	 display: flex;
 	 align-items: center;
@@ -244,13 +249,13 @@ html {
    background-color: var(--white);
     padding: 0px 10px;
 	 border-radius: 8px;
-	 width: 450px;
+	 width: 385px;
 	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 	 margin-bottom: 1rem;
 	 border: 3px dashed transparent;
 
 }
- .project-column-heading__title {
+ .team-column-heading__title {
 	font-size: 20px;
   padding: 10px;
   text-transform: none;
