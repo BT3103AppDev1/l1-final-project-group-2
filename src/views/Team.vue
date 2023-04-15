@@ -236,6 +236,7 @@ html {
    	grid-template-columns: auto auto auto;
 	  width: -webkit-fill-available; 
 	  grid-column-gap: 1rem;
+    overflow: auto;
 }
 
 .team-column {
