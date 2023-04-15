@@ -224,7 +224,7 @@
                 console.error ("Error adding document: ", error);
                 }
                 this.showForm=false;
-                //location.reload();
+                location.reload();
                 
               }
             }
