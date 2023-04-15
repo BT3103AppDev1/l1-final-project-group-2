@@ -244,7 +244,7 @@ html {
    background-color: var(--white);
     padding: 0px 10px;
 	 border-radius: 8px;
-	 width: 100%;
+	 width: 450px;
 	 box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
 	 margin-bottom: 1rem;
 	 border: 3px dashed transparent;
