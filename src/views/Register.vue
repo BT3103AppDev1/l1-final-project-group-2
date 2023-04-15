@@ -121,41 +121,47 @@ export default {
 <style scoped>
 .forms {
 	/* The section containing the form is aligned vertically and horizontally */
-	flex: 1;
-    display: flex;
+	  width: 100%;
     align-items: center;
     justify-content: center;
   }
 form.register {
 	color: #FFF;
-	background-color: black;
-	background-image: grey
-	
+	background-color: #7784ee;
+	background-image: grey;
+	width: 60%;
 }
 
 .register{
- 
-  height: 40rem;
+  height: 100vh;
+	justify-content: center;
+	align-items: center;
+	width: 100vh;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  
 }
 
 .form-wrapper {
-    /* The wrapper for the image and the form */
-    display: flex;
-    align-items: center;
+/* The wrapper for the image and the form */	
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ebf0f7;
+}
+.image {
+  /* The image takes up 50% of the width */
+  height: auto;	
+	width: 50%;  
   }
-  .image {
-    /* The image takes up 50% of the width */
-   
-    height: auto;
-	
-	width: 50%;
   
-    
-  }
-  .image img {
-    
-    max-width: 500px;
-  }
 
   h2 {
 	/* The form title */
@@ -165,7 +171,7 @@ form.register {
   }
 .title {
 	font-size: 2rem;
-	
+	margin-top: 4rem; 
 	margin-bottom: 2rem;
   text-align: center;
     
@@ -219,13 +225,20 @@ form.register input:not([type="submit"]) {
 }
 
 form.register input[type="submit"] {
-	background-color: #7784ee;
-	color: #fff;
+	background-color:white;
+	color: #7784ee;
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;
 	cursor: pointer;
 	text-transform: uppercase;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 .back-btn {
   position: absolute; /* position the button absolutely */
@@ -260,12 +273,7 @@ form.register input[type="submit"] {
 }
 
 
-  .register {
-    width: 50%;
-    display: inline-block;
-    vertical-align: top;
-    padding: 10pt;
-  }
+  
   body {
   overflow: hidden;
 }

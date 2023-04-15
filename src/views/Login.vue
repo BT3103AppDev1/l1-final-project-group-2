@@ -78,47 +78,51 @@
   <style>
   .forms {
 	/* The section containing the form is aligned vertically and horizontally */
-	flex: 1;
-    display: flex;
+	width: 100%;
     align-items: center;
     justify-content: center;
+	
   }
   form.form-page1 {
-	/* The login form has a black background with a gradient */
 	color: #FFF;
-	background-color: black;
-	background-image: grey
+	background-color: #7784ee;
+	background-image: grey;
+	width: 60%;
   }
 
   .form-page1 {
-	
-	height: 40rem;
+	height: 100vh;
 	justify-content: center;
 	align-items: center;
-	 
-	
+	width: 100vh;
+  }
+  
+  html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  
+}
 
-  }
-  .form-wrapper {
-    /* The wrapper for the image and the form */
-    display: flex;
-    align-items: center;
-	background-color: white;
-	margin-top: 4rem;
-  }
+.form-wrapper {
+/* The wrapper for the image and the form */	
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #ebf0f7;
+  
+}
+  
+
   .image {
     /* The image takes up 50% of the width */
-   
-    height: auto;
-	
-	width: 50%;
-  
-    
+    height: auto;	
+	width: 50%;  
   }
-  .image img {
-    
-    max-width: 500px;
-  }
+
   
   
   
@@ -131,7 +135,6 @@
   
   title {
 	font-size: 2rem;
-	
 	margin-top: 4rem; 
 	margin-bottom: 2rem;
     text-align: center;
@@ -170,8 +173,8 @@ form.form-page1 input:not([type="submit"]) {
 	
 }
 form.form-page1 input[type="submit"] {
-	background-color:#7784ee;
-	color: #FFF;
+	background-color:white;
+	color: #7784ee;
 	font-weight: 700;
 	padding: 1rem 2rem;
 	border-radius: 0.5rem;
@@ -209,12 +212,7 @@ form.form-page1 input[type="submit"] {
 body {
   overflow: hidden;
 }
-.form-page1 {
-	width: 50%;
-    display: inline-block;
-    vertical-align: top;
-    padding: 10pt;
-}
+
 
 
   
