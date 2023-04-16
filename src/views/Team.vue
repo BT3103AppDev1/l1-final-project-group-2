@@ -232,8 +232,7 @@ html {
 }
 
 .team-tasks {
-	 display: grid;  
-   	grid-template-columns: auto auto auto;
+	  display: flex;  
 	  width: -webkit-fill-available; 
 	  grid-column-gap: 1rem;
     overflow: auto;
