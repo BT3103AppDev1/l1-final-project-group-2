@@ -81,6 +81,8 @@
 	margin-right: 1rem;
    	border: 1px solid var(--light-grey);
    	border-radius: 3px;
+	display: inline-block;
+    width: fit-content;
 }
 
 </style>
