@@ -74,7 +74,8 @@
 }
  #taskDuedate {
 	position: relative;
-   	width: 35%;
+	width: 85px;
+   	
    	padding: 5px;
 	color: var(--text);
 	font-size: 12px;
@@ -82,7 +83,7 @@
    	border: 1px solid var(--light-grey);
    	border-radius: 3px;
 	display: inline-block;
-    width: fit-content;
+   
 }
 
 </style>
