@@ -83,11 +83,22 @@ export default {
     },
 
     selectedUserDisplayName() {
-      // Find the selected user
-      const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
-      // Return the name of the selected user, or "Chat" if no user is selected
-      return selectedUser ? selectedUser.name : "Chat";
-    },
+  // Find the selected user
+  const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
+
+  // Find the team of the selected user
+  const selectedUserTeam = selectedUser ? selectedUser.team : "";
+
+  // Return the name of the selected user and their team, or just their name if no user is selected
+  return selectedUser ? `${selectedUser.name} (${selectedUserTeam})` : "Chat";
+},
+
+selectedUserTeam() {
+  const selectedUser = this.users.find(user => user.email === this.selectedUserEmail);
+  return selectedUser && selectedUser.team ? selectedUser.team : "";
+}
+
+
   },
 
   async created() {
@@ -113,10 +124,12 @@ async fetchUsers() {
       this.users.push({
         email: userDoc.data().email,
         name: userDoc.data().name,
+        team: userDoc.data().team
       });
     }
   });
 },
+
 
 async fetchAndInitializeConversations() {
   // Get the email of the logged-in user
