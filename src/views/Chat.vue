@@ -471,7 +471,7 @@ form {
   align-items: center;
   margin: 0.5rem;
   padding: 0.25rem 0.75rem;
-  background-color: whitesmoke;
+  background-color: #edf2f7;
   border-radius: 9999px;
   font-size: 0.875rem;
   font-weight: 600;
