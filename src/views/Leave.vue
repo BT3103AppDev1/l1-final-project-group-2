@@ -354,9 +354,9 @@ select option:checked {
   align-items: center;
   appearance: none;
   background-color: #fff;
-  border-radius: 24px;
+  border-radius: 15px;
   border-style: none;
-  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+  
   box-sizing: border-box;
   color: #3c4043;
   cursor: pointer;
@@ -492,7 +492,9 @@ select option:checked {
 
   .progress-bar-foreground-1 {
     fill: none;
-    stroke: #FF5151;
+    stroke: #f3438d
+
+;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
@@ -540,7 +542,7 @@ select option:checked {
 
   .progress-bar-foreground-2 {
     fill: none;
-    stroke: #3786F1;
+    stroke: #5d8def;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
@@ -587,7 +589,8 @@ select option:checked {
 
   .progress-bar-foreground-3 {
     fill: none;
-    stroke: #EE61CF;
+    stroke:  #f3438d
+;
     stroke-width: 3.8;
     stroke-linecap: round;
     stroke-dasharray: 0 999;
