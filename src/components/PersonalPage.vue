@@ -194,15 +194,17 @@ html {
 	 font-size: 15px;
    width: 100%;
 }
- #taskDuedate {
-	 position: relative;
-   width: 35%;
-   padding: 2px;
-	 color: black;
-	 font-size: 12px;
-	 margin-right: 1rem;
-   border: 1px solid var(--light-grey);
-   border-radius: 3px;
+#taskDuedate {
+	position: relative;
+	width: 85px;
+   	
+   	padding: 5px;
+	color: var(--text);
+	font-size: 12px;
+	margin-right: 1rem;
+   	border: 1px solid var(--light-grey);
+   	border-radius: 3px;
+	display: inline-block;
 }
 
  .task-hover {
