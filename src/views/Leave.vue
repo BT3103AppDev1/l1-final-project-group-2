@@ -492,7 +492,7 @@ select option:checked {
 
   .progress-bar-foreground-1 {
     fill: none;
-    stroke: #f3438d
+    stroke: #FF5151
 
 ;
     stroke-width: 3.8;
