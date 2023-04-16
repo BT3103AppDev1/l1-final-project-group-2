@@ -19,7 +19,11 @@
 
       <div class="chat-container">
         <!-- Render the messages for the selected user -->
-        <h1 v-text="selectedUserDisplayName"></h1>
+        <div class="user-info">
+  <h1 class="selected-user-name" v-text="selectedUserDisplayName"></h1>
+  <span class="teamid" v-text="selectedUserTeam"> </span>
+</div>
+
         <div class="messages-container" ref="messagesContainer">
           <div v-if="filteredMessages.length > 0">
             <div
@@ -90,7 +94,7 @@ export default {
   const selectedUserTeam = selectedUser ? selectedUser.team : "";
 
   // Return the name of the selected user and their team, or just their name if no user is selected
-  return selectedUser ? `${selectedUser.name} (${selectedUserTeam})` : "Chat";
+  return selectedUser ? `${selectedUser.name}` : "Chat";
 },
 
 selectedUserTeam() {
@@ -462,5 +466,29 @@ form {
   padding-top: 1rem;
 }
 
+.teamid {
+  display: inline-flex;
+  align-items: center;
+  margin: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: whitesmoke;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: fit-content;
+  
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.selected-user-name {
+  margin-right: 0.5rem;
+}
 
 </style>
